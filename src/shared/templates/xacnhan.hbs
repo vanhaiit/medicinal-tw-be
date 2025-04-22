@@ -1,0 +1,316 @@
+<!DOCTYPE HTML
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml"
+  xmlns:o="urn:schemas-microsoft-com:office:office">
+
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap"
+    rel="stylesheet">
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="x-apple-disable-message-reformatting">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <title></title>
+  <style type="text/css">
+    p {
+      margin: 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    td,
+    th {
+      text-align: left;
+    }
+
+    th {
+      font-weight: 700;
+      color: #2F4157;
+    }
+
+    td {
+      font-size: 14px;
+      color: #2F4157;
+    }
+
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style-type: '- ';
+      list-style-position: inside;
+    }
+
+    li {
+      list-style-type: none;
+    }
+
+    .ml {
+      padding-left: 10px;
+    }
+
+    li {
+      list-style-type: none;
+    }
+
+    .ml {
+      padding-left: 10px;
+    }
+
+    .header-image {
+      height: 50px;
+      width: 100%;
+      border-radius: 0 0 16px 16px;
+    }
+
+    .product-image {
+      width: 100px;
+      height: 100px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+
+<body
+  style="max-width: 600px; margin: 0 auto;padding: 0;-webkit-text-size-adjust: 100%;background-color: #fdf7f2;color: #000000; font-family: Nunito, sans-serif;">
+  <div
+    style="width: 100%; height: 50px; border-radius: 0px 0px 16px 16px; display: flex;justify-content: center; background-color: #8A171A; align-items: center;">
+    <img src="https://api.teamogift.com/uploads/product_images/1727325729537_0.png"
+      style="width: 84px; height: 20px;  margin: auto;" />
+  </div>
+  <div style="padding: 0px 16px;">
+    <table>
+      <tr>
+        <td colspan="2" style="text-align: center; ">
+          <img src="https://api.teamogift.com/uploads/send_mail/1727123079076_0.png"
+            style="height: 200px; width: 220px;margin-top: 20px;" />
+          <p style="font-weight: 700; font-size: 24px; color: #8A171A; margin-top: 30px;">Đặt hàng thành công!</p>
+          <p style="font-size: 14px; margin-top: 4px;">Cảm ơn bạn vì đã tin tưởng Teamo. Đơn hàng của bạn sẽ được chuẩn
+            bị và gửi đến đơn vị vận chuyển trong thời gian sớm nhất.</p>
+        </td>
+      </tr>
+      <tr>
+        <th colspan="2"
+          style="font-size: 20px; text-align: center; color: #8A171A; padding-top: 30px; padding-bottom: 24px;">Đơn
+          hàng: {{orderCode}}</th>
+      </tr>
+      <tr>
+        <th colspan="2" style="padding-bottom: 4px; border-bottom: 1px solid #DEDEDE;">Thông tin đơn hàng</th>
+      </tr>
+      {{#if fromUserName}}
+      <tr>
+        <td style="padding: 16px 0px 0px 0px;">Họ và tên người gửi:</td>
+        <td style="font-weight: 700; text-align: right; padding: 16px 0px 0px 0px;">{{fromUserName}}</td>
+      </tr>
+      {{/if}}
+      {{#if fromPhone}}
+      <tr>
+        <td style="padding-top: 10px">Số điện thoại người gửi:</td>
+        <td style="font-weight: 700;text-align: right;padding-top: 10px">{{fromPhone}}</td>
+      </tr>
+      {{/if}}
+      {{#if toUserName}}
+      <tr>
+        <td style="padding: 16px 0px 0px 0px;">Họ và tên người nhận:</td>
+        <td style="font-weight: 700; text-align: right; padding: 16px 0px 0px 0px;">{{toUserName}}</td>
+      </tr>
+      {{/if}}
+      {{#if toPhone}}
+      <tr>
+        <td style="padding-top: 10px">Số điện thoại người nhận:</td>
+        <td style="font-weight: 700;text-align: right;padding-top: 10px">{{toPhone}}</td>
+      </tr>
+      {{/if}}
+      <tr style="border-bottom: 1px solid #DEDEDE;">
+        <td style="padding-top: 10px ;width: 160px; vertical-align: top;">Địa chỉ người nhận:</td>
+        <td style="font-weight: 700;text-align: right;padding-top: 10px; padding-bottom: 16px;">{{address}},
+          {{ward}}, {{district}},
+          {{city}}</td>
+      </tr>
+    </table>
+
+    <!-- ITEMS -->
+    {{#each orderItems}}
+    <table style="margin-top: 20px;">
+      <tr style="display: flex; column-gap: 20px;">
+        <td style="display: flex;">
+          {{#if item.medias}}
+          {{#each item.medias}}
+          {{#if (eq index 1)}}
+          <img src="https://api.teamogift.com{{url}}" class="product-image" />
+          {{/if}}
+          {{/each}}
+          {{else}}
+          <image src="https://api.teamogift.com/uploads/send_mail/1727192563861_0.jpg"
+            style="width: 100px; height: 100px; border-radius: 8px;" />
+          {{/if}}
+        </td>
+        <td style="display: flex; flex-direction: column;row-gap: 6px;">
+          <div>
+            <p style="font-weight: 700;">{{item.name}}</p>
+            <p style="font-weight: 700;">SL: {{quantity}}</p>
+            <p style="font-weight: 700;">{{totalPrice item.price quantity}}</p>
+            {{#if subItems}}
+            <p style="font-weight: 700;">Hộp quà bao gồm:</p>
+            <ul>
+              {{#each subItems}}
+              <li>- {{#if (eq item.type 'CARD'}}Thiệp: {{/if}}{{item.name}} x{{quantity}}</li>
+              {{#if enableTextPrint}}
+              {{#if contentPrint}}
+              <li class="ml">Nội dung in: {{contentPrint}}</li>
+              {{/if}}
+              {{#if printText}}
+              <li class="ml">Mẫu in: {{printText}}</li>
+              {{/if}}
+              {{/if}}
+              {{#if enableEngraved}}
+              {{#if contentEngraved}}
+              <li class="ml">Nội dung khắc: {{contentEngraved}}</li>
+              {{/if}}
+              {{#if engravedText}}
+              <li class="ml">Mẫu khắc: {{engravedText}}</li>
+              {{/if}}
+              {{/if}}
+              {{#if enableImagePrint}}
+              {{#if imagesPrint}}
+              <li class="ml" style="display: flex;align-items: center;column-gap: 5px;">
+                In hình:
+                {{#each (split imagesPrint ',')}}
+                <div
+                  style="margin-left: 9px; width: 24px; height: 24px; background-image: url('https://api.teamogift.com{{this}}'); background-size: cover;">
+                </div>
+                {{/each}}
+              </li>
+              {{/if}}
+              {{/if}}
+              {{#if message}}
+              <li class="ml">Lời nhắn: {{message}}</li>
+              {{/if}}
+              {{/each}}
+            </ul>
+            {{/if}}
+            <ul>
+              {{#if enableTextPrint}}
+              {{#if contentPrint}}
+              <li class="ml">Nội dung in: {{contentPrint}}</li>
+              {{/if}}
+              {{#if printText}}
+              <li class="ml">Mẫu in: {{printText}}</li>
+              {{/if}}
+              {{/if}}
+              {{#if enableEngraved}}
+              {{#if contentEngraved}}
+              <li class="ml">Nội dung khắc: {{contentEngraved}}</li>
+              {{/if}}
+              {{#if engravedText}}
+              <li class="ml">Mẫu khắc: {{engravedText}}</li>
+              {{/if}}
+              {{/if}}
+              {{#if enableImagePrint}}
+              {{#if imagesPrint}}
+              <li class="ml" style="display: flex;align-items: center; column-gap: 5px;">
+                In hình:
+                {{#each (split imagesPrint ',')}}
+                <div
+                  style="width: 24px; height: 24px; background-image: url('https://api.teamogift.com{{this}}'); background-size: cover;">
+                </div>
+                {{/each}}
+              </li>
+              {{/if}}
+              {{/if}}
+              {{#if message}}
+              <li class="ml">Lời nhắn: {{message}}</li>
+              {{/if}}
+            </ul>
+          </div>
+        </td>
+      </tr>
+    </table>
+    {{/each}}
+    <!--  ITEMS -->
+
+    <table style="margin-top: 20px; border-top: 1px solid #DEDEDE;border-bottom: 1px solid #DEDEDE;row-gap: 16px;">
+      <tr>
+        <td style="padding-top:20px ;">Tổng tiền sản phẩm:</td>
+        <td style="font-weight: 700; text-align: end;padding-top:20px ">{{formatVND amount}}</td>
+      </tr>
+      <tr>
+        <td style="padding-top:16px ;">Phí giao hàng:</td>
+        <td style="font-weight: 700;text-align: end;padding-top:16px; padding-bottom:16px">{{formatVND shippingFee}}
+        </td>
+      </tr>
+      {{#if voucher.discountAmount}}
+      <tr>
+        <td style="padding: 16px 0px 20px 0px;">Giảm giá:</td>
+        <td style="font-weight: 700;text-align: end;padding: 16px 0px 20px 0px;">{{formatVND voucher.discountAmount}}
+        </td>
+      </tr>
+      {{/if}}
+    </table>
+
+    <table style="width: 100%; margin-top: 16px; border-bottom: 1px solid #DEDEDE;">
+      <tr>
+        <td style="font-size: 16px; color: #2F4157;padding-bottom: 20px;">Tổng tiền:</td>
+        <td style="font-size: 16px; color: #8A171A; font-weight: 700; text-align: right; padding-bottom: 20px;">
+          {{formatVND total}}</td>
+      </tr>
+    </table>
+
+    <table style="width: 100%; margin-top: 20px; margin-bottom: 30px;">
+      <tr>
+        <td style="font-size: 14px; color: #2F4157; ">Phương thức thanh toán:</td>
+        {{#if (eq paymentMethod 1)}}
+        <td style="font-size: 14px; color: #8A171A; font-weight: 700; text-align: right; ">COD</td>
+        {{else}}
+        <td style="font-size: 14px; color: #8A171A; font-weight: 700; text-align: right; ">Chuyển khoản</td>
+        {{/if}}
+      </tr>
+    </table>
+  </div>
+
+  <table style="box-shadow: 0px -3px 3px 0px #00000029; border-radius: 24px 24px 0px 0px; width: 100%;">
+    <tr>
+      <td style="padding: 30px 12px 0px 16px;">
+        <img src="https://api.teamogift.com/uploads/send_mail/1727123649433_0.png" style="width: 12px; height: 16px;" />
+      </td>
+      <td style="font-size: 15px; color: #2F4157; padding-right: 16px;padding-top: 30px;">126 đường Hạ Hội, Tân Lập, Đan
+        Phượng, Hà Nội</td>
+    </tr>
+    <tr>
+      <td style="padding: 20px 12px 0px 16px;">
+        <img src="https://api.teamogift.com/uploads/send_mail/1727123745878_0.png" style="width: 16px; height: 16px;" />
+      </td>
+      <td style="font-size: 15px; color: #2F4157; padding-right: 16px;padding-top: 20px;">036 859 8286</td>
+    </tr>
+    <tr>
+      <td style="padding: 20px 12px 30px 16px;">
+        <img src="https://api.teamogift.com/uploads/send_mail/1727123832961_0.png" style="width: 16px; height: 12px;" />
+      </td>
+      <td style="font-size: 15px; color: #2F4157;padding: 20px 16px 30px 0px;">cskh.teamogift@gmail.com</td>
+    </tr>
+  </table>
+
+  <table style="width: 100%; text-align: center; margin-bottom: 30px; ">
+    <tr style="display: flex; align-items: center; justify-content: center;">
+      <td style="padding: 0 10px;">
+        <img src="https://api.teamogift.com/uploads/send_mail/1727123941462_0.png" style="width: 32px; height: 32px;" />
+      </td>
+      <td style="padding: 0 10px;">
+        <img src="https://api.teamogift.com/uploads/send_mail/1727124006041_0.png" style="width: 32px; height: 32px;" />
+      </td>
+      <td style="padding: 0 10px;">
+        <img src="https://api.teamogift.com/uploads/send_mail/1727124072980_0.png" style="width: 32px; height: 32px;" />
+      </td>
+    </tr>
+  </table>
+
+  <p style="background-color: #F4EFEB; padding: 16px 32px; text-align: center; font-size: 14px; color: #2F4157;">
+    Bản quyền thuộc về công ty TNHH Teamo Việt Nam
+  </p>
+</body>
+
+</html>

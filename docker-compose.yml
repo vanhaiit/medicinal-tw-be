@@ -1,0 +1,40 @@
+version: '3.8'
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "3000:${PORT}"
+    volumes:
+      - .:/app
+      - /app/node_modules
+    depends_on:
+      - db
+      - redis
+    networks:
+      - my-network
+    command: npm run start:prod
+
+  redis:
+    image: redis:6.2-alpine
+    command: redis-server --requirepass ${REDIS_PASSWORD} --save 20 1 --loglevel warning --port ${REDIS_PORT}
+    networks:
+      - my-network
+    volumes:
+      - redis_data_1:/data
+
+  db:
+    image: postgres:15.3
+    networks:
+      - my-network
+    volumes:
+      - db:/var/lib/postgresql/data
+
+networks:
+  my-network:
+    driver: bridge
+
+volumes:
+  redis_data_1:
+  db:

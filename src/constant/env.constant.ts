@@ -1,0 +1,15 @@
+export enum EEnvironment {
+    DEVELOPMENT = 'development',
+    PRODUCTION = 'production',
+    TESTING = 'testing',
+    STAGING = 'staging',
+}
+
+export enum EEnvKey {
+    DATA_CRAWLER_TOKEN_ADDRESS = 'DATA_CRAWLER_TOKEN_ADDRESS',
+    PAYMENT_CONTRACT_ADDRESS = 'PAYMENT_CONTRACT_ADDRESS',
+    LOG_LEVEL = 'LOG_LEVEL',
+    IS_WRITE_LOG = 'IS_WRITE_LOG',
+    CONSUMER_HEALTH_PORT = 'CONSUMER_HEALTH_PORT',
+    MAX_CONCURRENCY = 'MAX_CONCURRENCY',
+}

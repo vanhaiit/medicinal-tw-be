@@ -1,0 +1,160 @@
+import { EStatus } from "constant/product.constant";
+import { MigrationInterface, QueryRunner, Table } from "typeorm";
+
+export class InitProduct1744643886551 implements MigrationInterface {
+
+    public async up(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.createTable(
+            new Table({
+                name: 'products',
+                columns: [
+                    {
+                        name: 'id',
+                        type: 'integer',
+                        isPrimary: true,
+                        isGenerated: true,
+                        isUnique: true,
+                        generationStrategy: 'increment',
+                    },
+                    {
+                        name: 'name',
+                        type: 'varchar',
+                        isNullable: false,
+                        comment: 'Product name (e.g., "Quần")',
+                    },
+                    {
+                        name: 'slug',
+                        type: 'varchar',
+                        isNullable: false,
+                        isUnique: true,
+                        comment: 'URL-friendly slug for SEO',
+                    },
+                    {
+                        name: 'sku',
+                        type: 'varchar',
+                        isNullable: true,
+                        isUnique: true,
+                        comment: 'Optional SKU for the product',
+                    },
+                    {
+                        name: 'description',
+                        type: 'text',
+                        isNullable: true,
+                        comment: 'Detailed product description',
+                    },
+                    {
+                        name: 'short_description',
+                        type: 'text',
+                        isNullable: true,
+                        comment: 'Short product description for summaries',
+                    },
+                    {
+                        name: 'status',
+                        type: 'varchar',
+                        isNullable: false,
+                        default: `'${EStatus.draft}'`,
+                        comment: 'Product status: publish, draft, pending, private',
+                    },
+                    {
+                        name: 'is_visible',
+                        type: 'boolean',
+                        isNullable: false,
+                        default: true,
+                        comment: 'Whether the product is visible on the frontend',
+                    },
+                    {
+                        name: 'is_featured',
+                        type: 'boolean',
+                        isNullable: false,
+                        default: false,
+                        comment: 'Whether the product is marked as featured',
+                    },
+                    {
+                        name: 'featured_image',
+                        type: 'varchar',
+                        isNullable: true,
+                        comment: 'URL or path to the featured image',
+                    },
+                    {
+                        name: 'gallery_images',
+                        type: 'jsonb',
+                        isNullable: true,
+                        comment: 'List of URLs or paths to gallery images',
+                    },
+                    {
+                        name: 'tags',
+                        type: 'jsonb',
+                        isNullable: true,
+                        comment: 'List of tag IDs or tag names',
+                    },
+                    {
+                        name: 'meta_title',
+                        type: 'varchar',
+                        isNullable: true,
+                        comment: 'SEO meta title',
+                    },
+                    {
+                        name: 'meta_description',
+                        type: 'text',
+                        isNullable: true,
+                        comment: 'SEO meta description',
+                    },
+                    {
+                        name: 'reviews_allowed',
+                        type: 'boolean',
+                        isNullable: false,
+                        default: true,
+                        comment: 'Whether reviews are allowed for this product',
+                    },
+                    {
+                        name: 'average_rating',
+                        type: 'float',
+                        isNullable: true,
+                        default: 0,
+                        comment: 'Average rating based on item reviews',
+                    },
+                    {
+                        name: 'review_count',
+                        type: 'integer',
+                        isNullable: true,
+                        default: 0,
+                        comment: 'Total number of reviews for all items',
+                    },
+                    {
+                        name: 'related_products',
+                        type: 'jsonb',
+                        isNullable: true,
+                        comment: 'List of related product IDs',
+                    },
+                    {
+                        name: 'index',
+                        type: 'integer',
+                        isNullable: true,
+                        comment: 'Sort order for display',
+                    },
+                    {
+                        name: 'created_at',
+                        type: 'timestamp',
+                        default: 'CURRENT_TIMESTAMP',
+                    },
+                    {
+                        name: 'updated_at',
+                        type: 'timestamp',
+                        default: 'CURRENT_TIMESTAMP',
+                        onUpdate: 'CURRENT_TIMESTAMP',
+                    },
+                    {
+                        name: 'deleted_at',
+                        type: 'timestamp',
+                        isNullable: true,
+                    },
+                ],
+            }),
+        );
+    }
+
+    public async down(queryRunner: QueryRunner): Promise<void> {
+        await queryRunner.dropTable('product');
+    }
+
+}

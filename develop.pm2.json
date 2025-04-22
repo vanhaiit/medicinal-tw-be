@@ -1,0 +1,10 @@
+{
+    "apps": [
+        {
+            "name": "g-be-dev",
+            "script": "yarn start:prod",
+            "node_args": "",
+            "instances": 1
+        }
+    ]
+}

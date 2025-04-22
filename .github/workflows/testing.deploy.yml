@@ -1,0 +1,36 @@
+name: Deploy Production
+run-name: ${{ github.actor }} is deploying develop branch🚀
+on:
+  push:
+    branches:
+      - 'main'
+jobs:
+  Deploy:
+    runs-on: ['runner-g-be']
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Use Node.js 18.19
+        uses: actions/setup-node@v2
+        with:
+          node-version: 18.19
+
+      - name: Copy environment based on branch    
+        run: |
+           cp .env.testing .env
+
+      - name: Setup docker 
+        run: |
+          docker compose -f docker-compose.yml up -d --build
+
+      - name: Install and build, run migration        
+        run: |
+          yarn install
+          yarn build
+          yarn migration:run
+
+      - name: Restart PM2 based on branch
+        run: |
+          pm2 restart testing.pm2.json
+     
