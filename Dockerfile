@@ -11,6 +11,6 @@ RUN yarn
 
 COPY . .
 
-RUN yarn build && yarn migration:run 
+RUN yarn build
 
 CMD ["node", "dist/main.js"]

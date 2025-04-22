@@ -14,7 +14,7 @@ services:
       - redis
     networks:
       - my-network
-    command: npm run start:prod
+    command: yarn migration:run && npm run start:prod
 
   redis:
     image: redis:6.2-alpine
