@@ -33,10 +33,10 @@ export class AttributeValueService {
     }
 
     async updateAttributeValue(id: number, body: UpdateAttributeValueReqDto) {
-        const media = await this.attributeValueRepository.findOne({
+        const attribute = await this.attributeValueRepository.findOne({
             where: { id },
         });
-        if (!media) {
+        if (!attribute) {
             throw new HttpException(
                 httpErrors.ATTRIBUTE_NOT_EXIST,
                 HttpStatus.BAD_REQUEST,
@@ -44,7 +44,7 @@ export class AttributeValueService {
         }
         const payload = mapDto(body, UpdateAttributeValueReqDto);
         return await this.attributeValueRepository.save({
-            ...media,
+            ...attribute,
             ...payload,
         });
     }

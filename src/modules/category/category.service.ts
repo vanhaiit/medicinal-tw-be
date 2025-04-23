@@ -38,8 +38,8 @@ export class CategoryService {
     }
 
     async updateCategory(id: number, body: CategoryRequestDto) {
-        const media = await this.categoryRepository.findOne({ where: { id } });
-        if (!media) {
+        const category = await this.categoryRepository.findOne({ where: { id } });
+        if (!category) {
             throw new HttpException(
                 httpErrors.CATEGORY_NOT_EXIST,
                 HttpStatus.BAD_REQUEST,
@@ -47,7 +47,7 @@ export class CategoryService {
         }
         const payload = mapDto(body, CategoryRequestDto);
         return await this.categoryRepository.save({
-            ...media,
+            ...category,
             ...payload,
         });
     }

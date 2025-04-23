@@ -19,13 +19,6 @@ export class FinderRepository extends BaseRepository<FinderEntity> {
             });
         }
 
-        if (options?.orderBy) {
-            query.orderBy(
-                `media.${options.orderBy}`,
-                options.direction || SortOrder.DESC,
-            );
-        }
-
         query.andWhere('finders.deleted_at IS NULL');
 
         if (!!options) {
