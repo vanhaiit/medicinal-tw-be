@@ -1,16 +1,15 @@
-FROM node:18-alpine
-
-RUN npm install -g pm2
+FROM node:18
 
 WORKDIR /app
 
-COPY package.json ./
-COPY yarn.lock ./
+COPY package*.json ./
 
-RUN yarn
+RUN yarn 
 
 COPY . .
 
-RUN yarn build 
+RUN yarn build
 
-CMD ["node", "dist/main.js"]
+EXPOSE 3000
+
+CMD ["yarn ", "start:prod"]
