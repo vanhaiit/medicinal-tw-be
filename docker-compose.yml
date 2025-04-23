@@ -10,11 +10,13 @@ services:
       - .:/app
       - /app/node_modules
     depends_on:
-      - db
-      - redis
+      db:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
     networks:
       - my-network
-    command: yarn migration:run && npm run start:prod
+    command: sh -c "yarn migration:run && npm run start:prod"
 
   redis:
     image: redis:6.2-alpine
@@ -23,6 +25,12 @@ services:
       - my-network
     volumes:
       - redis_data_1:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "-h", "localhost", "-p", "${REDIS_PORT}", "-a", "${REDIS_PASSWORD}", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
   db:
     image: postgres:15.3
@@ -30,6 +38,16 @@ services:
       - my-network
     volumes:
       - db:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_USER=${DB_USERNAME}
+      - POSTGRES_PASSWORD=${DB_PASSWORD}
+      - POSTGRES_DB=${DB_DATABASE}
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_DATABASE}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
 
 networks:
   my-network:
