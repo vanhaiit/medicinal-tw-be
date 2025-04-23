@@ -7,7 +7,6 @@ services:
     ports:
       - "3000:${PORT}"
     volumes:
-      - .:/app
       - /app/node_modules
     depends_on:
       db:
@@ -16,7 +15,6 @@ services:
         condition: service_healthy
     networks:
       - my-network
-    command: sh -c "yarn start:prod"
 
   redis:
     image: redis:6.2-alpine
