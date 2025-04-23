@@ -19,6 +19,7 @@ import {
     GetAttibuteValueReqDto,
     UpdateAttributeValueReqDto,
 } from './dto/attribute-value.req.dto';
+import { AuthRoleGuard } from '@shared/decorators/http.decorator';
 
 @ApiTags('Attribute Value')
 @Controller('attribute-values')
@@ -28,7 +29,7 @@ export class AttributeValueController {
     ) {}
 
     @Post()
-    @PublicRoute()
+    @AuthRoleGuard([])
     create(@Body() body: CreateAttributeValueReqDto) {
         return this.attributeValueService.createAttributeValue(body);
     }
@@ -40,13 +41,13 @@ export class AttributeValueController {
     }
 
     @Put(':id')
-    @PublicRoute()
+    @AuthRoleGuard([])
     update(@Param('id') id: number, @Body() Body: UpdateAttributeValueReqDto) {
         return this.attributeValueService.updateAttributeValue(id, Body);
     }
 
     @Delete()
-    @PublicRoute()
+    @AuthRoleGuard([])
     delete(@Query() query: DeleteAttributeValueReqDto) {
         return this.attributeValueService.deleteAttributeValue(query);
     }

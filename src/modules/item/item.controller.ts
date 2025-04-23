@@ -14,6 +14,7 @@ import { PublicRoute } from '@shared/decorators/public-route.decorator';
 import { CreateItemDto } from './dto/create-item.dto';
 import { UpdateItemDto } from './dto/update-item.dto';
 import { ItemService } from './item.service';
+import { AuthRoleGuard } from '@shared/decorators/http.decorator';
 
 @ApiTags('items')
 @Controller('items')
@@ -21,7 +22,7 @@ export class ItemController {
     constructor(private readonly itemService: ItemService) {}
 
     @Post()
-    @PublicRoute()
+    @AuthRoleGuard([])
     @ApiOperation({ summary: 'Create new item' })
     @ApiResponse({
         status: 201,
@@ -50,7 +51,7 @@ export class ItemController {
     }
 
     @Patch(':id')
-    @PublicRoute()
+    @AuthRoleGuard([])
     @ApiOperation({ summary: 'Update item by id' })
     @ApiResponse({
         status: 200,
@@ -65,7 +66,7 @@ export class ItemController {
     }
 
     @Delete(':id')
-    @PublicRoute()
+    @AuthRoleGuard([])
     @ApiOperation({ summary: 'Delete item by id' })
     @ApiResponse({
         status: 200,

@@ -16,6 +16,7 @@ import { CreateOrderDto } from './dto/create-order.dto';
 import { DeleteOrderRequestDto, GetOrderRequestDto } from './dto/order.req.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { OrdersService } from './orders.service';
+import { AuthRoleGuard } from '@shared/decorators/http.decorator';
 
 @ApiTags('Order')
 @Controller('orders')
@@ -53,7 +54,7 @@ export class OrdersController {
     }
 
     @Delete()
-    @PublicRoute()
+    @AuthRoleGuard([])
     remove(@Query() query: DeleteOrderRequestDto) {
         return this.ordersService.remove(query);
     }

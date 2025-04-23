@@ -35,7 +35,7 @@ export class AttributeController {
     }
 
     @Post()
-    @PublicRoute()
+    @AuthRoleGuard([])
     create(@Body() body: CreateAttributeReqDto) {
         return this.attributeService.createAttribute(body);
     }

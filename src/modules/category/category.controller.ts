@@ -47,7 +47,7 @@ export class CategoryController {
     }
 
     @Post()
-    @PublicRoute()
+    @AuthRoleGuard([])
     createCategory(@Body() body: CategoryRequestDto) {
         return this.categoryService.createCategory(body);
     }

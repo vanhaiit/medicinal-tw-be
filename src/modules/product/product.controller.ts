@@ -22,6 +22,7 @@ import {
 } from './dtos/product.req.dto';
 import { ProductResDto } from './dtos/product.res.dto';
 import { ProductService } from './product.service';
+import { AuthRoleGuard } from '@shared/decorators/http.decorator';
 
 @ApiTags('Product')
 @Controller('product')
@@ -29,7 +30,7 @@ export class ProductController {
     constructor(private readonly productService: ProductService) {}
 
     @Post()
-    @PublicRoute()
+    @AuthRoleGuard([])
     @ApiPageOkResponse({ type: ProductResDto })
     createProduct(@Body() body: CreateProductReqDto) {
         return this.productService.createProduct(body);
@@ -49,14 +50,14 @@ export class ProductController {
     }
 
     @Put(':id')
-    @PublicRoute()
+    @AuthRoleGuard([])
     @ApiPageOkResponse({ type: ProductResDto })
     updateProduct(@Param('id') id: number, @Body() body: CreateProductReqDto) {
         return this.productService.updateProduct(id, body);
     }
 
     @Delete(':id')
-    @PublicRoute()
+    @AuthRoleGuard([])
     deleteProduct(@Param('id') id: number) {
         return this.productService.deleteProduct(id);
     }

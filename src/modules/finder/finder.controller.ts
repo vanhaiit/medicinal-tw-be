@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
+import { AuthRoleGuard } from '@shared/decorators/http.decorator';
 import { PublicRoute } from '@shared/decorators/public-route.decorator';
 
 import {
@@ -31,19 +32,19 @@ export class FinderController {
     }
 
     @Post()
-    @PublicRoute()
+    @AuthRoleGuard([])
     async createFinder(@Body() body: FinderRequestDto) {
         return await this.finderService.createFinder(body);
     }
 
     @Put('/:id')
-    @PublicRoute()
+    @AuthRoleGuard([])
     updateMedia(@Param('id') id: number, @Body() body: FinderRequestDto) {
         return this.finderService.updateFinder(id, body);
     }
 
     @Delete('')
-    @PublicRoute()
+    @AuthRoleGuard([])
     deleteMedia(@Query() query: DeleteFinderRequestDto) {
         return this.finderService.deleteFinder(query.ids);
     }
