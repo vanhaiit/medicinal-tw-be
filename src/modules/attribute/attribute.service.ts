@@ -34,7 +34,9 @@ export class AttributeService {
     }
 
     async updateAttribute(id: number, body: CreateAttributeReqDto) {
-        const attribute = await this.attributeRepository.findOne({ where: { id } });
+        const attribute = await this.attributeRepository.findOne({
+            where: { id },
+        });
         if (!attribute) {
             throw new HttpException(
                 httpErrors.ATTRIBUTE_NOT_EXIST,

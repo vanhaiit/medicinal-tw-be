@@ -1,6 +1,8 @@
 /*
 https://docs.nestjs.com/modules
 */
+import { AttributeRepository } from '@models/repositories/attribute.repository';
+import { CategoryRepository } from '@models/repositories/category.repository';
 import { ItemAttributeRepository } from '@models/repositories/item-attribute.responsitory';
 import { ItemRepository } from '@models/repositories/item.responsitory';
 import { ProductAttributeRepository } from '@models/repositories/product-attribute.repository';
@@ -21,6 +23,8 @@ import { ProductService } from './product.service';
             ProductAttributeRepository,
             ItemAttributeRepository,
             ProductCategoryRepository,
+            CategoryRepository,
+            AttributeRepository,
         ]),
     ],
     controllers: [ProductController],

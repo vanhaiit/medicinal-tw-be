@@ -38,7 +38,9 @@ export class CategoryService {
     }
 
     async updateCategory(id: number, body: CategoryRequestDto) {
-        const category = await this.categoryRepository.findOne({ where: { id } });
+        const category = await this.categoryRepository.findOne({
+            where: { id },
+        });
         if (!category) {
             throw new HttpException(
                 httpErrors.CATEGORY_NOT_EXIST,

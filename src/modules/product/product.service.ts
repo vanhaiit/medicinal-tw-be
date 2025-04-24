@@ -1,6 +1,8 @@
 /*
 https://docs.nestjs.com/providers#services
 */
+import { AttributeRepository } from '@models/repositories/attribute.repository';
+import { CategoryRepository } from '@models/repositories/category.repository';
 import { ItemAttributeRepository } from '@models/repositories/item-attribute.responsitory';
 import { ItemRepository } from '@models/repositories/item.responsitory';
 import { ProductAttributeRepository } from '@models/repositories/product-attribute.repository';
@@ -24,8 +26,10 @@ export class ProductService {
         private readonly itemRepository: ItemRepository,
         private readonly productRepository: ProductRepository,
         private readonly productCategoryRepository: ProductCategoryRepository,
+        private readonly categoryRepository: CategoryRepository,
         private readonly itemAttributeRepository: ItemAttributeRepository,
         private readonly productAttributeRepository: ProductAttributeRepository,
+        private readonly attributeRepository: AttributeRepository,
     ) {}
 
     async checkProductExist(id: number) {
@@ -54,9 +58,7 @@ export class ProductService {
         if (!!categoryIds?.length) {
             // Check if all categories exist using repository method
             const allCategoriesExist =
-                await this.productCategoryRepository.checkCategoriesExist(
-                    categoryIds,
-                );
+                await this.categoryRepository.checkCategoriesExist(categoryIds);
             if (!allCategoriesExist) {
                 throw new HttpException(
                     httpErrors.CATEGORY_NOT_EXIST,
@@ -76,7 +78,7 @@ export class ProductService {
         if (!!attributeIds?.length) {
             // Check if all attributes exist using repository method
             const allAttributesExist =
-                await this.productAttributeRepository.checkAttributesExist(
+                await this.attributeRepository.checkAttributesExist(
                     attributeIds,
                 );
             if (!allAttributesExist) {
@@ -156,9 +158,7 @@ export class ProductService {
 
             // Check if all categories exist
             const allCategoriesExist =
-                await this.productCategoryRepository.checkCategoriesExist(
-                    categoryIds,
-                );
+                await this.categoryRepository.checkCategoriesExist(categoryIds);
             if (!allCategoriesExist) {
                 throw new HttpException(
                     httpErrors.CATEGORY_NOT_EXIST,
@@ -181,7 +181,7 @@ export class ProductService {
 
             // Check if all attributes exist
             const allAttributesExist =
-                await this.productAttributeRepository.checkAttributesExist(
+                await this.attributeRepository.checkAttributesExist(
                     attributeIds,
                 );
             if (!allAttributesExist) {

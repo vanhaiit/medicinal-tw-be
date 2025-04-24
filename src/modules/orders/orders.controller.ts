@@ -10,13 +10,13 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
+import { AuthRoleGuard } from '@shared/decorators/http.decorator';
 import { PublicRoute } from '@shared/decorators/public-route.decorator';
 
 import { CreateOrderDto } from './dto/create-order.dto';
 import { DeleteOrderRequestDto, GetOrderRequestDto } from './dto/order.req.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { OrdersService } from './orders.service';
-import { AuthRoleGuard } from '@shared/decorators/http.decorator';
 
 @ApiTags('Order')
 @Controller('orders')

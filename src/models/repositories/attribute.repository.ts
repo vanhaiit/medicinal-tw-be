@@ -37,4 +37,14 @@ export class AttributeRepository extends BaseRepository<AttributeEntity> {
 
         return query.getMany();
     }
+
+    async checkAttributesExist(attributeIds: number[]): Promise<boolean> {
+        if (!attributeIds?.length) return true;
+
+        const attributes = await this.createQueryBuilder('attribute')
+            .where('attribute.id IN (:...ids)', { ids: attributeIds })
+            .getMany();
+
+        return attributes.length === attributeIds.length;
+    }
 }

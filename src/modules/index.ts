@@ -22,5 +22,5 @@ export const MODULES = [
     ItemModule,
     FinderModule,
     UploadModule,
-    PageModule
+    PageModule,
 ];

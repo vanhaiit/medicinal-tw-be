@@ -38,4 +38,22 @@ export class CategoryRepository extends BaseRepository<CategoryEntity> {
 
         return query.getMany();
     }
+
+    async getCategoryByIds(ids: number[]) {
+        const categories = await this.createQueryBuilder('category')
+            .where('category.id IN (:...ids)', { ids })
+            .getMany();
+
+        return categories;
+    }
+
+    async checkCategoryExist(id: number) {
+        const category = await this.findOne({ where: { id } });
+        return !!category;
+    }
+
+    async checkCategoriesExist(categoryIds: number[]) {
+        const categories = await this.getCategoryByIds(categoryIds);
+        return categories.length === categoryIds.length;
+    }
 }

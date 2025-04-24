@@ -14,6 +14,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 
 import { ApiPageOkResponse } from '@shared/decorators/api-ok-response.decorator';
+import { AuthRoleGuard } from '@shared/decorators/http.decorator';
 import { PublicRoute } from '@shared/decorators/public-route.decorator';
 
 import {
@@ -22,7 +23,6 @@ import {
 } from './dtos/product.req.dto';
 import { ProductResDto } from './dtos/product.res.dto';
 import { ProductService } from './product.service';
-import { AuthRoleGuard } from '@shared/decorators/http.decorator';
 
 @ApiTags('Product')
 @Controller('product')

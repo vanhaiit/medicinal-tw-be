@@ -10,6 +10,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
+import { AuthRoleGuard } from '@shared/decorators/http.decorator';
 import { PublicRoute } from '@shared/decorators/public-route.decorator';
 
 import { AttributeValueService } from './attribute-value.service';
@@ -19,7 +20,6 @@ import {
     GetAttibuteValueReqDto,
     UpdateAttributeValueReqDto,
 } from './dto/attribute-value.req.dto';
-import { AuthRoleGuard } from '@shared/decorators/http.decorator';
 
 @ApiTags('Attribute Value')
 @Controller('attribute-values')

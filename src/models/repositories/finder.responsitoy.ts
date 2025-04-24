@@ -1,5 +1,4 @@
 import { FinderEntity } from '@models/entities/finder.entity';
-import { SortOrder } from 'constant/pagination.constant';
 
 import { GetFinderRequestDto } from '@modules/finder/dto/finder.request.dto';
 

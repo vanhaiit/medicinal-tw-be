@@ -2,7 +2,6 @@ import {
     Column,
     Entity,
     JoinColumn,
-    OneToMany,
     OneToOne,
     PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -75,7 +74,6 @@ export class PageEntity {
 
     @Column({ name: 'deleted_at', type: 'timestamp', nullable: true })
     deletedAt: Date;
-
 
     @OneToOne(() => PageDetailEntity, detail => detail.pageId)
     @JoinColumn({ name: 'id' })

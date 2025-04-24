@@ -5,6 +5,7 @@ import { PageDetailRepository } from '@models/repositories/page-detail.repositor
 import { PageRepository } from '@models/repositories/page.repository';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { httpErrors } from 'constant/http-error.constant';
+import { EPageStatus } from 'constant/page.constant';
 import { Transactional } from 'typeorm-transactional';
 
 import { JwtPayloadDto } from '@shared/dtos/jwt-payload.dto';
@@ -15,7 +16,6 @@ import {
     GetPageRequestDto,
     UpdatePageRequestDto,
 } from './dtos/page.request.dto';
-import { EPageStatus } from 'constant/page.constant';
 
 @Injectable()
 export class PageService {

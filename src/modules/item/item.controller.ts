@@ -9,12 +9,12 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
+import { AuthRoleGuard } from '@shared/decorators/http.decorator';
 import { PublicRoute } from '@shared/decorators/public-route.decorator';
 
 import { CreateItemDto } from './dto/create-item.dto';
 import { UpdateItemDto } from './dto/update-item.dto';
 import { ItemService } from './item.service';
-import { AuthRoleGuard } from '@shared/decorators/http.decorator';
 
 @ApiTags('items')
 @Controller('items')
