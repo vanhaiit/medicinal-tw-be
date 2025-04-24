@@ -46,9 +46,20 @@ export class ProductService {
 
     @Transactional()
     async createProduct(body: CreateProductReqDto): Promise<any> {
-        const { items, attributeIds, categoryIds } = body;
+        const { items, attributeIds, categoryIds, sku } = body;
+
+        const existingSku = await this.productRepository.findOne({
+            where: { sku },
+        });
+        if (existingSku) {
+            throw new HttpException(
+                httpErrors.PRODUCT_SKU_EXIST,
+                HttpStatus.BAD_REQUEST,
+            );
+        }
 
         const payload = mapDto(body, CreateProductReqDto);
+
         const product = await this.productRepository.save(
             this.productRepository.create({
                 ...payload,
@@ -98,6 +109,16 @@ export class ProductService {
         }
 
         if (!!items?.length) {
+            const skus = items.map(item => item.sku);
+            const existingSku = await this.itemRepository.findOne({
+                where: { sku: In(skus) },
+            });
+            if (existingSku) {
+                throw new HttpException(
+                    httpErrors.ITEM_SKU_EXIST,
+                    HttpStatus.BAD_REQUEST,
+                );
+            }
             // Save items first
             const savedItems = await this.itemRepository.save(
                 this.itemRepository.create(

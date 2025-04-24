@@ -20,6 +20,10 @@ export const httpErrors = {
         message: 'Sản phẩm không tồn tại.',
         code: 'PRODUCT_0001',
     },
+    PRODUCT_SKU_EXIST: {
+        message: 'Mã sku sản phẩm đã tồn tại.',
+        code: 'PRODUCT_0002',
+    },
     ITEM_DOES_NOT_EXIST: {
         message: 'Sản phẩm không tồn tại.',
         code: 'ITEM_0001',
