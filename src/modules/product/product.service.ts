@@ -19,6 +19,7 @@ import {
     CreateProductReqDto,
     GetProductRequestDto,
 } from './dtos/product.req.dto';
+import { CommentRepository } from '@models/repositories/comment.repository';
 
 @Injectable()
 export class ProductService {
@@ -30,6 +31,7 @@ export class ProductService {
         private readonly itemAttributeRepository: ItemAttributeRepository,
         private readonly productAttributeRepository: ProductAttributeRepository,
         private readonly attributeRepository: AttributeRepository,
+        private readonly commentRepository: CommentRepository,
     ) {}
 
     async checkProductExist(id: number) {
@@ -159,10 +161,17 @@ export class ProductService {
 
     async getDetail(id: number) {
         await this.checkProductExist(id);
-        return this.productRepository.findOne({
+        const product = await this.productRepository.findOne({
             where: { id },
             relations: ['items', 'productAttributes', 'categories'],
         });
+        const {avgRating, totalComments } = await this.commentRepository.getCommentByProductId(id)
+       
+        return {
+            ...product,
+            avgRating,
+            totalComments
+        };
     }
 
     @Transactional()

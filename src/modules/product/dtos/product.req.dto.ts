@@ -211,7 +211,7 @@ export class CreateItemReqDto {
 
     @ApiProperty({
         description: 'List of attribute value IDs',
-        example: [1, 3],
+        example: [1],
         required: false,
     })
     @IsOptional()
@@ -349,7 +349,7 @@ export class CreateProductReqDto {
 
     @ApiProperty({
         description: 'List of related product IDs',
-        example: [1, 2],
+        example: [1],
         required: false,
     })
     @IsOptional()
@@ -359,7 +359,7 @@ export class CreateProductReqDto {
 
     @ApiProperty({
         description: 'List of category IDs',
-        example: [1, 2],
+        example: [1],
         required: false,
     })
     @IsOptional()
@@ -379,7 +379,7 @@ export class CreateProductReqDto {
 
     @ApiProperty({
         description: 'List of attribute IDs',
-        example: [1, 2],
+        example: [1],
         required: false,
     })
     @IsOptional()
@@ -430,6 +430,11 @@ export class CreateProductReqDto {
     @ApiProperty({ description: 'Enable flash sale', example: true })
     @IsBoolean()
     flashSale: boolean;
+
+    @Expose()
+    @ApiProperty({ description: 'Enable bestSeller', example: true })
+    @IsBoolean()
+    bestSeller: boolean;
 
     @ApiProperty({
         description: 'List of items for the product',

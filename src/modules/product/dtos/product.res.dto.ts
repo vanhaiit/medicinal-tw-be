@@ -67,7 +67,7 @@ export class ProductResDto {
         required: false,
     })
     @Expose()
-    short_description?: string;
+    shortDescription?: string;
 
     @ApiProperty({
         description: 'Product status',
@@ -82,7 +82,7 @@ export class ProductResDto {
         example: 100.0,
     })
     @Expose()
-    regular_price: number;
+    regularPrice: number;
 
     @ApiProperty({
         description: 'Sale price of the item (if on sale)',
@@ -90,21 +90,21 @@ export class ProductResDto {
         required: false,
     })
     @Expose()
-    sale_price?: number;
+    salePrice?: number;
 
     @ApiProperty({
         description: 'Available stock quantity',
         example: 100,
     })
     @Expose()
-    stock_quantity: number;
+    stockQuantity: number;
 
     @ApiProperty({
         description: 'Stock status: instock, outofstock, onbackorder',
         example: 'instock',
     })
     @Expose()
-    stock_status: string;
+    stockStatus: string;
 
     @ApiProperty({
         description: 'Brand name of the product',
@@ -119,19 +119,24 @@ export class ProductResDto {
     @IsBoolean()
     flashSale: boolean;
 
+    @Expose()
+    @ApiProperty({ description: 'Enable bestSeller', example: true })
+    @IsBoolean()
+    bestSeller: boolean;
+
     @ApiProperty({
         description: 'Whether the product is visible on the frontend',
         example: true,
     })
     @Expose()
-    is_visible: boolean;
+    isVisible: boolean;
 
     @ApiProperty({
         description: 'Whether the product is marked as featured',
         example: false,
     })
     @Expose()
-    is_featured: boolean;
+    isFeatured: boolean;
 
     @ApiProperty({
         description: 'URL or path to the featured image',
@@ -139,7 +144,7 @@ export class ProductResDto {
         required: false,
     })
     @Expose()
-    featured_image?: string;
+    featuredImage?: string;
 
     @ApiProperty({
         description: 'List of URLs or paths to gallery images',
@@ -147,7 +152,7 @@ export class ProductResDto {
         required: false,
     })
     @Expose()
-    gallery_images?: string[];
+    galleryImages?: string[];
 
     @ApiProperty({
         description: 'List of tag IDs or tag names',
@@ -163,7 +168,7 @@ export class ProductResDto {
         required: false,
     })
     @Expose()
-    meta_title?: string;
+    metaTitle?: string;
 
     @ApiProperty({
         description: 'SEO meta description',
@@ -171,7 +176,7 @@ export class ProductResDto {
         required: false,
     })
     @Expose()
-    meta_description?: string;
+    metaDescription?: string;
 
     @ApiProperty({ description: 'Whether reviews are allowed', example: true })
     @Expose()
@@ -182,14 +187,14 @@ export class ProductResDto {
         example: 4.5,
     })
     @Expose()
-    average_rating: number;
+    averageRating: number;
 
     @ApiProperty({
         description: 'Total number of reviews for all items',
         example: 10,
     })
     @Expose()
-    review_count: number;
+    reviewCount: number;
 
     @ApiProperty({
         description: 'List of related product IDs',
@@ -197,7 +202,7 @@ export class ProductResDto {
         required: false,
     })
     @Expose()
-    related_products?: number[];
+    relatedProducts?: number[];
 
     @ApiProperty({
         description: 'Sort order for display',

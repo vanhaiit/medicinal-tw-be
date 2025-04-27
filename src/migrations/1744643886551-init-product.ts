@@ -174,6 +174,13 @@ export class InitProduct1744643886551 implements MigrationInterface {
                         comment: 'enable flash sale',
                     },
                     {
+                        name: 'best_seller',
+                        type: 'boolean',
+                        isNullable: false,
+                        default: false,
+                        comment: 'enable best seller',
+                    },
+                    {
                         name: 'created_at',
                         type: 'timestamp',
                         default: 'CURRENT_TIMESTAMP',

@@ -212,6 +212,14 @@ export class ProductEntity {
     })
     flashSale: boolean;
 
+    @Column({
+        name: 'best_seller',
+        nullable: false,
+        default: false,
+        comment: 'Enable bestSeller',
+    })
+    bestSeller: boolean;
+
     @CreateDateColumn({
         name: 'created_at',
         type: 'timestamp',

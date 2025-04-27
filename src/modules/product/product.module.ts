@@ -14,6 +14,7 @@ import { TypeOrmExModule } from '@shared/decorators/typeorm-ex.module';
 
 import { ProductController } from './product.controller';
 import { ProductService } from './product.service';
+import { CommentRepository } from '@models/repositories/comment.repository';
 
 @Module({
     imports: [
@@ -25,6 +26,7 @@ import { ProductService } from './product.service';
             ProductCategoryRepository,
             CategoryRepository,
             AttributeRepository,
+            CommentRepository,
         ]),
     ],
     controllers: [ProductController],

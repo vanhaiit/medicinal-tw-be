@@ -41,4 +41,18 @@ export class CommentRepository extends BaseRepository<CommentEntity> {
 
         return query.getMany();
     }
+
+    async getCommentByProductId(productId: number): Promise<{ avgRating: number | null, totalComments: number }> {
+        const res = await this
+            .createQueryBuilder('comment')
+            .select('AVG(comment.rating)', 'avgRating')
+            .addSelect('COUNT(comment.id)', 'totalComments')
+            .where('comment.productId = :productId', { productId })
+            .getRawOne();
+
+        return {
+            avgRating: res?.avgRating ? Number(res.avgRating) : null,
+            totalComments: res?.totalComments ? Number(res.totalComments) : 0,
+        };
+    }
 }
