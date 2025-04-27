@@ -118,7 +118,6 @@ export class OrderEntity {
     })
     rate: number;
 
-
     @Column({
         name: 'created_at',
         type: 'timestamp',
@@ -142,7 +141,6 @@ export class OrderEntity {
         comment: 'Timestamp when the order was soft deleted (if applicable)',
     })
     deletedAt: Date;
-
 
     @OneToOne(() => VoucherEntity, v => v.id)
     @JoinColumn({ name: 'voucher_id' })

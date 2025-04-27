@@ -15,7 +15,7 @@ export class VoucherService {
     constructor(private readonly voucherRepository: VoucherRepository) {}
 
     async createVoucher(body: VoucherRequestDto): Promise<VoucherResponseDto> {
-        const [_, count] = await this.voucherRepository.findAndCount({
+        const [, count] = await this.voucherRepository.findAndCount({
             where: { code: body.code },
         });
 

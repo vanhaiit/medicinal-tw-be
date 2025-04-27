@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
-import { IsInt, IsString, ValidateNested } from 'class-validator';
+import { IsBoolean, IsInt, IsString, ValidateNested } from 'class-validator';
 import { EStatus } from 'constant/product.constant';
 
 // DTO for ProductAttribute (for response)
@@ -76,6 +76,48 @@ export class ProductResDto {
     })
     @Expose()
     status: EStatus;
+
+    @ApiProperty({
+        description: 'Regular price of the item',
+        example: 100.0,
+    })
+    @Expose()
+    regular_price: number;
+
+    @ApiProperty({
+        description: 'Sale price of the item (if on sale)',
+        example: 80.0,
+        required: false,
+    })
+    @Expose()
+    sale_price?: number;
+
+    @ApiProperty({
+        description: 'Available stock quantity',
+        example: 100,
+    })
+    @Expose()
+    stock_quantity: number;
+
+    @ApiProperty({
+        description: 'Stock status: instock, outofstock, onbackorder',
+        example: 'instock',
+    })
+    @Expose()
+    stock_status: string;
+
+    @ApiProperty({
+        description: 'Brand name of the product',
+        example: 'Nike',
+        required: false,
+    })
+    @Expose()
+    brand?: string;
+
+    @Expose()
+    @ApiProperty({ description: 'Enable flash sale', example: true })
+    @IsBoolean()
+    flashSale: boolean;
 
     @ApiProperty({
         description: 'Whether the product is visible on the frontend',

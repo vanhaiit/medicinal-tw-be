@@ -1,3 +1,4 @@
+import { EStockStatus } from 'constant/item.constant';
 import { EStatus } from 'constant/product.constant';
 import {
     Column,
@@ -159,6 +160,57 @@ export class ProductEntity {
         comment: 'Sort order for display',
     })
     index: number;
+
+    @Column({
+        name: 'regular_price',
+        type: 'float',
+        nullable: false,
+        default: 0,
+        comment: 'Regular price of the item',
+    })
+    regularPrice: number;
+
+    @Column({
+        name: 'sale_price',
+        type: 'float',
+        nullable: true,
+        comment: 'Sale price of the item (if on sale)',
+    })
+    salePrice: number;
+
+    @Column({
+        name: 'stock_quantity',
+        type: 'integer',
+        nullable: false,
+        default: 0,
+        comment: 'Available stock quantity',
+    })
+    stockQuantity: number;
+
+    @Column({
+        name: 'stock_status',
+        type: 'varchar',
+        nullable: false,
+        default: EStockStatus.instock,
+        comment: 'Stock status: instock, outofstock, onbackorder',
+    })
+    stockStatus: string;
+
+    @Column({
+        name: 'brand',
+        type: 'varchar',
+        nullable: true,
+        comment: 'brand name of the product',
+    })
+    brand: string;
+
+    @Column({
+        name: 'flash_sale',
+        nullable: false,
+        default: false,
+        comment: 'Enable flash sale',
+    })
+    flashSale: boolean;
 
     @CreateDateColumn({
         name: 'created_at',

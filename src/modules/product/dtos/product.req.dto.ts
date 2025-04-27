@@ -387,6 +387,50 @@ export class CreateProductReqDto {
     @IsInt({ each: true })
     attributeIds?: number[];
 
+    @Expose()
+    @ApiProperty({ description: 'Regular price of the item', example: 100.0 })
+    @IsNumber()
+    regularPrice: number;
+
+    @Expose()
+    @ApiProperty({
+        description: 'Sale price of the item (if on sale)',
+        example: 89.99,
+        required: false,
+    })
+    @IsOptional()
+    @IsNumber()
+    salePrice?: number;
+
+    @Expose()
+    @ApiProperty({ description: 'Available stock quantity', example: 100 })
+    @IsInt()
+    stockQuantity: number;
+
+    @Expose()
+    @ApiProperty({
+        description: 'Stock status',
+        example: EStockStatus.instock,
+        enum: EStockStatus,
+    })
+    @IsEnum(EStockStatus)
+    stockStatus: EStockStatus;
+
+    @Expose()
+    @ApiProperty({
+        description: 'Brand name of the product',
+        example: 'Nike',
+        required: false,
+    })
+    @IsOptional()
+    @IsString()
+    brand?: string;
+
+    @Expose()
+    @ApiProperty({ description: 'Enable flash sale', example: true })
+    @IsBoolean()
+    flashSale: boolean;
+
     @ApiProperty({
         description: 'List of items for the product',
         type: [CreateItemReqDto],

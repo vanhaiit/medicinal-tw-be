@@ -1,3 +1,4 @@
+import { EStockStatus } from "constant/item.constant";
 import { EStatus } from "constant/product.constant";
 import { MigrationInterface, QueryRunner, Table, TableIndex } from "typeorm";
 
@@ -131,6 +132,46 @@ export class InitProduct1744643886551 implements MigrationInterface {
                         type: 'integer',
                         isNullable: true,
                         comment: 'Sort order for display',
+                    },
+                    {
+                        name: 'regular_price',
+                        type: 'float',
+                        isNullable: false,
+                        default: 0,
+                        comment: 'Regular price of the item',
+                    },
+                    {
+                        name: 'sale_price',
+                        type: 'float',
+                        isNullable: true,
+                        comment: 'Sale price of the item (if on sale)',
+                    },
+                    {
+                        name: 'stock_quantity',
+                        type: 'integer',
+                        isNullable: false,
+                        default: 0,
+                        comment: 'Available stock quantity',
+                    },
+                    {
+                        name: 'stock_status',
+                        type: 'varchar',
+                        isNullable: false,
+                        default: `'${EStockStatus.instock}'`,
+                        comment: 'Stock status: instock, outofstock, onbackorder',
+                    },
+                    {
+                        name: 'brand',
+                        type: 'varchar',
+                        isNullable: true,
+                        comment: 'brand name of the product',
+                    },
+                    {
+                        name: 'flash_sale',
+                        type: 'boolean',
+                        isNullable: false,
+                        default: false,
+                        comment: 'enable flash sale',
                     },
                     {
                         name: 'created_at',

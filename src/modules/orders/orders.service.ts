@@ -1,5 +1,6 @@
 import { OrderItemRepository } from '@models/repositories/order-item.repository';
 import { OrderRepository } from '@models/repositories/order.repository';
+import { VoucherRepository } from '@models/repositories/voucher.repositoty';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { httpErrors } from 'constant/http-error.constant';
 
@@ -8,7 +9,6 @@ import mapDto from '@shared/helpers/mapdto';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { DeleteOrderRequestDto, GetOrderRequestDto } from './dto/order.req.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
-import { VoucherRepository } from '@models/repositories/voucher.repositoty';
 
 @Injectable()
 export class OrdersService {
