@@ -78,6 +78,11 @@ export class GetCommentRequestDto extends PageOptionsDto {
     @IsString()
     @IsOptional()
     search?: string;
+
+    @ApiPropertyOptional({ example: 5, description: 'Filter by rating' })
+    @IsNumber()
+    @IsOptional()
+    rating?: number;
 }
 
 export class DeleteCommentRequestDto {
