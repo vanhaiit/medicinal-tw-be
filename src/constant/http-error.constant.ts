@@ -86,4 +86,8 @@ export const httpErrors = {
         message: 'Thư mục không tồn tại',
         code: 'FINDER_0002',
     },
+    COMMENT_NOT_EXIST: {
+        message: 'Bình luận không tồn tại.',
+        code: 'COMMENT_0001',
+    },
 };
