@@ -16,6 +16,7 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
                 'products.productAttributes',
                 'productAttributes',
             )
+            .leftJoinAndSelect('products.categories', 'categories')
             .leftJoinAndSelect('productAttributes.attribute', 'attribute')
             .leftJoinAndSelect('products.items', 'items')
             .leftJoinAndSelect('items.itemAttributes', 'itemAttributes')
