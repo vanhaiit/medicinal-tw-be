@@ -8,12 +8,14 @@ import mapDto from '@shared/helpers/mapdto';
 import { CreateOrderDto } from './dto/create-order.dto';
 import { DeleteOrderRequestDto, GetOrderRequestDto } from './dto/order.req.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
+import { VoucherRepository } from '@models/repositories/voucher.repositoty';
 
 @Injectable()
 export class OrdersService {
     constructor(
         private readonly orderRepository: OrderRepository,
         private readonly orderItemRepository: OrderItemRepository,
+        private readonly voucherRepository: VoucherRepository,
     ) {}
 
     async findAll(query: GetOrderRequestDto) {
@@ -25,6 +27,18 @@ export class OrdersService {
 
     async create(body: CreateOrderDto) {
         const payload = mapDto(body, CreateOrderDto);
+
+        if (!!payload?.voucherId) {
+            const voucher = await this.voucherRepository.checkVoucher(
+                payload?.voucherId,
+            );
+            if (!voucher?.id) {
+                throw new HttpException(
+                    httpErrors.VOUCHER_CODE_EXPIRED,
+                    HttpStatus.BAD_REQUEST,
+                );
+            }
+        }
 
         // Create and save the order first
         const order = await this.orderRepository.save(

@@ -4,11 +4,13 @@ import {
     JoinColumn,
     ManyToOne,
     OneToMany,
+    OneToOne,
     PrimaryGeneratedColumn,
 } from 'typeorm';
 
 import { OrderItemEntity } from './order-item.entity';
 import { UserEntity } from './user.entity';
+import { VoucherEntity } from './voucher.entity';
 
 @Entity('orders')
 export class OrderEntity {
@@ -116,6 +118,7 @@ export class OrderEntity {
     })
     rate: number;
 
+
     @Column({
         name: 'created_at',
         type: 'timestamp',
@@ -139,6 +142,11 @@ export class OrderEntity {
         comment: 'Timestamp when the order was soft deleted (if applicable)',
     })
     deletedAt: Date;
+
+
+    @OneToOne(() => VoucherEntity, v => v.id)
+    @JoinColumn({ name: 'voucher_id' })
+    voucher: VoucherEntity;
 
     @ManyToOne(() => UserEntity, user => user.orders)
     @JoinColumn({ name: 'user_id' })
