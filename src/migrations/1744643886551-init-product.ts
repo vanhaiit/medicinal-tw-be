@@ -1,5 +1,5 @@
 import { EStatus } from "constant/product.constant";
-import { MigrationInterface, QueryRunner, Table } from "typeorm";
+import { MigrationInterface, QueryRunner, Table, TableIndex } from "typeorm";
 
 export class InitProduct1744643886551 implements MigrationInterface {
 
@@ -151,10 +151,21 @@ export class InitProduct1744643886551 implements MigrationInterface {
                 ],
             }),
         );
+
+        // Add index for the "index" column
+        await queryRunner.createIndex(
+            'products',
+            new TableIndex({
+                name: 'IDX_PRODUCTS_INDEX',
+                columnNames: ['index'],
+            }),
+        );
     }
 
     public async down(queryRunner: QueryRunner): Promise<void> {
-        await queryRunner.dropTable('product');
+        // Drop the index first
+        await queryRunner.dropIndex('products', 'IDX_PRODUCTS_INDEX');
+        await queryRunner.dropTable('products');
     }
 
 }

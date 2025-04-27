@@ -10,6 +10,7 @@ import { PageModule } from './page/page.module';
 import { ProductModule } from './product/product.module';
 import { UploadModule } from './upload/upload.module';
 import { UserModule } from './users/user.module';
+import { VoucherModule } from './voucher/voucher.module';
 
 export const MODULES = [
     AuthModule,
@@ -23,4 +24,5 @@ export const MODULES = [
     FinderModule,
     UploadModule,
     PageModule,
+    VoucherModule
 ];
