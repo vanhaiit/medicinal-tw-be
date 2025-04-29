@@ -76,6 +76,14 @@ export class ProductEntity {
     isVisible: boolean;
 
     @Column({
+        name: 'is_active',
+        nullable: false,
+        default: true,
+        comment: 'active product',
+    })
+    isActive: boolean;
+
+    @Column({
         name: 'is_featured',
         nullable: false,
         default: false,

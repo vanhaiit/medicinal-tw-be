@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { Expose } from 'class-transformer';
+import { Expose, Transform } from 'class-transformer';
 import {
     IsBoolean,
     IsIn,
@@ -49,11 +49,10 @@ export class VoucherRequestDto {
     @ApiProperty({
         example: true,
         description: 'Indicates if the voucher is active',
-        required: false,
+        required: true,
     })
-    @IsBoolean()
-    @IsOptional()
-    isActive?: boolean = true;
+    @Transform(({ value }) => value === 'true' ? true : value === 'false' ? false : value)
+    isActive?: boolean;
 
     @Expose()
     @ApiProperty({

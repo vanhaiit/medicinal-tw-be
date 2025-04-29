@@ -1,5 +1,5 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Expose } from 'class-transformer';
+import { Expose, Transform } from 'class-transformer';
 
 export class VoucherResponseDto {
     @Expose()
@@ -40,7 +40,9 @@ export class VoucherResponseDto {
     @ApiProperty({
         example: true,
         description: 'Indicates if the voucher is active',
+        required: true
     })
+    @Transform(({ value }) => value === 'true' ? true : value === 'false' ? false : value)
     isActive: boolean;
 
     @Expose()

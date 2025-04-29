@@ -31,6 +31,26 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
             });
         }
 
+        if (options?.isActive !== undefined) {
+            query.andWhere('products.isActive = :isActive', { isActive: options.isActive });
+        }
+        if (options?.flashSale !== undefined) {
+            query.andWhere('products.flashSale = :flashSale', { flashSale: options.flashSale });
+        }
+        if (options?.bestSeller !== undefined) {
+            query.andWhere('products.bestSeller = :bestSeller', { bestSeller: options.bestSeller });
+        }
+
+        if (options?.categoryIds && options.categoryIds.length > 0) {
+            query.andWhere('categories.id IN (:...categoryIds)', { categoryIds: options.categoryIds });
+        }
+
+        if (options?.itemAttributeIDs && options.itemAttributeIDs.length > 0) {
+            query.andWhere('itemAttributes.attribute_value_id IN (:...itemAttributeIDs)', {
+                itemAttributeIDs: options.itemAttributeIDs,
+            });
+        }
+
         if (options?.orderBy) {
             query.orderBy(
                 `products.${options.orderBy}`,

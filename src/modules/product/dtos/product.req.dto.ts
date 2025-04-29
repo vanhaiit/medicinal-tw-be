@@ -1,5 +1,5 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import { Expose, Type } from 'class-transformer';
+import { Expose, Transform, Type } from 'class-transformer';
 import {
     IsArray,
     IsBoolean,
@@ -10,6 +10,7 @@ import {
     IsOptional,
     IsString,
     ValidateNested,
+    ArrayNotEmpty,
 } from 'class-validator';
 import {
     EItemType,
@@ -459,4 +460,53 @@ export class GetProductRequestDto extends PageOptionsDto {
     @IsString()
     @IsOptional()
     search: string;
+
+
+    @Expose()
+    @ApiProperty({
+        example: true,
+        description: 'Indicates if the voucher is active',
+        required: true,
+    })
+    @Transform(({ value }) => value === 'true' ? true : value === 'false' ? false : value)
+    isActive?: boolean;
+
+    @Expose()
+    @ApiProperty({
+        example: false,
+        description: 'Indicates if the voucher is active',
+        required: false,
+    })
+    @Transform(({ value }) => value === 'true' ? true : value === 'false' ? false : value)
+    @IsOptional()
+    flashSale?: boolean;
+
+
+    @Expose()
+    @ApiProperty({
+        example: false,
+        description: 'Indicates if the voucher is active',
+        required: false,
+    })
+    @Transform(({ value }) => value === 'true' ? true : value === 'false' ? false : value)
+    @IsOptional()
+    bestSeller?: boolean;
+
+
+    @ApiProperty({
+        description: 'List of category IDs',
+        example: [1],
+        required: false,
+    })
+    @IsOptional()
+    @IsArray()
+    @IsInt({ each: true })
+    categoryIds?: number[];
+
+    @ApiPropertyOptional({ type: [String], description: 'Danh sách ids thuộc tính trong sản phẩm' })
+    @IsOptional()
+    @IsArray()
+    @ArrayNotEmpty()
+    @IsString({ each: true })
+    itemAttributeIDs?: string[];
 }

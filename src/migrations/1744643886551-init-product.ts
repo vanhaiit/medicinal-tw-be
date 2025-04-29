@@ -181,6 +181,13 @@ export class InitProduct1744643886551 implements MigrationInterface {
                         comment: 'enable best seller',
                     },
                     {
+                        name: 'is_active',
+                        type: 'boolean',
+                        isNullable: false,
+                        default: true,
+                        comment: 'Whether the item is available for purchase',
+                    },
+                    {
                         name: 'created_at',
                         type: 'timestamp',
                         default: 'CURRENT_TIMESTAMP',
