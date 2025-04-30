@@ -32,13 +32,13 @@ export class UploadController {
     ) {}
 
     @Post(':finderId')
-    @UseInterceptors(FilesInterceptor('files', 10)) // 'files' is the field name, and 10 is the max number of files
+    @UseInterceptors(FilesInterceptor('upload', 10)) // 'files' is the field name, and 10 is the max number of files
     @ApiConsumes('multipart/form-data')
     @ApiBody({
         schema: {
             type: 'object',
             properties: {
-                files: {
+                upload: {
                     type: 'array',
                     items: {
                         type: 'string',
@@ -55,12 +55,12 @@ export class UploadController {
     })
     @PublicRoute()
     async uploadFiles(
-        @UploadedFiles() files: Express.Multer.File[],
+        @UploadedFiles() upload: Express.Multer.File[],
         @Param('finderId') finderId: number,
     ): Promise<any> {
         const finder = await this.finderService.getFinder(finderId);
         const fileUploadResponses = await Promise.all(
-            files.map(async (file, index: number) => {
+            upload.map(async (file, index: number) => {
                 const filePath = await this.uploadService.saveFile(
                     file,
                     finder.shortcut,
