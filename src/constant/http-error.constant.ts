@@ -90,4 +90,8 @@ export const httpErrors = {
         message: 'Bình luận không tồn tại.',
         code: 'COMMENT_0001',
     },
+    POST_NOT_EXIST: {
+        message: 'Bài viết không tồn tại.',
+        code: 'POST_0001',
+    },
 };

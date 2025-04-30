@@ -8,6 +8,7 @@ import { FinderModule } from './finder/finder.module';
 import { ItemModule } from './item/item.module';
 import { OrdersModule } from './orders/orders.module';
 import { PageModule } from './page/page.module';
+import { PostModule } from './post/post.module';
 import { ProductModule } from './product/product.module';
 import { UploadModule } from './upload/upload.module';
 import { UserModule } from './users/user.module';
@@ -27,4 +28,5 @@ export const MODULES = [
     PageModule,
     VoucherModule,
     CommentModule,
+    PostModule
 ];

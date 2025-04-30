@@ -4,6 +4,7 @@ import { IsArray, IsIn, IsNumber, IsOptional, IsString } from 'class-validator';
 
 import { StringFieldOption } from '@shared/decorators/field.decorator';
 import { PageOptionsDto } from '@shared/dtos/page-options.dto';
+import { ECategoryType } from 'constant/category.constant';
 
 export class CategoryRequestDto {
     @ApiProperty({ required: false, example: 'Media Name' })
@@ -18,7 +19,8 @@ export class CategoryRequestDto {
     @IsOptional()
     description: string;
 
-    @ApiProperty({ required: false, example: 'color' })
+    @ApiProperty({ required: false, example: 'product' })
+    @IsIn([ECategoryType.post, ECategoryType.product])
     @Expose()
     @IsString()
     @IsOptional()
@@ -41,7 +43,9 @@ export class GetCategoryRequestDto extends PageOptionsDto {
     @StringFieldOption()
     readonly orderBy: string;
 
-    @ApiPropertyOptional({ required: false, example: 'color' })
+    @ApiPropertyOptional({ enum: [ECategoryType.post, ECategoryType.product] })
+    @StringFieldOption()
+    @IsIn([ECategoryType.post, ECategoryType.product])
     @IsString()
     @IsOptional()
     type: string;
