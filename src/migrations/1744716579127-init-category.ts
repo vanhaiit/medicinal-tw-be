@@ -30,7 +30,7 @@ export class InitCategory1744716579127 implements MigrationInterface {
                         name: 'type',
                         type: 'varchar',
                         isNullable: true,
-                        default: ECategoryType.product
+                        default: `'${ECategoryType.product}'`
                     },
                     {
                         name: 'image',
