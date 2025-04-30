@@ -45,7 +45,7 @@ export class InitPost1746011526881 implements MigrationInterface {
                         name: 'status',
                         type: 'varchar',
                         isNullable: false,
-                        default: EPostStatus.draft
+                        default: `'${EPostStatus.draft}'`
                     },
                     {
                         name: 'short_description',
