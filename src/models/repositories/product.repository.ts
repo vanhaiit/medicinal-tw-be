@@ -32,23 +32,37 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
         }
 
         if (options?.isActive !== undefined) {
-            query.andWhere('products.isActive = :isActive', { isActive: options.isActive });
+            query.andWhere('products.isActive = :isActive', {
+                isActive: options.isActive,
+            });
         }
         if (options?.flashSale !== undefined) {
-            query.andWhere('products.flashSale = :flashSale', { flashSale: options.flashSale });
+            query.andWhere('products.flashSale = :flashSale', {
+                flashSale: options.flashSale,
+            });
         }
         if (options?.bestSeller !== undefined) {
-            query.andWhere('products.bestSeller = :bestSeller', { bestSeller: options.bestSeller });
+            query.andWhere('products.bestSeller = :bestSeller', {
+                bestSeller: options.bestSeller,
+            });
         }
 
         if (options?.categoryIds && options.categoryIds.length > 0) {
-            query.andWhere('categories.id IN (:...categoryIds)', { categoryIds: options.categoryIds });
+            const integerCategoryIds = options.categoryIds.map(id =>
+                parseInt(String(id), 10),
+            );
+            query.andWhere('categories.id IN (:...categoryIds)', {
+                categoryIds: integerCategoryIds,
+            });
         }
 
         if (options?.itemAttributeIDs && options.itemAttributeIDs.length > 0) {
-            query.andWhere('itemAttributes.attribute_value_id IN (:...itemAttributeIDs)', {
-                itemAttributeIDs: options.itemAttributeIDs,
-            });
+            query.andWhere(
+                'itemAttributes.attribute_value_id IN (:...itemAttributeIDs)',
+                {
+                    itemAttributeIDs: options.itemAttributeIDs,
+                },
+            );
         }
 
         if (options?.orderBy) {

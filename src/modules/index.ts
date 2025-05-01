@@ -28,5 +28,5 @@ export const MODULES = [
     PageModule,
     VoucherModule,
     CommentModule,
-    PostModule
+    PostModule,
 ];

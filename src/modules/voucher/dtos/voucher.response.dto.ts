@@ -40,9 +40,11 @@ export class VoucherResponseDto {
     @ApiProperty({
         example: true,
         description: 'Indicates if the voucher is active',
-        required: true
+        required: true,
     })
-    @Transform(({ value }) => value === 'true' ? true : value === 'false' ? false : value)
+    @Transform(({ value }) =>
+        value === 'true' ? true : value === 'false' ? false : value,
+    )
     isActive: boolean;
 
     @Expose()

@@ -13,12 +13,12 @@ import { ApiTags } from '@nestjs/swagger';
 import { AuthRoleGuard } from '@shared/decorators/http.decorator';
 import { PublicRoute } from '@shared/decorators/public-route.decorator';
 
-import { PostService } from './post.service';
 import {
-    PostRequestDto,
     DeletePostRequestDto,
     GetPostRequestDto,
+    PostRequestDto,
 } from './dto/post.req.dto';
+import { PostService } from './post.service';
 
 @ApiTags('Post')
 @Controller('post')
@@ -48,4 +48,4 @@ export class PostController {
     createPost(@Body() body: PostRequestDto) {
         return this.postService.createPost(body);
     }
-} 
+}

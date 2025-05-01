@@ -10,8 +10,8 @@ import {
     Min,
 } from 'class-validator';
 
-import { PageOptionsDto } from '@shared/dtos/page-options.dto';
 import { StringFieldOption } from '@shared/decorators/field.decorator';
+import { PageOptionsDto } from '@shared/dtos/page-options.dto';
 
 export class CommentRequestDto {
     @ApiProperty({

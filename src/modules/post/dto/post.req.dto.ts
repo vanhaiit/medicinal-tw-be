@@ -1,10 +1,10 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Expose, Transform, Type } from 'class-transformer';
 import { IsArray, IsIn, IsNumber, IsOptional, IsString } from 'class-validator';
+import { EPostStatus } from 'constant/post.constant';
 
 import { StringFieldOption } from '@shared/decorators/field.decorator';
 import { PageOptionsDto } from '@shared/dtos/page-options.dto';
-import { EPostStatus } from 'constant/post.constant';
 
 export class PostRequestDto {
     @ApiProperty({ required: true, example: 1 })
@@ -49,7 +49,13 @@ export class PostRequestDto {
     @IsOptional()
     featuredImage?: string;
 
-    @ApiPropertyOptional({ type: [String], example: ['https://example.com/img1.jpg', 'https://example.com/img2.jpg'] })
+    @ApiPropertyOptional({
+        type: [String],
+        example: [
+            'https://example.com/img1.jpg',
+            'https://example.com/img2.jpg',
+        ],
+    })
     @Expose()
     @IsArray()
     @IsOptional()
@@ -62,9 +68,8 @@ export class GetPostRequestDto extends PageOptionsDto {
     @StringFieldOption()
     readonly orderBy: string;
 
-
     @ApiPropertyOptional({ enum: [EPostStatus.draft, EPostStatus.publish] })
-    @IsIn([EPostStatus.draft, EPostStatus.publish ])
+    @IsIn([EPostStatus.draft, EPostStatus.publish])
     @StringFieldOption()
     readonly status: string;
 
@@ -92,4 +97,4 @@ export class DeletePostRequestDto {
     @Transform(({ value }) => (Array.isArray(value) ? value : [value]))
     @Type(() => Number)
     ids: number[];
-} 
+}

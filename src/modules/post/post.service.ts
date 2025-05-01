@@ -8,9 +8,9 @@ import { httpErrors } from 'constant/http-error.constant';
 import mapDto from '@shared/helpers/mapdto';
 
 import {
-    PostRequestDto,
     DeletePostRequestDto,
     GetPostRequestDto,
+    PostRequestDto,
 } from './dto/post.req.dto';
 
 @Injectable()
@@ -18,9 +18,7 @@ export class PostService {
     constructor(private readonly postRepository: PostRepository) {}
 
     async getAllPost(query: GetPostRequestDto) {
-        const [result, metadata]: any = await this.postRepository.getAll(
-            query,
-        );
+        const [result, metadata]: any = await this.postRepository.getAll(query);
         return result.toPageDto(metadata);
     }
 
@@ -53,4 +51,4 @@ export class PostService {
             ...payload,
         });
     }
-} 
+}

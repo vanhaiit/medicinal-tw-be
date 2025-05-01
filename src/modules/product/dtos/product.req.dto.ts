@@ -10,7 +10,6 @@ import {
     IsOptional,
     IsString,
     ValidateNested,
-    ArrayNotEmpty,
 } from 'class-validator';
 import {
     EItemType,
@@ -461,52 +460,60 @@ export class GetProductRequestDto extends PageOptionsDto {
     @IsOptional()
     search: string;
 
-
     @Expose()
     @ApiProperty({
         example: true,
         description: 'Indicates if the voucher is active',
         required: true,
     })
-    @Transform(({ value }) => value === 'true' ? true : value === 'false' ? false : value)
+    @Transform(({ value }) =>
+        value === 'true' ? true : value === 'false' ? false : value,
+    )
     isActive?: boolean;
 
     @Expose()
     @ApiProperty({
-        example: false,
         description: 'Indicates if the voucher is active',
         required: false,
     })
-    @Transform(({ value }) => value === 'true' ? true : value === 'false' ? false : value)
+    @Transform(({ value }) =>
+        value === 'true' ? true : value === 'false' ? false : value,
+    )
     @IsOptional()
     flashSale?: boolean;
 
-
     @Expose()
     @ApiProperty({
-        example: false,
         description: 'Indicates if the voucher is active',
         required: false,
     })
-    @Transform(({ value }) => value === 'true' ? true : value === 'false' ? false : value)
+    @Transform(({ value }) =>
+        value === 'true' ? true : value === 'false' ? false : value,
+    )
     @IsOptional()
     bestSeller?: boolean;
 
+    @ApiProperty({
+        required: false,
+        type: [Number],
+        description: 'Array of category IDs',
+    })
+    @IsArray()
+    @IsNumber({}, { each: true })
+    @IsOptional()
+    @Transform(({ value }) => value && (Array.isArray(value) ? value : [value]))
+    @Type(() => Number)
+    categoryIds: number[];
 
     @ApiProperty({
-        description: 'List of category IDs',
-        example: [1],
         required: false,
+        type: [Number],
+        description: 'Array of itemAttributeIDs',
     })
-    @IsOptional()
     @IsArray()
-    @IsInt({ each: true })
-    categoryIds?: number[];
-
-    @ApiPropertyOptional({ type: [String], description: 'Danh sách ids thuộc tính trong sản phẩm' })
+    @IsNumber({}, { each: true })
     @IsOptional()
-    @IsArray()
-    @ArrayNotEmpty()
-    @IsString({ each: true })
-    itemAttributeIDs?: string[];
+    @Transform(({ value }) => value && (Array.isArray(value) ? value : [value]))
+    @Type(() => Number)
+    itemAttributeIDs: number[];
 }

@@ -3,6 +3,7 @@ https://docs.nestjs.com/providers#services
 */
 import { AttributeRepository } from '@models/repositories/attribute.repository';
 import { CategoryRepository } from '@models/repositories/category.repository';
+import { CommentRepository } from '@models/repositories/comment.repository';
 import { ItemAttributeRepository } from '@models/repositories/item-attribute.responsitory';
 import { ItemRepository } from '@models/repositories/item.responsitory';
 import { ProductAttributeRepository } from '@models/repositories/product-attribute.repository';
@@ -19,7 +20,6 @@ import {
     CreateProductReqDto,
     GetProductRequestDto,
 } from './dtos/product.req.dto';
-import { CommentRepository } from '@models/repositories/comment.repository';
 
 @Injectable()
 export class ProductService {
@@ -165,12 +165,13 @@ export class ProductService {
             where: { id },
             relations: ['items', 'productAttributes', 'categories'],
         });
-        const {avgRating, totalComments } = await this.commentRepository.getCommentByProductId(id)
-       
+        const { avgRating, totalComments } =
+            await this.commentRepository.getCommentByProductId(id);
+
         return {
             ...product,
             avgRating,
-            totalComments
+            totalComments,
         };
     }
 

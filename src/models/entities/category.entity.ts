@@ -1,3 +1,4 @@
+import { ECategoryType } from 'constant/category.constant';
 import {
     Column,
     CreateDateColumn,
@@ -10,8 +11,6 @@ import {
 } from 'typeorm';
 
 import { ProductEntity } from './product.entity';
-import { ECategoryType } from 'constant/category.constant';
-import { EPostStatus } from 'constant/post.constant';
 
 @Entity('category')
 export class CategoryEntity {
@@ -24,7 +23,11 @@ export class CategoryEntity {
     @Column({ nullable: false, comment: 'Category description' })
     description: string;
 
-    @Column({ nullable: true, comment: 'Category type', default: ECategoryType.product })
+    @Column({
+        nullable: true,
+        comment: 'Category type',
+        default: ECategoryType.product,
+    })
     type: string;
 
     @Column({

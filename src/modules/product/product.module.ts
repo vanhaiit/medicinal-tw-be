@@ -3,6 +3,7 @@ https://docs.nestjs.com/modules
 */
 import { AttributeRepository } from '@models/repositories/attribute.repository';
 import { CategoryRepository } from '@models/repositories/category.repository';
+import { CommentRepository } from '@models/repositories/comment.repository';
 import { ItemAttributeRepository } from '@models/repositories/item-attribute.responsitory';
 import { ItemRepository } from '@models/repositories/item.responsitory';
 import { ProductAttributeRepository } from '@models/repositories/product-attribute.repository';
@@ -14,7 +15,6 @@ import { TypeOrmExModule } from '@shared/decorators/typeorm-ex.module';
 
 import { ProductController } from './product.controller';
 import { ProductService } from './product.service';
-import { CommentRepository } from '@models/repositories/comment.repository';
 
 @Module({
     imports: [

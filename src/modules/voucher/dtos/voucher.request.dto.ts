@@ -1,12 +1,6 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Expose, Transform } from 'class-transformer';
-import {
-    IsBoolean,
-    IsIn,
-    IsNumber,
-    IsOptional,
-    IsString,
-} from 'class-validator';
+import { IsIn, IsNumber, IsOptional, IsString } from 'class-validator';
 
 import { StringFieldOption } from '@shared/decorators/field.decorator';
 import { PageOptionsDto } from '@shared/dtos/page-options.dto';
@@ -51,7 +45,9 @@ export class VoucherRequestDto {
         description: 'Indicates if the voucher is active',
         required: true,
     })
-    @Transform(({ value }) => value === 'true' ? true : value === 'false' ? false : value)
+    @Transform(({ value }) =>
+        value === 'true' ? true : value === 'false' ? false : value,
+    )
     isActive?: boolean;
 
     @Expose()

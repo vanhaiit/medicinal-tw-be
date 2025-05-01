@@ -20,11 +20,15 @@ export class CommentRepository extends BaseRepository<CommentEntity> {
         }
 
         if (options?.productId) {
-            query.andWhere('comment.productId = :productId', { productId: options.productId });
+            query.andWhere('comment.productId = :productId', {
+                productId: options.productId,
+            });
         }
 
         if (options?.rating) {
-            query.andWhere('comment.rating = :rating', { rating: options.rating });
+            query.andWhere('comment.rating = :rating', {
+                rating: options.rating,
+            });
         }
 
         // Always order by createdAt, as per DTO
@@ -42,9 +46,10 @@ export class CommentRepository extends BaseRepository<CommentEntity> {
         return query.getMany();
     }
 
-    async getCommentByProductId(productId: number): Promise<{ avgRating: number | null, totalComments: number }> {
-        const res = await this
-            .createQueryBuilder('comment')
+    async getCommentByProductId(
+        productId: number,
+    ): Promise<{ avgRating: number | null; totalComments: number }> {
+        const res = await this.createQueryBuilder('comment')
             .select('AVG(comment.rating)', 'avgRating')
             .addSelect('COUNT(comment.id)', 'totalComments')
             .where('comment.productId = :productId', { productId })

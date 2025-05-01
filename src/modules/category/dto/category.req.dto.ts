@@ -1,10 +1,10 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Expose, Transform, Type } from 'class-transformer';
 import { IsArray, IsIn, IsNumber, IsOptional, IsString } from 'class-validator';
+import { ECategoryType } from 'constant/category.constant';
 
 import { StringFieldOption } from '@shared/decorators/field.decorator';
 import { PageOptionsDto } from '@shared/dtos/page-options.dto';
-import { ECategoryType } from 'constant/category.constant';
 
 export class CategoryRequestDto {
     @ApiProperty({ required: false, example: 'Media Name' })

@@ -1,8 +1,10 @@
+import { PostEntity } from '@models/entities/post.entity';
+
+import { GetPostRequestDto } from '@modules/post/dto/post.req.dto';
+
 import { CustomRepository } from '@shared/decorators/typeorm-ex.decorator';
 
-import { PostEntity } from '@models/entities/post.entity';
 import { BaseRepository } from './base.repository';
-import { GetPostRequestDto } from '@modules/post/dto/post.req.dto';
 
 @CustomRepository(PostEntity)
 export class PostRepository extends BaseRepository<PostEntity> {
@@ -16,13 +18,14 @@ export class PostRepository extends BaseRepository<PostEntity> {
         }
 
         if (options?.categoryId) {
-            query.andWhere(`post.categoryId = :categoryId`, { categoryId: options.categoryId });
+            query.andWhere(`post.categoryId = :categoryId`, {
+                categoryId: options.categoryId,
+            });
         }
 
         if (options?.status) {
             query.andWhere(`post.status = :status`, { status: options.status });
         }
-
 
         if (options?.orderBy) {
             query.orderBy(
