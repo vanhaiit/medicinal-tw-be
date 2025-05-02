@@ -11,7 +11,11 @@ export class AddToCartDto {
     @Min(1)
     quantity: number;
 
-    @ApiProperty({ description: 'Note for the cart item', example: 'For mom', required: false })
+    @ApiProperty({
+        description: 'Note for the cart item',
+        example: 'For mom',
+        required: false,
+    })
     note?: string;
 }
 
@@ -21,6 +25,10 @@ export class UpdateCartDto {
     @Min(1)
     quantity: number;
 
-    @ApiProperty({ description: 'Note for the cart item', example: 'For mom', required: false })
+    @ApiProperty({
+        description: 'Note for the cart item',
+        example: 'For mom',
+        required: false,
+    })
     note?: string;
 }

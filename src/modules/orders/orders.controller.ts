@@ -1,3 +1,4 @@
+import { UserEntity } from '@models/entities/user.entity';
 import {
     Body,
     Controller,
@@ -10,6 +11,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
+import { AuthUser } from '@shared/decorators/auth-user.decorator';
 import { AuthRoleGuard } from '@shared/decorators/http.decorator';
 import { PublicRoute } from '@shared/decorators/public-route.decorator';
 
@@ -17,8 +19,6 @@ import { CreateOrderDto } from './dto/create-order.dto';
 import { DeleteOrderRequestDto, GetOrderRequestDto } from './dto/order.req.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { OrdersService } from './orders.service';
-import { AuthUser } from '@shared/decorators/auth-user.decorator';
-import { UserEntity } from '@models/entities/user.entity';
 
 @ApiTags('Order')
 @Controller('orders')

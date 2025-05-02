@@ -1,4 +1,5 @@
 // import { SocketModule } from '@modules/socket/socket.module';
+import { AddressModule } from './address/address.module';
 import { AttributeValueModule } from './attribute-value/attribute-value.module';
 import { AttributeModule } from './attribute/attribute.module';
 import { AuthModule } from './auth/auth.module';
@@ -19,18 +20,19 @@ import { VoucherModule } from './voucher/voucher.module';
 export const MODULES = [
     AuthModule,
     UserModule,
-    ProductModule,
+    ProfileModule,
+    AddressModule,
+    FinderModule,
+    UploadModule,
     CategoryModule,
     AttributeModule,
     AttributeValueModule,
-    OrdersModule,
+    ProductModule,
     ItemModule,
-    FinderModule,
-    UploadModule,
-    PageModule,
     VoucherModule,
+    OrdersModule,
+    CartModule,
+    PageModule,
     CommentModule,
     PostModule,
-    CartModule,
-    ProfileModule
 ];

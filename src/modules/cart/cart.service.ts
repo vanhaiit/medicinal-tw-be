@@ -1,9 +1,8 @@
 import { CartRepository } from '@models/repositories/cart.repository';
+import { ItemRepository } from '@models/repositories/item.responsitory';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 
-import { ItemService } from '../item/item.service';
 import { AddToCartDto } from './dtos/cart.req.dto';
-import { ItemRepository } from '@models/repositories/item.responsitory';
 
 @Injectable()
 export class CartService {
@@ -83,7 +82,12 @@ export class CartService {
         }
     }
 
-    async updateQuantity(userId: number, itemId: number, quantity: number, note?: string) {
+    async updateQuantity(
+        userId: number,
+        itemId: number,
+        quantity: number,
+        note?: string,
+    ) {
         if (typeof quantity !== 'number' || quantity < 1) {
             throw new HttpException(
                 'Quantity must be a positive integer',

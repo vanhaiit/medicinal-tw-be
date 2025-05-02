@@ -1,8 +1,14 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn, OneToOne } from 'typeorm';
+import {
+    Column,
+    Entity,
+    OneToMany,
+    OneToOne,
+    PrimaryGeneratedColumn,
+} from 'typeorm';
 
 import { OrderEntity } from './order.entity';
-import { UsersRoleEntity } from './users-role.entity';
 import { ProfileEntity } from './profile.entity';
+import { UsersRoleEntity } from './users-role.entity';
 
 @Entity('user')
 export class UserEntity {

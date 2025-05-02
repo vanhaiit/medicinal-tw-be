@@ -1,12 +1,12 @@
 import {
     Column,
+    CreateDateColumn,
+    DeleteDateColumn,
     Entity,
     JoinColumn,
     ManyToOne,
     PrimaryGeneratedColumn,
-    CreateDateColumn,
     UpdateDateColumn,
-    DeleteDateColumn,
 } from 'typeorm';
 
 import { UserEntity } from './user.entity';
@@ -49,4 +49,4 @@ export class ProfileEntity {
 
     @DeleteDateColumn({ name: 'deleted_at' })
     deletedAt?: Date;
-} 
+}

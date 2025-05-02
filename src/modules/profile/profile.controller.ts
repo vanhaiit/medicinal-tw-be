@@ -1,19 +1,9 @@
-import {
-    Body,
-    Controller,
-    Delete,
-    Get,
-    Param,
-    Post,
-    Put,
-    Query,
-} from '@nestjs/common';
+import { UserEntity } from '@models/entities/user.entity';
+import { Body, Controller, Get, Post, Put } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
-import { AuthRoleGuard } from '@shared/decorators/http.decorator';
-import { PublicRoute } from '@shared/decorators/public-route.decorator';
 import { AuthUser } from '@shared/decorators/auth-user.decorator';
-import { UserEntity } from '@models/entities/user.entity';
+import { AuthRoleGuard } from '@shared/decorators/http.decorator';
 
 import { CreateProfileDto } from './dtos/create-profile.dto';
 import { UpdateProfileDto } from './dtos/update-profile.dto';
@@ -26,20 +16,25 @@ export class ProfileController {
 
     @Get()
     @AuthRoleGuard([])
-    findOne( @AuthUser() user: UserEntity,) {
+    findOne(@AuthUser() user: UserEntity) {
         return this.profileService.findOne(user.id);
     }
 
     @Post()
     @AuthRoleGuard([])
-    create(@Body() createProfileDto: CreateProfileDto, @AuthUser() user: UserEntity) {
-        return this.profileService.create(createProfileDto, user.id );
+    create(
+        @Body() createProfileDto: CreateProfileDto,
+        @AuthUser() user: UserEntity,
+    ) {
+        return this.profileService.create(createProfileDto, user.id);
     }
 
     @Put()
     @AuthRoleGuard([])
-    update(@AuthUser() user: UserEntity, @Body() updateProfileDto: UpdateProfileDto) {
+    update(
+        @AuthUser() user: UserEntity,
+        @Body() updateProfileDto: UpdateProfileDto,
+    ) {
         return this.profileService.update(user.id, updateProfileDto);
     }
-
-} 
+}

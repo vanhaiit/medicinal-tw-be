@@ -1,5 +1,13 @@
 import { UserEntity } from '@models/entities/user.entity';
-import { Body, Controller, Delete, Param, Post, Put, Get } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Delete,
+    Get,
+    Param,
+    Post,
+    Put,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 import { AuthUser } from '@shared/decorators/auth-user.decorator';
@@ -35,7 +43,12 @@ export class CartController {
         @Param('itemId') itemId: number,
         @Body() dto: UpdateCartDto,
     ) {
-        return this.cartService.updateQuantity(user.id, itemId, dto.quantity, dto.note);
+        return this.cartService.updateQuantity(
+            user.id,
+            itemId,
+            dto.quantity,
+            dto.note,
+        );
     }
 
     @Get()
