@@ -47,6 +47,18 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
             });
         }
 
+        if (options?.minPrice !== undefined) {
+            query.andWhere('products.salePrice >= :minPrice', {
+                minPrice: options.minPrice,
+            });
+        }
+
+        if (options?.maxPrice !== undefined) {
+            query.andWhere('products.salePrice <= :maxPrice', {
+                maxPrice: options.maxPrice,
+            });
+        }
+
         if (options?.categoryIds && options.categoryIds.length > 0) {
             const integerCategoryIds = options.categoryIds.map(id =>
                 parseInt(String(id), 10),

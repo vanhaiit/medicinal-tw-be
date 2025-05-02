@@ -450,8 +450,8 @@ export class CreateProductReqDto {
 }
 
 export class GetProductRequestDto extends PageOptionsDto {
-    @ApiPropertyOptional({ enum: ['name', 'createdAt'] })
-    @IsIn(['name', 'createdAt'])
+    @ApiPropertyOptional({ enum: ['name', 'createdAt', 'salePrice'] })
+    @IsIn(['name', 'createdAt', 'salePrice'])
     @StringFieldOption()
     readonly orderBy: string;
 
@@ -516,4 +516,24 @@ export class GetProductRequestDto extends PageOptionsDto {
     @Transform(({ value }) => value && (Array.isArray(value) ? value : [value]))
     @Type(() => Number)
     itemAttributeIDs: number[];
+
+    @ApiPropertyOptional({
+        description: 'Minimum price filter',
+        example: 0,
+        required: false,
+    })
+    @IsOptional()
+    @IsNumber()
+    @Type(() => Number)
+    minPrice?: number;
+
+    @ApiPropertyOptional({
+        description: 'Maximum price filter',
+        example: 1000000,
+        required: false,
+    })
+    @IsOptional()
+    @IsNumber()
+    @Type(() => Number)
+    maxPrice?: number;
 }
