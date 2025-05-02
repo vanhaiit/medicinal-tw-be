@@ -11,6 +11,7 @@ import { OrdersModule } from './orders/orders.module';
 import { PageModule } from './page/page.module';
 import { PostModule } from './post/post.module';
 import { ProductModule } from './product/product.module';
+import { ProfileModule } from './profile/profile.module';
 import { UploadModule } from './upload/upload.module';
 import { UserModule } from './users/user.module';
 import { VoucherModule } from './voucher/voucher.module';
@@ -31,4 +32,5 @@ export const MODULES = [
     CommentModule,
     PostModule,
     CartModule,
+    ProfileModule
 ];

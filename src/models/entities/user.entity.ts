@@ -1,7 +1,8 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn, OneToOne } from 'typeorm';
 
 import { OrderEntity } from './order.entity';
 import { UsersRoleEntity } from './users-role.entity';
+import { ProfileEntity } from './profile.entity';
 
 @Entity('user')
 export class UserEntity {
@@ -57,4 +58,7 @@ export class UserEntity {
 
     @OneToMany(() => OrderEntity, order => order.user)
     orders: OrderEntity[];
+
+    @OneToOne(() => ProfileEntity, profile => profile.user)
+    profile: ProfileEntity;
 }

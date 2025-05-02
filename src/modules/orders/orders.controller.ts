@@ -17,6 +17,8 @@ import { CreateOrderDto } from './dto/create-order.dto';
 import { DeleteOrderRequestDto, GetOrderRequestDto } from './dto/order.req.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { OrdersService } from './orders.service';
+import { AuthUser } from '@shared/decorators/auth-user.decorator';
+import { UserEntity } from '@models/entities/user.entity';
 
 @ApiTags('Order')
 @Controller('orders')
@@ -35,16 +37,16 @@ export class OrdersController {
         return this.ordersService.findAll(query);
     }
 
-    @Get(':id')
+    @Get('detail/:id')
     @PublicRoute()
     findOne(@Param('id') id: string) {
         return this.ordersService.findOne(+id);
     }
 
-    @Get('user/:userId')
-    @PublicRoute()
-    findByUserId(@Param('userId') userId: string) {
-        return this.ordersService.findByUserId(+userId);
+    @Get('owner')
+    @AuthRoleGuard([])
+    findByUserId(@AuthUser() user: UserEntity) {
+        return this.ordersService.findByUserId(user.id);
     }
 
     @Put(':id')
