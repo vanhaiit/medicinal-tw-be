@@ -1,5 +1,5 @@
 import { UserEntity } from '@models/entities/user.entity';
-import { Body, Controller, Delete, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Delete, Param, Post, Put, Get } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 import { AuthUser } from '@shared/decorators/auth-user.decorator';
@@ -36,5 +36,11 @@ export class CartController {
         @Body() dto: UpdateCartDto,
     ) {
         return this.cartService.updateQuantity(user.id, itemId, dto.quantity, dto.note);
+    }
+
+    @Get()
+    @AuthRoleGuard([])
+    getCart(@AuthUser() user: UserEntity) {
+        return this.cartService.getCart(user.id);
     }
 }
