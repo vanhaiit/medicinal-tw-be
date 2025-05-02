@@ -1,0 +1,40 @@
+import { UserEntity } from '@models/entities/user.entity';
+import { Body, Controller, Delete, Param, Post, Put } from '@nestjs/common';
+import { ApiTags } from '@nestjs/swagger';
+
+import { AuthUser } from '@shared/decorators/auth-user.decorator';
+import { AuthRoleGuard } from '@shared/decorators/http.decorator';
+
+import { CartService } from './cart.service';
+import { AddToCartDto, UpdateCartDto } from './dtos/cart.req.dto';
+
+@ApiTags('Cart')
+@Controller('cart')
+export class CartController {
+    constructor(private readonly cartService: CartService) {}
+
+    @Post()
+    @AuthRoleGuard([])
+    addToCart(@AuthUser() user: UserEntity, @Body() dto: AddToCartDto) {
+        return this.cartService.addToCart(user.id, dto);
+    }
+
+    @Delete()
+    @AuthRoleGuard([])
+    removeFromCart(
+        @AuthUser() user: UserEntity,
+        @Body('itemIds') itemIds: number[],
+    ) {
+        return this.cartService.removeFromCart(user.id, itemIds);
+    }
+
+    @Put(':itemId')
+    @AuthRoleGuard([])
+    updateQuantity(
+        @AuthUser() user: UserEntity,
+        @Param('itemId') itemId: number,
+        @Body() dto: UpdateCartDto,
+    ) {
+        return this.cartService.updateQuantity(user.id, itemId, dto.quantity, dto.note);
+    }
+}

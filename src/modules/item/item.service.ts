@@ -5,12 +5,13 @@ import { Repository } from 'typeorm';
 import { ItemEntity } from '../../models/entities/item.entity';
 import { CreateItemDto } from './dto/create-item.dto';
 import { UpdateItemDto } from './dto/update-item.dto';
+import { ItemRepository } from '../../models/repositories/item.responsitory';
 
 @Injectable()
 export class ItemService {
     constructor(
         @InjectRepository(ItemEntity)
-        private readonly itemRepository: Repository<ItemEntity>,
+        private readonly itemRepository: ItemRepository,
     ) {}
 
     async create(createItemDto: CreateItemDto) {
