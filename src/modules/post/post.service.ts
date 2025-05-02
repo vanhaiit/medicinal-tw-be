@@ -51,4 +51,8 @@ export class PostService {
             ...payload,
         });
     }
+
+    async getPostDetail(id: number) {
+        return this.postRepository.getDetail(id);
+    }
 }

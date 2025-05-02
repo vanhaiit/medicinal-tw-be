@@ -9,7 +9,9 @@ import { BaseRepository } from './base.repository';
 @CustomRepository(PostEntity)
 export class PostRepository extends BaseRepository<PostEntity> {
     async getAll(options?: GetPostRequestDto) {
-        const query = this.createQueryBuilder('post');
+        const query = this.createQueryBuilder('post')
+            .leftJoinAndSelect('post.category', 'category')
+            .leftJoinAndSelect('post.user', 'user'); // Changed from categories to category
 
         if (options?.search) {
             query.andWhere(`LOWER(post.title) LIKE LOWER(:search)`, {
@@ -17,9 +19,10 @@ export class PostRepository extends BaseRepository<PostEntity> {
             });
         }
 
-        if (options?.categoryId) {
-            query.andWhere(`post.categoryId = :categoryId`, {
-                categoryId: options.categoryId,
+        if (options?.categoryIds && options.categoryIds.length > 0) {
+            query.andWhere('category.id IN (:...categoryIds)', {
+                // Changed from categories to category
+                categoryIds: options.categoryIds,
             });
         }
 
@@ -39,5 +42,13 @@ export class PostRepository extends BaseRepository<PostEntity> {
         }
 
         return query.getMany();
+    }
+
+    async getDetail(id: number) {
+        return this.createQueryBuilder('post')
+            .leftJoinAndSelect('post.category', 'category')
+            .leftJoinAndSelect('post.user', 'user')
+            .where('post.id = :id', { id })
+            .getOne();
     }
 }

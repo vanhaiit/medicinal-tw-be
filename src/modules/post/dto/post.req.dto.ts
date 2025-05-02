@@ -73,15 +73,22 @@ export class GetPostRequestDto extends PageOptionsDto {
     @StringFieldOption()
     readonly status: string;
 
-    @ApiPropertyOptional({ required: false, example: 'search' })
+    @ApiPropertyOptional({ required: false, example: '' })
     @IsString()
     @IsOptional()
     search?: string;
 
-    @ApiPropertyOptional({ required: false, example: 1 })
-    @IsNumber()
+    @ApiProperty({
+        required: false,
+        type: [Number],
+        description: 'Array of category IDs',
+    })
+    @IsArray()
+    @IsNumber({}, { each: true })
     @IsOptional()
-    categoryId?: number;
+    @Transform(({ value }) => value && (Array.isArray(value) ? value : [value]))
+    @Type(() => Number)
+    categoryIds: number[];
 }
 
 export class DeletePostRequestDto {

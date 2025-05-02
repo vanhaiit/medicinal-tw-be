@@ -31,6 +31,12 @@ export class PostController {
         return this.postService.getAllPost(query);
     }
 
+    @Get(':id')
+    @PublicRoute()
+    getDetail(@Param('id') id: number) {
+        return this.postService.getPostDetail(id);
+    }
+
     @Delete()
     @AuthRoleGuard([])
     delete(@Query() query: DeletePostRequestDto) {
