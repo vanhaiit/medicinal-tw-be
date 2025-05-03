@@ -17,9 +17,22 @@ export class InitCategory1744716579127 implements MigrationInterface {
                         generationStrategy: 'increment',
                     },
                     {
+                        name: 'slug',
+                        type: 'varchar',
+                        isNullable: false,
+                        isUnique: true,
+                        comment: 'URL-friendly slug for SEO',
+                    },
+                    {
                         name: 'name',
                         type: 'varchar',
                         isNullable: false,
+                    },
+                    {
+                        name: 'short_description',
+                        type: 'text',
+                        isNullable: true,
+                        comment: 'Short product description for summaries',
                     },
                     {
                         name: 'description',

@@ -13,6 +13,21 @@ export class CategoryRequestDto {
     @IsOptional()
     name: string;
 
+    @ApiProperty({
+        description: 'URL-friendly slug for SEO',
+        example: 'cate-mau-xanh',
+        required: false,
+    })
+    @IsOptional()
+    @IsString()
+    slug?: string;
+
+    @ApiProperty({ required: false, example: 'Cat description' })
+    @Expose()
+    @IsString()
+    @IsOptional()
+    shortDescription: string;
+
     @ApiProperty({ required: false, example: 'Cat description' })
     @Expose()
     @IsString()
@@ -38,8 +53,8 @@ export class CategoryRequestDto {
 }
 
 export class GetCategoryRequestDto extends PageOptionsDto {
-    @ApiPropertyOptional({ enum: ['name', 'createdAt'] })
-    @IsIn(['name', 'createdAt'])
+    @ApiPropertyOptional({ enum: ['name', 'createdAt', 'slug'] })
+    @IsIn(['name', 'createdAt', 'slug'])
     @StringFieldOption()
     readonly orderBy: string;
 

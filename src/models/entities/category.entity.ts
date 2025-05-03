@@ -24,6 +24,23 @@ export class CategoryEntity {
     description: string;
 
     @Column({
+        name: 'slug',
+        nullable: false,
+        unique: true,
+        comment: 'URL-friendly slug for SEO',
+    })
+    slug: string;
+
+    @Column({
+        name: 'short_description',
+        type: 'text',
+        nullable: true,
+        comment: 'Short product description for summaries',
+    })
+    shortDescription: string;
+
+    @Column({
+        type: 'varchar',
         nullable: true,
         comment: 'Category type',
         default: ECategoryType.product,
