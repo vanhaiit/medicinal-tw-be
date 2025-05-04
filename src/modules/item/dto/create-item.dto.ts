@@ -11,21 +11,7 @@ import {
     MaxLength,
     Min,
 } from 'class-validator';
-
-export enum ItemStatus {
-    ACTIVE = 'active',
-    INACTIVE = 'inactive',
-}
-
-export enum ItemType {
-    SIMPLE = 'simple',
-    VARIABLE = 'variable',
-}
-
-export enum StockStatus {
-    IN_STOCK = 'in_stock',
-    OUT_OF_STOCK = 'out_of_stock',
-}
+import { EItemStatus, ItemType, StockStatus } from 'constant/item.constant';
 
 export class CreateItemDto {
     @Expose()
@@ -114,11 +100,11 @@ export class CreateItemDto {
 
     @Expose()
     @ApiProperty({
-        enum: ItemStatus,
-        example: ItemStatus.ACTIVE,
+        enum: EItemStatus,
+        example: EItemStatus.publish,
         required: false,
     })
-    @IsEnum(ItemStatus)
+    @IsEnum(EItemStatus)
     @IsOptional()
     status?: string;
 }

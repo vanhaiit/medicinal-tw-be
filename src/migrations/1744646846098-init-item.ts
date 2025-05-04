@@ -1,4 +1,4 @@
-import { EItemType, Estatus, EStockStatus, ETaxStatus } from "constant/item.constant";
+import { EItemStatus, EItemType, EStockStatus, ETaxStatus } from "constant/item.constant";
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
 export class InitItem1744646846098 implements MigrationInterface {
@@ -129,7 +129,7 @@ export class InitItem1744646846098 implements MigrationInterface {
                         name: 'status',
                         type: 'varchar',
                         isNullable: false,
-                        default: `'${Estatus.publish}'`,
+                        default: `'${EItemStatus.publish}'`,
                         comment: 'Item status: publish, draft, disabled',
                     },
                     {

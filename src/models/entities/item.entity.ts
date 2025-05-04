@@ -1,6 +1,6 @@
 import {
+    EItemStatus,
     EItemType,
-    Estatus,
     EStockStatus,
     ETaxStatus,
 } from 'constant/item.constant';
@@ -166,7 +166,7 @@ export class ItemEntity {
     @Column({
         name: 'status',
         nullable: false,
-        default: Estatus.publish,
+        default: EItemStatus.publish,
         comment: 'Item status: publish, draft, disabled',
     })
     status: string;

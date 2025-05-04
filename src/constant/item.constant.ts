@@ -10,14 +10,25 @@ export enum EStockStatus {
     onbackorder = 'onbackorder',
 }
 
-export enum Estatus {
+export enum EItemStatus {
     publish = 'publish',
     draft = 'draft',
-    disabled = 'disabled',
+    pending = 'pending',
+    private = 'private',
 }
 
 export enum ETaxStatus {
     taxable = 'taxable',
     shipping = 'shipping',
     none = 'none',
+}
+
+export enum ItemType {
+    SIMPLE = 'simple',
+    VARIABLE = 'variable',
+}
+
+export enum StockStatus {
+    IN_STOCK = 'in_stock',
+    OUT_OF_STOCK = 'out_of_stock',
 }
