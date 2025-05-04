@@ -16,11 +16,12 @@ export class CategoryRequestDto {
     @ApiProperty({
         description: 'URL-friendly slug for SEO',
         example: 'cate-mau-xanh',
-        required: false,
+        required: true,
     })
     @IsOptional()
     @IsString()
-    slug?: string;
+    @Expose()
+    slug: string;
 
     @ApiProperty({ required: false, example: 'Cat description' })
     @Expose()
