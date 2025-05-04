@@ -12,8 +12,8 @@ import {
     ValidateNested,
 } from 'class-validator';
 import {
+    EItemStatus,
     EItemType,
-    Estatus,
     EStockStatus,
     ETaxStatus,
 } from 'constant/item.constant';
@@ -152,11 +152,11 @@ export class CreateItemReqDto {
 
     @ApiProperty({
         description: 'Item status',
-        example: Estatus.publish,
-        enum: Estatus,
+        example: EItemStatus.publish,
+        enum: EItemStatus,
     })
-    @IsEnum(Estatus)
-    status: Estatus;
+    @IsEnum(EItemStatus)
+    status: EItemStatus;
 
     @ApiProperty({
         description: 'Whether the item is available for purchase',
