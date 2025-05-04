@@ -17,6 +17,7 @@ import { ProfileModule } from './profile/profile.module';
 import { UploadModule } from './upload/upload.module';
 import { UserModule } from './users/user.module';
 import { VoucherModule } from './voucher/voucher.module';
+import { WishlistModule } from './wishlist/wishlist.module';
 
 export const MODULES = [
     AuthModule,
@@ -37,4 +38,5 @@ export const MODULES = [
     CommentModule,
     PostModule,
     ContactModule,
+    WishlistModule,
 ];
