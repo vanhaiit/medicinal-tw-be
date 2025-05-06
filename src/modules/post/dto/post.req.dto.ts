@@ -10,6 +10,7 @@ export class PostRequestDto {
     @ApiProperty({ required: true, example: 1 })
     @Expose()
     @IsNumber()
+    @IsOptional()
     userId: number;
 
     @ApiProperty({ required: true, example: 1 })

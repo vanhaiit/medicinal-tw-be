@@ -1,3 +1,4 @@
+import { UserEntity } from '@models/entities/user.entity';
 import {
     Body,
     Controller,
@@ -10,6 +11,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
+import { AuthUser } from '@shared/decorators/auth-user.decorator';
 import { AuthRoleGuard } from '@shared/decorators/http.decorator';
 import { PublicRoute } from '@shared/decorators/public-route.decorator';
 
@@ -51,7 +53,7 @@ export class PostController {
 
     @Post()
     @AuthRoleGuard([])
-    createPost(@Body() body: PostRequestDto) {
-        return this.postService.createPost(body);
+    createPost(@AuthUser() user: UserEntity, @Body() body: PostRequestDto) {
+        return this.postService.createPost({ ...body, userId: user.id });
     }
 }
