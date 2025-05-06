@@ -213,6 +213,7 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
                 'products.isActive AS "isActive"',
                 'COUNT(DISTINCT comments.id) AS "commentCount"',
                 'COALESCE(AVG(NULLIF(comments.rating, 0)), 0) AS "avgRating"',
+                '(SELECT COUNT(*) FROM wishlist w WHERE w.product_id = products.id AND w.deleted_at IS NULL) AS "totalLike"',
                 `jsonb_agg(jsonb_build_object('name', categories.name, 'id', categories.id)) AS "categories"`,
                 `jsonb_agg(jsonb_build_object('name', attribute.name, 'id', attribute.id)) AS "attributes"`,
                 `jsonb_agg(
