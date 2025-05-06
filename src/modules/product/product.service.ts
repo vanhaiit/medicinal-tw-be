@@ -157,7 +157,7 @@ export class ProductService {
     async getAllProduct(query: GetProductRequestDto, userId: number) {
         const [result, metadata]: any = await this.productRepository.getAll(
             query,
-            // userId,
+            userId,
         );
         return result.toPageDto(metadata);
     }
