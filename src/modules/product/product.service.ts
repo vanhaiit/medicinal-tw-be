@@ -183,23 +183,7 @@ export class ProductService {
             );
         }
 
-        const { avgRating, totalComments } =
-            await this.commentRepository.getCommentByProductId(product.id);
-
-        let isLiked = false;
-        if (userId) {
-            const wishlistItem = await this.wishlistRepository.findOne({
-                where: { userId: userId, productId: product.id },
-            });
-            isLiked = !!wishlistItem;
-        }
-
-        return {
-            ...product,
-            avgRating,
-            totalComments,
-            isLiked,
-        };
+        return product;
     }
 
     @Transactional()

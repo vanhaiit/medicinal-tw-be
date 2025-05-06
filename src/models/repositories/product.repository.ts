@@ -42,6 +42,7 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
                 'products.flashSale AS "flashSale"',
                 'products.bestSeller AS "bestSeller"',
                 'products.isActive AS "isActive"',
+                'COALESCE(AVG(NULLIF(comments.rating, 0)), 0) AS "avgRating"',
                 `jsonb_agg(jsonb_build_object('name', categories.name, 'id', categories.id)) AS "categories"`,
                 `jsonb_agg(
                     jsonb_build_object(
@@ -62,6 +63,11 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
                     )
                 ) AS "items"`,
             ])
+            .leftJoin(
+                CommentEntity,
+                'comments',
+                'comments.productId = products.id AND comments.deletedAt IS NULL',
+            )
             .leftJoin(
                 'products.productAttributes',
                 'productAttributes',
@@ -179,73 +185,74 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
     ): Promise<ProductEntity> {
         const query = this.createQueryBuilder('products')
             .select([
-                'products.id AS id',
-                'products.name AS name',
-                'products.slug AS slug',
-                'products.sku AS sku',
-                'products.description AS description',
-                'products.shortDescription AS shortDescription',
-                'products.status AS status',
-                'products.isVisible AS isVisible',
-                'products.isFeatured AS isFeatured',
-                'products.featuredImage AS featuredImage',
-                'products.galleryImages AS galleryImages',
-                'products.tags AS tags',
-                'products.metaTitle AS metaTitle',
-                'products.metaDescription AS metaDescription',
-                'products.reviewsAllowed AS reviewsAllowed',
-                'products.averageRating AS averageRating',
-                'products.reviewCount AS reviewCount',
-                'products.relatedProducts AS relatedProducts',
-                'products.index AS index',
-                'products.regularPrice AS regularPrice',
-                'products.salePrice AS salePrice',
-                'products.stockQuantity AS stockQuantity',
-                'products.stockStatus AS stockStatus',
-                'products.brand AS brand',
-                'products.flashSale AS flashSale',
-                'products.bestSeller AS bestSeller',
-                'products.isActive AS isActive',
+                'products.id AS "id"',
+                'products.name AS "name"',
+                'products.slug AS "slug"',
+                'products.sku AS "sku"',
+                'products.description AS "description"',
+                'products.shortDescription AS "shortDescription"',
+                'products.status AS "status"',
+                'products.isVisible AS "isVisible"',
+                'products.isFeatured AS "isFeatured"',
+                'products.featuredImage AS "featuredImage"',
+                'products.galleryImages AS "galleryImages"',
+                'products.tags AS "tags"',
+                'products.metaTitle AS "metaTitle"',
+                'products.metaDescription AS "metaDescription"',
+                'products.reviewsAllowed AS "reviewsAllowed"',
+                'products.reviewCount AS "reviewCount"',
+                'products.relatedProducts AS "relatedProducts"',
+                'products.index AS "index"',
+                'products.regularPrice AS "regularPrice"',
+                'products.salePrice AS "salePrice"',
+                'products.stockQuantity AS "stockQuantity"',
+                'products.stockStatus AS "stockStatus"',
+                'products.brand AS "brand"',
+                'products.flashSale AS "flashSale"',
+                'products.bestSeller AS "bestSeller"',
+                'products.isActive AS "isActive"',
                 'COUNT(DISTINCT comments.id) AS "commentCount"',
-                `jsonb_agg(jsonb_build_object('name', categories.name, 'id', categories.id)) AS categories`,
+                'COALESCE(AVG(NULLIF(comments.rating, 0)), 0) AS "avgRating"',
+                `jsonb_agg(jsonb_build_object('name', categories.name, 'id', categories.id)) AS "categories"`,
+                `jsonb_agg(jsonb_build_object('name', attribute.name, 'id', attribute.id)) AS "attributes"`,
                 `jsonb_agg(
-        jsonb_build_object(
-            'id', items.id,
-            'sku', items.sku,
-            'name', items.name,
-            'slug', items.slug,
-            'regularPrice', items.regularPrice,
-            'salePrice', items.salePrice,
-            'stockQuantity', items.stockQuantity,
-            'stockStatus', items.stockStatus,
-            'featuredImage', items.featuredImage,
-            'galleryImages', items.galleryImages,
-            'type', items.type,
-            'status', items.status,
-            'isActive', items.isActive,
-            'index', items.index,
-            'itemAttributes', (
-                SELECT jsonb_agg(
                     jsonb_build_object(
-                        'id', ia.id,
-                        'itemId', ia.item_id,
-                        'attributeValueId', ia.attribute_value_id,
-                        'index', ia.index,
-                        'attribute_value', jsonb_build_object(
-                            'id', av.id,
-                            'attributeId', av.attribute_id,
-                            'value', av.value,
-                            'index', av.index,
-                            'image', av.image
+                        'id', items.id,
+                        'sku', items.sku,
+                        'name', items.name,
+                        'slug', items.slug,
+                        'regularPrice', items.regularPrice,
+                        'salePrice', items.salePrice,
+                        'stockQuantity', items.stockQuantity,
+                        'stockStatus', items.stockStatus,
+                        'featuredImage', items.featuredImage,
+                        'galleryImages', items.galleryImages,
+                        'type', items.type,
+                        'status', items.status,
+                        'isActive', items.isActive,
+                        'index', items.index,
+                        'itemAttributes', (
+                            SELECT jsonb_agg(
+                                jsonb_build_object(
+                                    'id', ia.id,
+                                    'itemId', ia.item_id,
+                                    'attributeValueId', ia.attribute_value_id,
+                                    'index', ia.index,
+                                    'attributeValue', jsonb_build_object(
+                                        'id', av.id,
+                                        'attributeId', av.attribute_id,
+                                        'value', av.value,
+                                        'index', av.index,
+                                        'image', av.image
+                                    )
+                                )
+                            )
+                            FROM item_attributes ia
+                            LEFT JOIN attribute_values av ON av.id = ia.attribute_value_id
+                            WHERE ia.item_id = items.id AND ia.deleted_at IS NULL
                         )
                     )
-                )
-                FROM item_attributes ia
-                LEFT JOIN attribute_values av ON av.id = ia.attribute_value_id
-                WHERE ia.item_id = items.id AND ia.deleted_at IS NULL
-            )
-        )
-    ) AS items`,
+                ) AS "items"`,
             ])
             .leftJoin(
                 CommentEntity,
