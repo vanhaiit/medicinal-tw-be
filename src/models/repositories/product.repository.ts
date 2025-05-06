@@ -1,3 +1,4 @@
+import { CommentEntity } from '@models/entities/comment.entity';
 import { ProductEntity } from '@models/entities/product.entity';
 import { WishlistEntity } from '@models/entities/wishlist.entity';
 import { SortOrder } from 'constant/pagination.constant';
@@ -205,6 +206,7 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
                 'products.flashSale AS flashSale',
                 'products.bestSeller AS bestSeller',
                 'products.isActive AS isActive',
+                'COUNT(DISTINCT comments.id) AS "commentCount"',
                 `jsonb_agg(jsonb_build_object('name', categories.name, 'id', categories.id)) AS categories`,
                 `jsonb_agg(
         jsonb_build_object(
@@ -245,6 +247,11 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
         )
     ) AS items`,
             ])
+            .leftJoin(
+                CommentEntity,
+                'comments',
+                'comments.productId = products.id AND comments.deletedAt IS NULL',
+            )
             .leftJoin(
                 'products.productAttributes',
                 'productAttributes',
