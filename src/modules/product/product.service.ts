@@ -163,17 +163,18 @@ export class ProductService {
     }
 
     async getDetail(id: string | number, userId?: number) {
-        let whereCondition = {};
+        let condition: { id?: number; slug?: string } = {};
         if (typeof id === 'number' || !isNaN(Number(id))) {
-            whereCondition = { id: Number(id) };
+            condition = { id: Number(id) };
         } else {
-            whereCondition = { slug: id };
+            condition = { slug: id };
         }
 
-        const product = await this.productRepository.findOne({
-            where: whereCondition,
-            relations: ['items', 'productAttributes', 'categories'],
-        });
+        const product = await this.productRepository.getDetail(
+            condition.id,
+            condition.slug,
+            userId,
+        );
 
         if (!product) {
             throw new HttpException(
