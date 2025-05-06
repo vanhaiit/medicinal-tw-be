@@ -9,6 +9,7 @@ import { ItemRepository } from '@models/repositories/item.responsitory';
 import { ProductAttributeRepository } from '@models/repositories/product-attribute.repository';
 import { ProductCategoryRepository } from '@models/repositories/product-category.repository';
 import { ProductRepository } from '@models/repositories/product.repository';
+import { WishlistRepository } from '@models/repositories/wishlist.repository';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { httpErrors } from 'constant/http-error.constant';
 import { In } from 'typeorm';
@@ -32,6 +33,7 @@ export class ProductService {
         private readonly productAttributeRepository: ProductAttributeRepository,
         private readonly attributeRepository: AttributeRepository,
         private readonly commentRepository: CommentRepository,
+        private readonly wishlistRepository: WishlistRepository,
     ) {}
 
     async checkProductExist(id: number) {
@@ -152,14 +154,15 @@ export class ProductService {
         return product;
     }
 
-    async getAllProduct(query: GetProductRequestDto) {
+    async getAllProduct(query: GetProductRequestDto, userId: number) {
         const [result, metadata]: any = await this.productRepository.getAll(
             query,
+            // userId,
         );
         return result.toPageDto(metadata);
     }
 
-    async getDetail(id: number) {
+    async getDetail(id: number, userId?: number) {
         await this.checkProductExist(id);
         const product = await this.productRepository.findOne({
             where: { id },
@@ -168,10 +171,19 @@ export class ProductService {
         const { avgRating, totalComments } =
             await this.commentRepository.getCommentByProductId(id);
 
+        let isLiked = false;
+        if (userId) {
+            const wishlistItem = await this.wishlistRepository.findOne({
+                where: { userId: userId, productId: id },
+            });
+            isLiked = !!wishlistItem;
+        }
+
         return {
             ...product,
             avgRating,
             totalComments,
+            isLiked,
         };
     }
 

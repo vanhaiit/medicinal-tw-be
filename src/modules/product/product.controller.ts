@@ -14,6 +14,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 
 import { ApiPageOkResponse } from '@shared/decorators/api-ok-response.decorator';
+import { TokenUser } from '@shared/decorators/auth-user.decorator';
 import { AuthRoleGuard } from '@shared/decorators/http.decorator';
 import { PublicRoute } from '@shared/decorators/public-route.decorator';
 
@@ -38,15 +39,15 @@ export class ProductController {
 
     @Get()
     @PublicRoute()
-    getAll(@Query() query: GetProductRequestDto) {
-        return this.productService.getAllProduct(query);
+    getAll(@TokenUser() user: any, @Query() query: GetProductRequestDto) {
+        return this.productService.getAllProduct(query, user?.id);
     }
 
     @Get(':id')
     @PublicRoute()
     @ApiPageOkResponse({ type: ProductResDto })
-    getDetail(@Param('id') id: number) {
-        return this.productService.getDetail(id);
+    getDetail(@TokenUser() user: any, @Param('id') id: number) {
+        return this.productService.getDetail(id, user?.id);
     }
 
     @Put(':id')

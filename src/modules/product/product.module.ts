@@ -9,6 +9,7 @@ import { ItemRepository } from '@models/repositories/item.responsitory';
 import { ProductAttributeRepository } from '@models/repositories/product-attribute.repository';
 import { ProductCategoryRepository } from '@models/repositories/product-category.repository';
 import { ProductRepository } from '@models/repositories/product.repository';
+import { WishlistRepository } from '@models/repositories/wishlist.repository';
 import { Module } from '@nestjs/common';
 
 import { TypeOrmExModule } from '@shared/decorators/typeorm-ex.module';
@@ -27,6 +28,7 @@ import { ProductService } from './product.service';
             CategoryRepository,
             AttributeRepository,
             CommentRepository,
+            WishlistRepository,
         ]),
     ],
     controllers: [ProductController],

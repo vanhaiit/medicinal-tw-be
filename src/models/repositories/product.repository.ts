@@ -1,4 +1,5 @@
 import { ProductEntity } from '@models/entities/product.entity';
+import { WishlistEntity } from '@models/entities/wishlist.entity';
 import { SortOrder } from 'constant/pagination.constant';
 
 import { GetProductRequestDto } from '@modules/product/dtos/product.req.dto';
@@ -10,20 +11,86 @@ import { BaseRepository } from './base.repository';
 
 @CustomRepository(ProductEntity)
 export class ProductRepository extends BaseRepository<ProductEntity> {
-    async getAll(options?: GetProductRequestDto) {
+    async getAll(options?: GetProductRequestDto, userId?: number) {
         const query = this.createQueryBuilder('products')
-            .leftJoinAndSelect(
+            .select([
+                'products.id AS id',
+                'products.name AS name',
+                'products.slug AS slug',
+                'products.sku AS sku',
+                'products.description AS description',
+                'products.shortDescription AS shortDescription',
+                'products.status AS status',
+                'products.isVisible AS isVisible',
+                'products.isFeatured AS isFeatured',
+                'products.featuredImage AS featuredImage',
+                'products.galleryImages AS galleryImages',
+                'products.tags AS tags',
+                'products.metaTitle AS metaTitle',
+                'products.metaDescription AS metaDescription',
+                'products.reviewsAllowed AS reviewsAllowed',
+                'products.averageRating AS averageRating',
+                'products.reviewCount AS reviewCount',
+                'products.relatedProducts AS relatedProducts',
+                'products.index AS index',
+                'products.regularPrice AS regularPrice',
+                'products.salePrice AS salePrice',
+                'products.stockQuantity AS stockQuantity',
+                'products.stockStatus AS stockStatus',
+                'products.brand AS brand',
+                'products.flashSale AS flashSale',
+                'products.bestSeller AS bestSeller',
+                'products.isActive AS isActive',
+                `jsonb_agg(jsonb_build_object('name', categories.name, 'id', categories.id)) AS categories`,
+                `jsonb_agg(
+                    jsonb_build_object(
+                        'id', items.id,
+                        'sku', items.sku,
+                        'name', items.name,
+                        'slug', items.slug,
+                        'regularPrice', items.regularPrice,
+                        'salePrice', items.salePrice,
+                        'stockQuantity', items.stockQuantity,
+                        'stockStatus', items.stockStatus,
+                        'featuredImage', items.featuredImage,
+                        'galleryImages', items.galleryImages,
+                        'type', items.type,
+                        'status', items.status,
+                        'isActive', items.isActive,
+                        'index', items.index
+                    )
+                ) AS items`,
+            ])
+            .leftJoin(
                 'products.productAttributes',
                 'productAttributes',
+                'productAttributes.deletedAt IS NULL',
             )
-            .leftJoinAndSelect('products.categories', 'categories')
-            .leftJoinAndSelect('productAttributes.attribute', 'attribute')
-            .leftJoinAndSelect('products.items', 'items')
-            .leftJoinAndSelect('items.itemAttributes', 'itemAttributes')
-            .leftJoinAndSelect(
-                'itemAttributes.attributeValue',
-                'attributeValue',
-            );
+            .leftJoin('products.items', 'items', 'items.deletedAt IS NULL')
+            .leftJoin(
+                'products.categories',
+                'categories',
+                'categories.deletedAt IS NULL',
+            )
+            .leftJoin(
+                'productAttributes.attribute',
+                'attribute',
+                'attribute.deletedAt IS NULL',
+            )
+            .andWhere('products.deletedAt IS NULL');
+
+        if (userId) {
+            query
+                .leftJoin(
+                    WishlistEntity,
+                    'wishlist',
+                    'wishlist.productId = products.id AND wishlist.userId = :userId',
+                    { userId },
+                )
+                .addSelect(
+                    `BOOL_OR(wishlist.productId IS NOT NULL) AS isLiked`,
+                );
+        }
 
         if (options?.search) {
             query.andWhere(`LOWER(products.name) LIKE LOWER(:search)`, {
@@ -76,6 +143,7 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
                 },
             );
         }
+        query.groupBy('products.id');
 
         if (options?.orderBy) {
             query.orderBy(
@@ -87,10 +155,10 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
         if (!!options) {
             const { limit, page, skip } = options;
             const pageOption = { page, limit, skip } as PageOptionsDto;
-            return query.paginate(pageOption);
+            return await query.paginateRaw(pageOption);
         }
 
-        return query.getMany();
+        return await query.getRawMany();
     }
 
     async checkProductExist(id: number): Promise<boolean> {
@@ -103,3 +171,91 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
         return !!product?.id;
     }
 }
+
+
+// const query = this.createQueryBuilder('products')
+// .select([
+//     'products.id AS id',
+//     'products.name AS name',
+//     'products.slug AS slug',
+//     'products.sku AS sku',
+//     'products.description AS description',
+//     'products.shortDescription AS shortDescription',
+//     'products.status AS status',
+//     'products.isVisible AS isVisible',
+//     'products.isFeatured AS isFeatured',
+//     'products.featuredImage AS featuredImage',
+//     'products.galleryImages AS galleryImages',
+//     'products.tags AS tags',
+//     'products.metaTitle AS metaTitle',
+//     'products.metaDescription AS metaDescription',
+//     'products.reviewsAllowed AS reviewsAllowed',
+//     'products.averageRating AS averageRating',
+//     'products.reviewCount AS reviewCount',
+//     'products.relatedProducts AS relatedProducts',
+//     'products.index AS index',
+//     'products.regularPrice AS regularPrice',
+//     'products.salePrice AS salePrice',
+//     'products.stockQuantity AS stockQuantity',
+//     'products.stockStatus AS stockStatus',
+//     'products.brand AS brand',
+//     'products.flashSale AS flashSale',
+//     'products.bestSeller AS bestSeller',
+//     'products.isActive AS isActive',
+//     `jsonb_agg(jsonb_build_object('name', categories.name, 'id', categories.id)) AS categories`,
+//     `jsonb_agg(
+//         jsonb_build_object(
+//             'id', items.id,
+//             'sku', items.sku,
+//             'name', items.name,
+//             'slug', items.slug,
+//             'regularPrice', items.regularPrice,
+//             'salePrice', items.salePrice,
+//             'stockQuantity', items.stockQuantity,
+//             'stockStatus', items.stockStatus,
+//             'featuredImage', items.featuredImage,
+//             'galleryImages', items.galleryImages,
+//             'type', items.type,
+//             'status', items.status,
+//             'isActive', items.isActive,
+//             'index', items.index,
+//             'itemAttributes', (
+//                 SELECT jsonb_agg(
+//                     jsonb_build_object(
+//                         'id', ia.id,
+//                         'itemId', ia.item_id,
+//                         'attributeValueId', ia.attribute_value_id,
+//                         'index', ia.index,
+//                         'attribute_value', jsonb_build_object(
+//                             'id', av.id,
+//                             'attributeId', av.attribute_id,
+//                             'value', av.value,
+//                             'index', av.index,
+//                             'image', av.image
+//                         )
+//                     )
+//                 )
+//                 FROM item_attributes ia
+//                 LEFT JOIN attribute_values av ON av.id = ia.attribute_value_id
+//                 WHERE ia.item_id = items.id AND ia.deleted_at IS NULL
+//             )
+//         )
+//     ) AS items`,
+// ])
+// .leftJoin(
+//     'products.productAttributes',
+//     'productAttributes',
+//     'productAttributes.deletedAt IS NULL',
+// )
+// .leftJoin('products.items', 'items', 'items.deletedAt IS NULL')
+// .leftJoin(
+//     'products.categories',
+//     'categories',
+//     'categories.deletedAt IS NULL',
+// )
+// .leftJoin(
+//     'productAttributes.attribute',
+//     'attribute',
+//     'attribute.deletedAt IS NULL',
+// )
+// .andWhere('products.deletedAt IS NULL');

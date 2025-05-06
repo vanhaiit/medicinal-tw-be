@@ -15,7 +15,7 @@ export function TokenUser() {
         const token = request.headers['authorization']?.split(' ')[1];
         if (token) {
             const jwtService = new JwtService();
-            return jwtService.decode(token).wallet;
+            return jwtService.decode(token);
         }
     })();
 }
