@@ -46,7 +46,7 @@ export class ProductController {
     @Get(':id')
     @PublicRoute()
     @ApiPageOkResponse({ type: ProductResDto })
-    getDetail(@TokenUser() user: any, @Param('id') id: number) {
+    getDetail(@TokenUser() user: any, @Param('id') id: string) {
         return this.productService.getDetail(id, user?.id);
     }
 

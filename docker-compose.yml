@@ -8,6 +8,7 @@ services:
       - "3000:${PORT}"
     volumes:
       - /app/node_modules
+      - uploads_data:/app  # Mount vào thư mục gốc của ứng dụnghớp với app.module.ts
     depends_on:
       db:
         condition: service_healthy
@@ -54,3 +55,4 @@ networks:
 volumes:
   redis_data_1:
   db:
+  uploads_data:

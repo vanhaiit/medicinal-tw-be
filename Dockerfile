@@ -8,6 +8,9 @@ RUN yarn install
 
 COPY . .
 
+# Create uploads directory at the correct location (two levels up from dist/src)
+RUN mkdir -p uploads && chmod 777 uploads
+
 RUN yarn build
 
 EXPOSE 3000

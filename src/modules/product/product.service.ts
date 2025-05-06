@@ -162,19 +162,33 @@ export class ProductService {
         return result.toPageDto(metadata);
     }
 
-    async getDetail(id: number, userId?: number) {
-        await this.checkProductExist(id);
+    async getDetail(id: string | number, userId?: number) {
+        let whereCondition = {};
+        if (typeof id === 'number' || !isNaN(Number(id))) {
+            whereCondition = { id: Number(id) };
+        } else {
+            whereCondition = { slug: id };
+        }
+
         const product = await this.productRepository.findOne({
-            where: { id },
+            where: whereCondition,
             relations: ['items', 'productAttributes', 'categories'],
         });
+
+        if (!product) {
+            throw new HttpException(
+                httpErrors.PRODUCT_DOES_NOT_EXIST,
+                HttpStatus.BAD_REQUEST,
+            );
+        }
+
         const { avgRating, totalComments } =
-            await this.commentRepository.getCommentByProductId(id);
+            await this.commentRepository.getCommentByProductId(product.id);
 
         let isLiked = false;
         if (userId) {
             const wishlistItem = await this.wishlistRepository.findOne({
-                where: { userId: userId, productId: id },
+                where: { userId: userId, productId: product.id },
             });
             isLiked = !!wishlistItem;
         }
