@@ -35,12 +35,17 @@ services:
     image: postgres:15.3
     networks:
       - my-network
+    ports:
+      - "5432:5432"  # Add this line to expose PostgreSQL port
     volumes:
       - db:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=${DB_USERNAME}
       - POSTGRES_PASSWORD=${DB_PASSWORD}
       - POSTGRES_DB=${DB_DATABASE}
+      # Add these environment variables to allow external connections
+      - POSTGRES_HOST_AUTH_METHOD=md5
+      - POSTGRES_LISTEN_ADDRESSES=*
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U ${DB_USERNAME} -d ${DB_DATABASE}"]
       interval: 10s
