@@ -6,6 +6,7 @@ import {
     Param,
     Patch,
     Post,
+    Query,
 } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 
@@ -13,7 +14,7 @@ import { AuthRoleGuard } from '@shared/decorators/http.decorator';
 import { PublicRoute } from '@shared/decorators/public-route.decorator';
 
 import { CreateItemDto } from './dto/create-item.dto';
-import { UpdateItemDto } from './dto/update-item.dto';
+import { GetItemRequestDto, UpdateItemDto } from './dto/update-item.dto';
 import { ItemService } from './item.service';
 
 @ApiTags('items')
@@ -37,8 +38,8 @@ export class ItemController {
     @PublicRoute()
     @ApiOperation({ summary: 'Get all items' })
     @ApiResponse({ status: 200, description: 'Return all items.' })
-    async findAll(): Promise<any[]> {
-        return this.itemService.findAll();
+    async findAll(@Query() query: GetItemRequestDto): Promise<any> {
+        return this.itemService.getAll(query);
     }
 
     @Get(':id')

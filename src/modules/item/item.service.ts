@@ -1,27 +1,21 @@
+import { ItemRepository } from '@models/repositories/item.responsitory';
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
 
-import { ItemEntity } from '../../models/entities/item.entity';
-import { ItemRepository } from '../../models/repositories/item.responsitory';
 import { CreateItemDto } from './dto/create-item.dto';
-import { UpdateItemDto } from './dto/update-item.dto';
+import { GetItemRequestDto, UpdateItemDto } from './dto/update-item.dto';
 
 @Injectable()
 export class ItemService {
-    constructor(
-        @InjectRepository(ItemEntity)
-        private readonly itemRepository: ItemRepository,
-    ) {}
+    constructor(private readonly itemRepository: ItemRepository) {}
 
     async create(createItemDto: CreateItemDto) {
         const item = this.itemRepository.create(createItemDto);
         return await this.itemRepository.save(item);
     }
 
-    async findAll() {
-        return await this.itemRepository.find({
-            relations: ['product', 'itemAttributes'],
-        });
+    async getAll(query: GetItemRequestDto) {
+        const [result, metadata]: any = await this.itemRepository.getAll(query);
+        return result.toPageDto(metadata);
     }
 
     async findOne(id: number) {
