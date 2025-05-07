@@ -214,10 +214,27 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
                 'COUNT(DISTINCT comments.id) AS "commentCount"',
                 'COALESCE(AVG(NULLIF(comments.rating, 0)), 0) AS "avgRating"',
                 '(SELECT COUNT(*) FROM wishlist w WHERE w.product_id = products.id AND w.deleted_at IS NULL) AS "totalLike"',
-                `jsonb_agg(jsonb_build_object('name', categories.name, 'id', categories.id)) AS "categories"`,
-                `jsonb_agg(jsonb_build_object('name', attribute.name, 'id', attribute.id)) AS "attributes"`,
-                `jsonb_agg(
+                `jsonb_agg(DISTINCT jsonb_build_object('name', "categories"."name", 'id', "categories"."id")) as "categories"`,
+                `jsonb_agg(DISTINCT 
                     jsonb_build_object(
+                        'name', attribute.name, 
+                        'id', attribute.id,
+                        'attributeValues', (
+                            SELECT jsonb_agg(
+                                DISTINCT jsonb_build_object(
+                                    'id', av.id,
+                                    'name', av.value,
+                                    'index', av.index,
+                                    'image', av.image
+                                )
+                            )
+                            FROM attribute_values av
+                            WHERE av.attribute_id = attribute.id AND av.deleted_at IS NULL
+                        )
+                    )
+                ) AS "attributes"`,
+                `jsonb_agg(
+                    DISTINCT jsonb_build_object(
                         'id', items.id,
                         'sku', items.sku,
                         'name', items.name,
@@ -234,7 +251,7 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
                         'index', items.index,
                         'itemAttributes', (
                             SELECT jsonb_agg(
-                                jsonb_build_object(
+                                DISTINCT jsonb_build_object(
                                     'id', ia.id,
                                     'itemId', ia.item_id,
                                     'attributeValueId', ia.attribute_value_id,
