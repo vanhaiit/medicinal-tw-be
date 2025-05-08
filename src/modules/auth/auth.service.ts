@@ -101,7 +101,6 @@ export class AuthService {
             id: user.id,
             roles: user.userRoles,
             email: user.email,
-            isAdmin: false,
         });
 
         const accessTokenPayload: JwtPayloadDto = this.jwtService.decode(
@@ -171,7 +170,6 @@ export class AuthService {
             id: user.id,
             roles: user.userRoles,
             email: user.email,
-            isAdmin: false,
         });
 
         const resetUrl = `${this.configService.get<string>(
