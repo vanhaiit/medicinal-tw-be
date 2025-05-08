@@ -43,9 +43,9 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
                 'products.bestSeller AS "bestSeller"',
                 'products.isActive AS "isActive"',
                 'COALESCE(AVG(NULLIF(comments.rating, 0)), 0) AS "avgRating"',
-                `jsonb_agg(jsonb_build_object('name', categories.name, 'id', categories.id)) AS "categories"`,
+                `jsonb_agg(DISTINCT jsonb_build_object('name', categories.name, 'id', categories.id)) AS "categories"`,
                 `jsonb_agg(
-                    jsonb_build_object(
+                    DISTINCT jsonb_build_object(
                         'id', items.id,
                         'sku', items.sku,
                         'name', items.name,
