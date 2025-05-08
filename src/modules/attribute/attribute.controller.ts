@@ -24,7 +24,7 @@ import {
 } from './dto/attribute.req.dto';
 
 @ApiTags('Attribute')
-@Controller('Attribute')
+@Controller('attribute')
 export class AttributeController {
     constructor(private readonly attributeService: AttributeService) {}
 
