@@ -508,6 +508,18 @@ export class GetProductRequestDto extends PageOptionsDto {
     @ApiProperty({
         required: false,
         type: [Number],
+        description: 'Array of category IDs',
+    })
+    @IsArray()
+    @IsNumber({}, { each: true })
+    @IsOptional()
+    @Transform(({ value }) => value && (Array.isArray(value) ? value : [value]))
+    @Type(() => Number)
+    productIds: number[];
+
+    @ApiProperty({
+        required: false,
+        type: [Number],
         description: 'Array of itemAttributeIDs',
     })
     @IsArray()

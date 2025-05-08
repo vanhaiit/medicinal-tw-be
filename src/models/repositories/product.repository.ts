@@ -150,6 +150,16 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
                 },
             );
         }
+
+        if (options?.productIds && options.productIds.length > 0) {
+            const integerProductIds = options.productIds.map(id =>
+                parseInt(String(id), 10),
+            );
+            query.andWhere('products.id IN (:...productIds)', {
+                productIds: integerProductIds,
+            });
+        }
+
         query.groupBy('products.id');
 
         if (options?.orderBy) {
