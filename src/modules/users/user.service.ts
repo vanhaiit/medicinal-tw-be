@@ -1,10 +1,17 @@
 import { UserRepository } from '@models/repositories/user.repository';
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+    BadRequestException,
+    HttpException,
+    HttpStatus,
+    Injectable,
+} from '@nestjs/common';
+import * as bcrypt from 'bcrypt';
 import { httpErrors } from 'constant/http-error.constant';
 
 import mapDto from '@shared/helpers/mapdto';
 
 import {
+    CreateUserRequestDto,
     DeleteUserRequestDto,
     GetUserRequestDto,
     UserRequestDto,
@@ -30,13 +37,28 @@ export class UserService {
         return user;
     }
 
-    async createUser(body: UserRequestDto) {
-        const payload = mapDto(body, UserRequestDto);
-        return await this.userRepository.save(
-            this.userRepository.create({
-                ...payload,
-            }),
-        );
+    async createUser(data: CreateUserRequestDto) {
+        const existingUser = await this.userRepository.findOne({
+            where: [{ email: data.email }, { username: data.username }],
+        });
+
+        if (existingUser) {
+            throw new BadRequestException(
+                'User with this email or username already exists',
+            );
+        }
+
+        const payload = mapDto(data, CreateUserRequestDto);
+
+        const salt = await bcrypt.genSalt();
+        const hash = await bcrypt.hash(payload.password, salt);
+        const user = this.userRepository.create({
+            ...data,
+            hash,
+            salt,
+        });
+
+        return this.userRepository.save(user);
     }
 
     async updateUser(id: number, body: UserRequestDto) {

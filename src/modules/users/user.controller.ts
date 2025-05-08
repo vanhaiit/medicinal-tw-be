@@ -1,11 +1,20 @@
 import { UserEntity } from '@models/entities/user.entity';
-import { Body, Controller, Delete, Get, Put, Query } from '@nestjs/common';
+import {
+    Body,
+    Controller,
+    Delete,
+    Get,
+    Post,
+    Put,
+    Query,
+} from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 import { AuthUser } from '@shared/decorators/auth-user.decorator';
 import { AuthRoleGuard } from '@shared/decorators/http.decorator';
 
 import {
+    CreateUserRequestDto,
     DeleteUserRequestDto,
     GetUserRequestDto,
     UserRequestDto,
@@ -16,6 +25,12 @@ import { UserService } from './user.service';
 @Controller('users')
 export class UserController {
     constructor(private readonly userService: UserService) {}
+
+    @Post()
+    @AuthRoleGuard([])
+    createUser(@Body() body: CreateUserRequestDto) {
+        return this.userService.createUser(body);
+    }
 
     @Get('/all')
     @AuthRoleGuard([])

@@ -4,9 +4,11 @@ import {
     IsArray,
     IsEmail,
     IsIn,
+    IsNotEmpty,
     IsNumber,
     IsOptional,
     IsString,
+    MinLength,
 } from 'class-validator';
 
 import { StringFieldOption } from '@shared/decorators/field.decorator';
@@ -63,4 +65,53 @@ export class DeleteUserRequestDto {
     @Transform(({ value }) => (Array.isArray(value) ? value : [value]))
     @Type(() => Number)
     ids: number[];
+}
+
+export class CreateUserRequestDto {
+    @ApiProperty({
+        type: String,
+        description: 'Username of the user',
+        example: 'johndoe',
+    })
+    @IsString()
+    @IsNotEmpty()
+    @Expose()
+    username: string;
+
+    @ApiProperty({
+        type: String,
+        description: 'Password of the user, minimum 6 characters',
+        example: 'password123',
+    })
+    @IsString()
+    @IsNotEmpty()
+    @MinLength(6)
+    @Expose()
+    password: string;
+
+    @ApiProperty({
+        type: String,
+        description: 'Email address of the user',
+        example: 'john@example.com',
+    })
+    @IsString()
+    @IsNotEmpty()
+    @IsEmail()
+    @Expose()
+    email: string;
+
+    @ApiPropertyOptional({
+        type: String,
+        description: 'Full name of the user',
+        example: 'John Doe',
+    })
+    @IsOptional()
+    @IsString()
+    @Expose()
+    fullName?: string;
+
+    @ApiProperty({ required: true, example: '+1234567890' })
+    @Expose()
+    @IsString()
+    phone: string;
 }
