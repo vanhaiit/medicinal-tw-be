@@ -75,6 +75,11 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
             )
             .leftJoin('products.items', 'items', 'items.deletedAt IS NULL')
             .leftJoin(
+                'items.itemAttributes',
+                'itemAttributes',
+                'itemAttributes.deletedAt IS NULL',
+            )
+            .leftJoin(
                 'products.categories',
                 'categories',
                 'categories.deletedAt IS NULL',
