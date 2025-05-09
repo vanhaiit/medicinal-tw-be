@@ -23,14 +23,14 @@ export class ItemRepository extends BaseRepository<ItemEntity> {
         ); // Changed from categories to category
 
         if (options?.search) {
-            query.andWhere(`LOWER(post.title) LIKE LOWER(:search)`, {
+            query.andWhere(`LOWER(items.title) LIKE LOWER(:search)`, {
                 search: `%${options.search.toLowerCase()}%`,
             });
         }
 
         if (options?.orderBy) {
             query.orderBy(
-                `post.${options.orderBy}`,
+                `items.${options.orderBy}`,
                 options.direction || 'DESC',
             );
         }
