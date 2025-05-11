@@ -3,12 +3,14 @@ import { Expose, Type } from 'class-transformer';
 import {
     ArrayMinSize,
     IsEmail,
+    IsEnum,
     IsNotEmpty,
     IsNumber,
     IsOptional,
     IsString,
     ValidateNested,
 } from 'class-validator';
+import { EOrderPaymentMethod, EOrderStatus } from 'constant/order.constant';
 
 import { CreateOrderItemDto } from './create-order-item.dto';
 
@@ -118,10 +120,11 @@ export class CreateOrderDto {
     @ApiProperty({
         description: 'Current status of the order',
         example: 'pending',
-        enum: ['pending', 'processing', 'completed', 'cancelled'],
+        enum: EOrderStatus,
     })
     @IsString()
     @IsNotEmpty()
+    @IsEnum(EOrderStatus)
     status: string;
 
     @Expose()
@@ -138,10 +141,11 @@ export class CreateOrderDto {
     @ApiProperty({
         description: 'Method used for payment',
         example: 1,
-        enum: [1, 2, 3], // 1: cash, 2: credit card, 3: bank transfer
+        enum: EOrderPaymentMethod, // 1: cash, 2: credit card, 3: bank transfer
     })
     @IsNumber()
     @IsNotEmpty()
+    @IsEnum(EOrderPaymentMethod) // Assuming these are the payment method IDs
     paymentMethod: number;
 
     @Expose()

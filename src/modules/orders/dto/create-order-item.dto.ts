@@ -1,6 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
-import { IsNotEmpty, IsNumber, IsOptional, IsString } from 'class-validator';
+import {
+    IsEnum,
+    IsNotEmpty,
+    IsNumber,
+    IsOptional,
+    IsString,
+} from 'class-validator';
+import { EOrderItemStatus } from 'constant/order-item.constant';
 
 export class CreateOrderItemDto {
     @Expose()
@@ -43,9 +50,12 @@ export class CreateOrderItemDto {
     @ApiProperty({
         description: 'Status of the order item',
         example: 'pending',
+        enum: EOrderItemStatus,
+        default: EOrderItemStatus.COMPLETED,
     })
     @IsString()
     @IsOptional()
+    @IsEnum(EOrderItemStatus)
     status: string;
 
     @Expose()

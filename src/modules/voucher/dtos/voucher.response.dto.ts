@@ -1,5 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Transform } from 'class-transformer';
+import { IsEnum, IsString } from 'class-validator';
+import { EDiscountType } from 'constant/voucher.constatnt';
 
 export class VoucherResponseDto {
     @Expose()
@@ -20,7 +22,11 @@ export class VoucherResponseDto {
     @ApiProperty({
         example: 'percentage',
         description: 'Type of discount (e.g., percentage, fixed)',
+        enum: EDiscountType,
+        default: EDiscountType.fixed,
     })
+    @IsString()
+    @IsEnum(EDiscountType)
     discountType: string;
 
     @Expose()

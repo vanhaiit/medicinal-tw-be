@@ -2,11 +2,13 @@ import { ApiProperty } from '@nestjs/swagger';
 import { Expose, Type } from 'class-transformer';
 import {
     IsEmail,
+    IsEnum,
     IsNumber,
     IsOptional,
     IsString,
     ValidateNested,
 } from 'class-validator';
+import { EOrderPaymentMethod, EOrderStatus } from 'constant/order.constant';
 
 import { CreateOrderItemDto } from './create-order-item.dto';
 
@@ -115,11 +117,13 @@ export class UpdateOrderDto {
     @ApiProperty({
         description: 'Current status of the order',
         example: 'pending',
-        enum: ['pending', 'processing', 'completed', 'cancelled'],
+        enum: EOrderStatus,
         required: false,
+        default: EOrderStatus.pending,
     })
     @IsString()
     @IsOptional()
+    @IsEnum(EOrderStatus)
     status?: string;
 
     @Expose()
@@ -136,13 +140,12 @@ export class UpdateOrderDto {
     @Expose()
     @ApiProperty({
         description: 'Method used for payment',
-        example: 1,
-        enum: [1, 2, 3], // 1: cash, 2: credit card, 3: bank transfer
-        required: false,
+        example: EOrderPaymentMethod.cash,
+        enum: EOrderPaymentMethod, // 1: cash, 2: credit card, 3: bank transfer
     })
     @IsNumber()
-    @IsOptional()
-    paymentMethod?: number;
+    @IsEnum(EOrderPaymentMethod) // Assuming these are the payment method IDs
+    paymentMethod: number;
 
     @Expose()
     @ApiProperty({

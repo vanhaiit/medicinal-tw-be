@@ -1,3 +1,4 @@
+import { EOrderItemStatus } from 'constant/order-item.constant';
 import {
     Column,
     Entity,
@@ -42,9 +43,10 @@ export class OrderItemEntity {
     @Column({
         type: 'varchar',
         length: 50,
-        default: 'pending',
+        default: EOrderItemStatus.PENDING,
         comment:
             'Status of the order item (e.g., pending, completed, cancelled)',
+        enum: EOrderItemStatus,
     })
     status: string;
 

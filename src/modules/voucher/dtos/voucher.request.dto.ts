@@ -1,6 +1,7 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Expose, Transform } from 'class-transformer';
-import { IsIn, IsNumber, IsOptional, IsString } from 'class-validator';
+import { IsEnum, IsIn, IsNumber, IsOptional, IsString } from 'class-validator';
+import { EDiscountType } from 'constant/voucher.constatnt';
 
 import { StringFieldOption } from '@shared/decorators/field.decorator';
 import { PageOptionsDto } from '@shared/dtos/page-options.dto';
@@ -18,8 +19,10 @@ export class VoucherRequestDto {
     @ApiProperty({
         example: 'percentage',
         description: 'Type of discount (e.g., percentage, fixed)',
+        enum: EDiscountType,
     })
     @IsString()
+    @IsEnum(EDiscountType)
     discountType: string;
 
     @Expose()

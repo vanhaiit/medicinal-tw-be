@@ -1,3 +1,4 @@
+import { EOrderPaymentMethod, EOrderStatus } from 'constant/order.constant';
 import {
     Column,
     Entity,
@@ -91,6 +92,8 @@ export class OrderEntity {
     @Column({
         comment:
             'Current status of the order (e.g., pending, processing, completed)',
+        enum: EOrderStatus,
+        default: EOrderStatus.pending,
     })
     status: string;
 
@@ -103,6 +106,8 @@ export class OrderEntity {
     @Column({
         name: 'payment_method',
         comment: 'Method used for payment (e.g., cash, credit card)',
+        enum: EOrderPaymentMethod, // Example payment methods
+        default: EOrderPaymentMethod.cash,
     })
     paymentMethod: number;
 

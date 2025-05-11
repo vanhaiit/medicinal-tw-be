@@ -40,6 +40,8 @@ export class ContactEntity {
         name: 'status',
         type: 'varchar',
         default: EContactStatus.pending,
+        enum: EContactStatus,
+        comment: 'Status of the contact request (e.g., pending, resolved)',
     })
     status: EContactStatus;
 
