@@ -4,6 +4,7 @@ import {
     Controller,
     Delete,
     Get,
+    Param,
     Post,
     Put,
     Query,
@@ -38,16 +39,20 @@ export class UserController {
         return this.userService.getAllUsers(query);
     }
 
-    @Get()
+    @Get(':id')
     @AuthRoleGuard([])
-    getDetail(@AuthUser() user: UserEntity) {
-        return this.userService.findUserById(user.id);
+    getDetail(@Param('id') id: number, @AuthUser() user: UserEntity) {
+        return this.userService.findUserById(id || user.id);
     }
 
-    @Put()
+    @Put(':id')
     @AuthRoleGuard([])
-    updateUser(@AuthUser() user: UserEntity, @Body() body: UserRequestDto) {
-        return this.userService.updateUser(user.id, body);
+    updateUser(
+        @Param('id') id: number,
+        @AuthUser() user: UserEntity,
+        @Body() body: UserRequestDto,
+    ) {
+        return this.userService.updateUser(id || user.id, body);
     }
 
     @Delete()

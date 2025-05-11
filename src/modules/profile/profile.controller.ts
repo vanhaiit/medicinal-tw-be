@@ -1,5 +1,5 @@
 import { UserEntity } from '@models/entities/user.entity';
-import { Body, Controller, Get, Post, Put } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 import { AuthUser } from '@shared/decorators/auth-user.decorator';
@@ -14,10 +14,10 @@ import { ProfileService } from './profile.service';
 export class ProfileController {
     constructor(private readonly profileService: ProfileService) {}
 
-    @Get()
+    @Get(':id')
     @AuthRoleGuard([])
-    findOne(@AuthUser() user: UserEntity) {
-        return this.profileService.findOne(user.id);
+    findOne(@Param('id') id: number, @AuthUser() user: UserEntity) {
+        return this.profileService.findOne(id || user.id);
     }
 
     @Post()

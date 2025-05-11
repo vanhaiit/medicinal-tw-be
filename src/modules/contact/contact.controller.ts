@@ -30,7 +30,8 @@ export class ContactController {
     @Get()
     @PublicRoute()
     async findAll(@Query() query: GetContactRequestDto) {
-        return this.contactService.getAll(query);
+        const [result, metadata]: any = await this.contactService.getAll(query);
+        return result.toPageDto(metadata);
     }
 
     @Get(':id')
