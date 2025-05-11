@@ -2,6 +2,8 @@ import { ProfileEntity } from '@models/entities/profile.entity';
 import { ProfileRepository } from '@models/repositories/profile.repository';
 import { Injectable } from '@nestjs/common';
 
+import mapDto from '@shared/helpers/mapdto';
+
 import { CreateProfileDto } from './dtos/create-profile.dto';
 import { UpdateProfileDto } from './dtos/update-profile.dto';
 
@@ -17,23 +19,16 @@ export class ProfileService {
         return this.profileRepository.findOneBy({ id });
     }
 
-    async create(
-        createProfileDto: CreateProfileDto,
-        userId: number,
-    ): Promise<ProfileEntity> {
-        const profile = this.profileRepository.create({
-            ...createProfileDto,
-            userId,
-        });
+    async create(createProfileDto: CreateProfileDto): Promise<ProfileEntity> {
+        const payload = mapDto(createProfileDto, CreateProfileDto);
+        const profile = this.profileRepository.create(payload);
         return this.profileRepository.save(profile);
     }
 
-    async update(
-        id: number,
-        updateProfileDto: UpdateProfileDto,
-    ): Promise<ProfileEntity> {
-        await this.profileRepository.update(id, updateProfileDto);
-        return this.profileRepository.findOneBy({ id });
+    async update(updateProfileDto: UpdateProfileDto): Promise<ProfileEntity> {
+        const payload = mapDto(updateProfileDto, CreateProfileDto);
+        await this.profileRepository.update(payload.userId, updateProfileDto);
+        return this.profileRepository.findOneBy({ id: payload.userId });
     }
 
     async remove(id: number): Promise<void> {

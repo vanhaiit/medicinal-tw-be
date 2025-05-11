@@ -22,19 +22,13 @@ export class ProfileController {
 
     @Post()
     @AuthRoleGuard([])
-    create(
-        @Body() createProfileDto: CreateProfileDto,
-        @AuthUser() user: UserEntity,
-    ) {
-        return this.profileService.create(createProfileDto, user.id);
+    create(@Body() createProfileDto: CreateProfileDto) {
+        return this.profileService.create(createProfileDto);
     }
 
     @Put()
     @AuthRoleGuard([])
-    update(
-        @AuthUser() user: UserEntity,
-        @Body() updateProfileDto: UpdateProfileDto,
-    ) {
-        return this.profileService.update(user.id, updateProfileDto);
+    update(@Body() updateProfileDto: UpdateProfileDto) {
+        return this.profileService.update(updateProfileDto);
     }
 }

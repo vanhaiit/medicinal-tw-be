@@ -1,12 +1,22 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional, IsString } from 'class-validator';
+import { Expose } from 'class-transformer';
+import { IsNumber, IsOptional, IsString } from 'class-validator';
 
 export class CreateProfileDto {
+    @ApiProperty({
+        example: 1,
+        description: 'ID of the user who made the comment',
+    })
+    @Expose()
+    @IsNumber()
+    userId: number;
+
     @ApiProperty({
         description: 'Full name of the user',
         example: 'John Doe',
     })
     @IsString()
+    @Expose()
     fullName: string;
 
     @ApiProperty({
@@ -16,6 +26,7 @@ export class CreateProfileDto {
     })
     @IsOptional()
     @IsString()
+    @Expose()
     gender?: string;
 
     @ApiProperty({
@@ -25,6 +36,7 @@ export class CreateProfileDto {
     })
     @IsOptional()
     @IsString()
+    @Expose()
     birthday?: string;
 
     @ApiProperty({
@@ -34,6 +46,7 @@ export class CreateProfileDto {
     })
     @IsOptional()
     @IsString()
+    @Expose()
     phone?: string;
 
     @ApiProperty({
@@ -43,6 +56,7 @@ export class CreateProfileDto {
     })
     @IsOptional()
     @IsString()
+    @Expose()
     address?: string;
 
     @ApiProperty({
@@ -52,5 +66,6 @@ export class CreateProfileDto {
     })
     @IsOptional()
     @IsString()
+    @Expose()
     avatar?: string;
 }

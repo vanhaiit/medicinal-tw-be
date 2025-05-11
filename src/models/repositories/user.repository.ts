@@ -52,13 +52,9 @@ export class UserRepository extends BaseRepository<UserEntity> {
             .leftJoin('user.profile', 'profile');
 
         if (options?.search) {
-            query.andWhere(
-                `(LOWER(user.email) LIKE LOWER(:search) OR 
-                  LOWER(profile.fullName) LIKE LOWER(:search)`,
-                {
-                    search: `%${options.search.toLowerCase()}%`,
-                },
-            );
+            query.andWhere(`LOWER(user.email) LIKE LOWER(:search)`, {
+                search: `%${options.search.toLowerCase()}%`,
+            });
         }
 
         if (options?.orderBy) {
