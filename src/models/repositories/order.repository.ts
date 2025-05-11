@@ -12,6 +12,7 @@ export class OrderRepository extends BaseRepository<OrderEntity> {
     async getOrderWithItems(orderId: number): Promise<OrderEntity> {
         return this.createQueryBuilder('orders')
             .leftJoinAndSelect('orders.orderItems', 'orderItems')
+            .leftJoinAndSelect('orders.voucher', 'voucher')
             .leftJoinAndSelect('orderItems.item', 'item')
             .leftJoinAndSelect('orders.user', 'user')
             .where('orders.id = :orderId', { orderId })
