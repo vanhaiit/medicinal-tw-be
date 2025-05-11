@@ -26,6 +26,10 @@ export class ContactRepository extends BaseRepository<ContactEntity> {
             );
         }
 
+        if (options?.status) {
+            query.where(`contact.status = :type`, { type: options.status });
+        }
+
         if (!!options) {
             const { limit, page, skip } = options;
             const pageOption = { page, limit, skip } as PageOptionsDto;

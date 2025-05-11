@@ -99,6 +99,7 @@ export class OrdersService {
             );
         }
 
+        delete updatedOrder.orderItems;
         return await this.orderRepository.save(updatedOrder);
     }
 

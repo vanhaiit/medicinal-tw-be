@@ -1,3 +1,4 @@
+import { EContactStatus } from 'constant/contact.constant';
 import {
     Column,
     CreateDateColumn,
@@ -34,6 +35,13 @@ export class ContactEntity {
 
     @Column({ name: 'message', type: 'text' })
     message: string;
+
+    @Column({
+        name: 'status',
+        type: 'varchar',
+        default: EContactStatus.pending,
+    })
+    status: EContactStatus;
 
     @CreateDateColumn({ name: 'created_at' })
     createdAt: Date;

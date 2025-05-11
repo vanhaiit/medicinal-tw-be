@@ -11,7 +11,24 @@ import { BaseRepository } from './base.repository';
 @CustomRepository(CommentEntity)
 export class CommentRepository extends BaseRepository<CommentEntity> {
     async getAll(options?: GetCommentRequestDto) {
-        const query = this.createQueryBuilder('comment');
+        const query = this.createQueryBuilder('comment')
+            .leftJoin('comment.user', 'user')
+            .leftJoin('user.profile', 'profile')
+            .select([
+                'comment.id as "id"',
+                'comment.content as "content"',
+                'comment.images as "images"',
+                'comment.rating as "rating"',
+                'comment.createdAt as "createdAt"',
+                'comment.updatedAt as "updatedAt"',
+                'comment.deletedAt as "deletedAt"',
+                'comment.productId as "productId"',
+                'user.id',
+                'user.username as "userName"',
+                'user.email as "userEmail"',
+                'user.phone as "userPhone"',
+                'profile.avatar as "userAvatar"',
+            ]);
 
         if (options?.search) {
             query.andWhere(`LOWER(comment.content) LIKE LOWER(:search)`, {
@@ -40,7 +57,7 @@ export class CommentRepository extends BaseRepository<CommentEntity> {
         if (!!options) {
             const { limit, page, skip } = options;
             const pageOption = { page, limit, skip } as PageOptionsDto;
-            return query.paginate(pageOption);
+            return query.paginateRaw(pageOption);
         }
 
         return query.getMany();

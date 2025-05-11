@@ -67,8 +67,9 @@ export class GetCommentRequestDto extends PageOptionsDto {
     readonly orderBy: string;
 
     @ApiPropertyOptional({ example: 1, description: 'Filter by productId' })
-    @IsNumber()
+    @Expose()
     @IsOptional()
+    @Transform(({ value }) => Number(value))
     productId?: number;
 
     @ApiPropertyOptional({
@@ -82,6 +83,7 @@ export class GetCommentRequestDto extends PageOptionsDto {
     @ApiPropertyOptional({ example: 5, description: 'Filter by rating' })
     @IsNumber()
     @IsOptional()
+    @Transform(({ value }) => Number(value))
     rating?: number;
 }
 

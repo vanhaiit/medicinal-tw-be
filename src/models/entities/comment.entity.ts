@@ -4,9 +4,13 @@ import {
     DeleteDateColumn,
     Entity,
     Index,
+    JoinColumn,
+    ManyToOne,
     PrimaryGeneratedColumn,
     UpdateDateColumn,
 } from 'typeorm';
+
+import { UserEntity } from './user.entity';
 
 @Entity('comments')
 @Index('IDX_COMMENT_PRODUCT_ID', ['productId'])
@@ -21,6 +25,10 @@ export class CommentEntity {
         comment: 'ID of the user who made the comment',
     })
     userId: number;
+
+    @ManyToOne(() => UserEntity)
+    @JoinColumn({ name: 'user_id' })
+    user: UserEntity;
 
     @Column({
         name: 'product_id',

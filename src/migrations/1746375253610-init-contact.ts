@@ -1,3 +1,4 @@
+import { EContactStatus } from "constant/contact.constant";
 import { MigrationInterface, QueryRunner, Table } from "typeorm";
 
 export class InitContact1746375253610 implements MigrationInterface {
@@ -46,6 +47,13 @@ export class InitContact1746375253610 implements MigrationInterface {
                         type: 'text',
                         isNullable: false,
                         comment: 'Nội dung tin nhắn',
+                    },
+                    {
+                        name: 'status',
+                        type: 'varchar',
+                        isNullable: false,
+                        default: `'${EContactStatus.pending}'`,
+                        comment: 'Product status: publish, draft, pending, private',
                     },
                     {
                         name: 'created_at',

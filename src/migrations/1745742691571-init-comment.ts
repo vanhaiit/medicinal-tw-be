@@ -33,7 +33,7 @@ export class InitComment1745742691571 implements MigrationInterface {
                     },
                     {
                         name: 'images',
-                        type: 'text',
+                        type: 'jsonb',
                         isNullable: true,
                         comment: 'JSON string array of image URLs',
                     },
