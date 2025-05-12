@@ -57,9 +57,15 @@ export class UserRepository extends BaseRepository<UserEntity> {
             });
         }
 
+        if (options?.type) {
+            query.andWhere(`user.type = :type`, {
+                type: options.type,
+            });
+        }
+
         if (options?.orderBy) {
             query.orderBy(
-                `products.${options.orderBy}`,
+                `user.${options.orderBy}`,
                 options.direction || SortOrder.DESC,
             );
         }

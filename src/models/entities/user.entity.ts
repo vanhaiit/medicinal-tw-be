@@ -1,3 +1,4 @@
+import { UserType } from 'constant/user.constant';
 import {
     Column,
     Entity,
@@ -41,6 +42,13 @@ export class UserEntity {
 
     @Column()
     salt: string;
+
+    @Column({
+        nullable: false,
+        comment: 'user type (e.g., customer, employee)',
+        default: UserType.customer,
+    })
+    type: string;
 
     @Column({
         name: 'created_at',

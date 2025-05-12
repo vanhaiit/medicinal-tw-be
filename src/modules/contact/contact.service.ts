@@ -16,8 +16,8 @@ export class ContactService {
         return this.contactRepository.find({ where: { userId } });
     }
 
-    async findOne(userId: number, id: number): Promise<ContactEntity> {
-        const contact = await this.contactRepository.findOneBy({ id, userId });
+    async findOne(id: number): Promise<ContactEntity> {
+        const contact = await this.contactRepository.findOneBy({ id });
         if (!contact) {
             throw new HttpException('Contact not found', HttpStatus.NOT_FOUND);
         }
@@ -37,17 +37,16 @@ export class ContactService {
     }
 
     async update(
-        userId: number,
         id: number,
         data: Partial<ContactEntity>,
     ): Promise<ContactEntity> {
-        const contact = await this.contactRepository.findOneBy({ id, userId });
+        const contact = await this.contactRepository.findOneBy({ id });
         if (!contact) {
             throw new HttpException('Contact not found', HttpStatus.NOT_FOUND);
         }
         try {
-            await this.contactRepository.update({ id, userId }, data);
-            return this.findOne(userId, id);
+            await this.contactRepository.update({ id }, data);
+            return this.findOne(id);
         } catch (error) {
             throw new HttpException(
                 'Update contact failed',

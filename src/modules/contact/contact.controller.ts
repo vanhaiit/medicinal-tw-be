@@ -36,11 +36,8 @@ export class ContactController {
 
     @Get(':id')
     @AuthRoleGuard([])
-    async findOne(
-        @AuthUser() user: UserEntity,
-        @Param('id') id: number,
-    ): Promise<ContactEntity> {
-        return this.contactService.findOne(user.id, id);
+    async findOne(@Param('id') id: number): Promise<ContactEntity> {
+        return this.contactService.findOne(id);
     }
 
     @Post()
@@ -53,11 +50,10 @@ export class ContactController {
     @Put(':id')
     @AuthRoleGuard([])
     async update(
-        @AuthUser() user: UserEntity,
         @Param('id') id: number,
         @Body() data: UpdateContactDto,
     ): Promise<ContactEntity> {
-        return this.contactService.update(user.id, id, data);
+        return this.contactService.update(id, data);
     }
 
     @Delete(':id')

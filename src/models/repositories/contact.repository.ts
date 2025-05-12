@@ -19,6 +19,12 @@ export class ContactRepository extends BaseRepository<ContactEntity> {
             });
         }
 
+        if (options?.status) {
+            query.andWhere(`contact.status = :status`, {
+                status: options.status,
+            });
+        }
+
         if (options?.orderBy) {
             query.orderBy(
                 `contact.${options.orderBy}`,
@@ -26,13 +32,10 @@ export class ContactRepository extends BaseRepository<ContactEntity> {
             );
         }
 
-        if (options?.status) {
-            query.where(`contact.status = :type`, { type: options.status });
-        }
-
         if (!!options) {
             const { limit, page, skip } = options;
             const pageOption = { page, limit, skip } as PageOptionsDto;
+            console.log('pageOption', query.getQuery());
             return query.paginate(pageOption);
         }
 

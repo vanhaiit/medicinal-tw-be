@@ -13,3 +13,8 @@ export enum UserIsLocked {
     LOCKED = 'LOCKED',
     UNLOCKED = 'UNLOCKED',
 }
+
+export enum UserType {
+    employee = 'employee',
+    customer = 'customer',
+}

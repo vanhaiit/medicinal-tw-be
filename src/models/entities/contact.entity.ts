@@ -43,7 +43,7 @@ export class ContactEntity {
         enum: EContactStatus,
         comment: 'Status of the contact request (e.g., pending, resolved)',
     })
-    status: EContactStatus;
+    status: string;
 
     @CreateDateColumn({ name: 'created_at' })
     createdAt: Date;

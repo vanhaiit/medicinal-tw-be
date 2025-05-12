@@ -27,7 +27,7 @@ export class ProfileService {
 
     async update(updateProfileDto: UpdateProfileDto): Promise<ProfileEntity> {
         const payload = mapDto(updateProfileDto, CreateProfileDto);
-        await this.profileRepository.update(payload.userId, updateProfileDto);
+        await this.profileRepository.update(payload.userId, payload);
         return this.profileRepository.findOneBy({ id: payload.userId });
     }
 

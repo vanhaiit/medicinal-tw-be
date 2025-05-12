@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
 import { httpErrors } from 'constant/http-error.constant';
+import { UserType } from 'constant/user.constant';
 
 import mapDto from '@shared/helpers/mapdto';
 
@@ -56,6 +57,7 @@ export class UserService {
             ...data,
             hash,
             salt,
+            type: UserType.employee,
         });
 
         return this.userRepository.save(user);

@@ -52,7 +52,7 @@ export class OrderRepository extends BaseRepository<OrderEntity> {
 
         if (options.search) {
             query.andWhere(
-                '(orders.address LIKE :search OR orders.status LIKE :search)',
+                '(user.phone LIKE :search OR user.username LIKE :search)',
                 { search: `%${options.search}%` },
             );
         }

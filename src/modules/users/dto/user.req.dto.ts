@@ -10,6 +10,7 @@ import {
     IsString,
     MinLength,
 } from 'class-validator';
+import { UserType } from 'constant/user.constant';
 
 import { StringFieldOption } from '@shared/decorators/field.decorator';
 import { PageOptionsDto } from '@shared/dtos/page-options.dto';
@@ -52,6 +53,15 @@ export class GetUserRequestDto extends PageOptionsDto {
     @IsIn(['title', 'createdAt'])
     @StringFieldOption()
     readonly orderBy: string;
+
+    @ApiPropertyOptional({
+        required: true,
+        enum: [UserType.employee, UserType.customer],
+        example: UserType.employee,
+    })
+    @IsIn([UserType.employee, UserType.customer])
+    @IsString()
+    type: string;
 }
 
 export class DeleteUserRequestDto {

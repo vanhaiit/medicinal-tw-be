@@ -1,4 +1,4 @@
-import { UserIsLocked, UserStatus } from 'constant/user.constant';
+import { UserIsLocked, UserStatus, UserType } from 'constant/user.constant';
 import { MigrationInterface, QueryRunner, Table } from 'typeorm';
 
 export class InitUser1722009252855 implements MigrationInterface {
@@ -63,6 +63,13 @@ export class InitUser1722009252855 implements MigrationInterface {
                         name: 'salt',
                         type: 'varchar',
                         isNullable: false,
+                    },
+                     {
+                        name: 'type',
+                        type: 'varchar',
+                        isNullable: true,
+                        default: `'${UserType.customer}'`,
+                        comment: Object.keys(UserType).join(','),
                     },
                     {
                         name: 'created_at',
