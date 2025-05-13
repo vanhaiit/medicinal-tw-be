@@ -7,6 +7,7 @@ import { CartModule } from './cart/cart.module';
 import { CategoryModule } from './category/category.module';
 import { CommentModule } from './comment/comment.module';
 import { ContactModule } from './contact/contact.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 import { FinderModule } from './finder/finder.module';
 import { ItemModule } from './item/item.module';
 import { OrdersModule } from './orders/orders.module';
@@ -39,4 +40,5 @@ export const MODULES = [
     PostModule,
     ContactModule,
     WishlistModule,
+    DashboardModule,
 ];
