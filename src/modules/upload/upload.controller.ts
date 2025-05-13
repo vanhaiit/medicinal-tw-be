@@ -80,13 +80,13 @@ export class UploadController {
     }
 
     @Delete('')
-    @AuthRoleGuard([])
+    @AuthRoleGuard(['employee'])
     deleteUpload(@Query() query: DeleteMediaUploadDto) {
         return this.uploadService.deleteFile(query.ids);
     }
 
     @Get()
-    @AuthRoleGuard([])
+    @AuthRoleGuard(['employee'])
     getAll(@Query() query: GetUploadRequestDto) {
         return this.uploadService.getAllFile(query);
     }

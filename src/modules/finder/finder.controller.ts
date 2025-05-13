@@ -32,19 +32,19 @@ export class FinderController {
     }
 
     @Post()
-    @AuthRoleGuard([])
+    @AuthRoleGuard(['employee'])
     async createFinder(@Body() body: FinderRequestDto) {
         return await this.finderService.createFinder(body);
     }
 
     @Put('/:id')
-    @AuthRoleGuard([])
+    @AuthRoleGuard(['employee'])
     updateMedia(@Param('id') id: number, @Body() body: FinderRequestDto) {
         return this.finderService.updateFinder(id, body);
     }
 
     @Delete('')
-    @AuthRoleGuard([])
+    @AuthRoleGuard(['employee'])
     deleteMedia(@Query() query: DeleteFinderRequestDto) {
         return this.finderService.deleteFinder(query.ids);
     }

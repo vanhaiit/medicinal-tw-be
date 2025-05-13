@@ -41,21 +41,21 @@ export class VoucherController {
     }
 
     @Post()
-    @AuthRoleGuard([])
+    @AuthRoleGuard(['employee'])
     @ApiPageOkResponse({ type: VoucherResponseDto })
     createMessage(@Body() body: VoucherRequestDto) {
         return this.voucherService.createVoucher(body);
     }
 
     @Put(':id')
-    @AuthRoleGuard([])
+    @AuthRoleGuard(['employee'])
     @ApiPageOkResponse({ type: VoucherResponseDto })
     updateMessage(@Body() body: VoucherRequestDto, @Param('id') id: number) {
         return this.voucherService.updateVoucher(id, body);
     }
 
     @Delete(':id')
-    @AuthRoleGuard([])
+    @AuthRoleGuard(['employee'])
     deleteMessage(@Param('id') id: number) {
         return this.voucherService.deleteVoucher(id);
     }

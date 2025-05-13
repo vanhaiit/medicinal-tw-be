@@ -35,19 +35,19 @@ export class CategoryController {
     }
 
     @Delete()
-    @AuthRoleGuard([])
+    @AuthRoleGuard(['employee'])
     delete(@Query() query: DeleteCategoryRequestDto) {
         return this.categoryService.deleteCategory(query);
     }
 
     @Put(':id')
-    @AuthRoleGuard([])
+    @AuthRoleGuard(['employee'])
     update(@Param('id') id: number, @Body() Body: CategoryRequestDto) {
         return this.categoryService.updateCategory(id, Body);
     }
 
     @Post()
-    @AuthRoleGuard([])
+    @AuthRoleGuard(['employee'])
     createCategory(@Body() body: CategoryRequestDto) {
         return this.categoryService.createCategory(body);
     }

@@ -35,19 +35,19 @@ export class AttributeController {
     }
 
     @Post()
-    @AuthRoleGuard([])
+    @AuthRoleGuard(['employee'])
     create(@Body() body: CreateAttributeReqDto) {
         return this.attributeService.createAttribute(body);
     }
 
     @Put(':id')
-    @AuthRoleGuard([])
+    @AuthRoleGuard(['employee'])
     update(@Param('id') id: number, @Body() Body: CreateAttributeReqDto) {
         return this.attributeService.updateAttribute(id, Body);
     }
 
     @Delete()
-    @AuthRoleGuard([])
+    @AuthRoleGuard(['employee'])
     delete(@Query() query: DeleteAttributeReqDto) {
         return this.attributeService.deleteAttribute(query);
     }

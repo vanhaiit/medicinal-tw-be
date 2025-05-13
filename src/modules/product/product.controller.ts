@@ -31,7 +31,7 @@ export class ProductController {
     constructor(private readonly productService: ProductService) {}
 
     @Post()
-    @AuthRoleGuard([])
+    @AuthRoleGuard(['employee'])
     @ApiPageOkResponse({ type: ProductResDto })
     createProduct(@Body() body: CreateProductReqDto) {
         return this.productService.createProduct(body);
@@ -51,14 +51,14 @@ export class ProductController {
     }
 
     @Put(':id')
-    @AuthRoleGuard([])
+    @AuthRoleGuard(['employee'])
     @ApiPageOkResponse({ type: ProductResDto })
     updateProduct(@Param('id') id: number, @Body() body: CreateProductReqDto) {
         return this.productService.updateProduct(id, body);
     }
 
     @Delete(':id')
-    @AuthRoleGuard([])
+    @AuthRoleGuard(['employee'])
     deleteProduct(@Param('id') id: number) {
         return this.productService.deleteProduct(id);
     }

@@ -28,25 +28,25 @@ export class UserController {
     constructor(private readonly userService: UserService) {}
 
     @Post()
-    @AuthRoleGuard([])
+    @AuthRoleGuard(['admin'])
     createUser(@Body() body: CreateUserRequestDto) {
         return this.userService.createUser(body);
     }
 
     @Get('/all')
-    @AuthRoleGuard([])
+    @AuthRoleGuard(['employee'])
     getAll(@Query() query: GetUserRequestDto) {
         return this.userService.getAllUsers(query);
     }
 
     @Get(':id')
-    @AuthRoleGuard([])
+    @AuthRoleGuard(['employee'])
     getDetail(@Param('id') id: number, @AuthUser() user: UserEntity) {
         return this.userService.findUserById(id || user.id);
     }
 
     @Put(':id')
-    @AuthRoleGuard([])
+    @AuthRoleGuard(['admin'])
     updateUser(
         @Param('id') id: number,
         @AuthUser() user: UserEntity,
@@ -56,7 +56,7 @@ export class UserController {
     }
 
     @Delete()
-    @AuthRoleGuard([])
+    @AuthRoleGuard(['admin'])
     deleteUsers(@Query() query: DeleteUserRequestDto) {
         return this.userService.deleteUsers(query);
     }

@@ -23,7 +23,7 @@ export class ItemController {
     constructor(private readonly itemService: ItemService) {}
 
     @Post()
-    @AuthRoleGuard([])
+    @AuthRoleGuard(['employee'])
     @ApiOperation({ summary: 'Create new item' })
     @ApiResponse({
         status: 201,
@@ -52,7 +52,7 @@ export class ItemController {
     }
 
     @Patch(':id')
-    @AuthRoleGuard([])
+    @AuthRoleGuard(['employee'])
     @ApiOperation({ summary: 'Update item by id' })
     @ApiResponse({
         status: 200,
@@ -67,7 +67,7 @@ export class ItemController {
     }
 
     @Delete(':id')
-    @AuthRoleGuard([])
+    @AuthRoleGuard(['employee'])
     @ApiOperation({ summary: 'Delete item by id' })
     @ApiResponse({
         status: 200,

@@ -40,19 +40,19 @@ export class PostController {
     }
 
     @Delete()
-    @AuthRoleGuard([])
+    @AuthRoleGuard(['employee'])
     delete(@Query() query: DeletePostRequestDto) {
         return this.postService.deletePost(query);
     }
 
     @Put(':id')
-    @AuthRoleGuard([])
+    @AuthRoleGuard(['employee'])
     update(@Param('id') id: number, @Body() body: PostRequestDto) {
         return this.postService.updatePost(id, body);
     }
 
     @Post()
-    @AuthRoleGuard([])
+    @AuthRoleGuard(['employee'])
     createPost(@AuthUser() user: UserEntity, @Body() body: PostRequestDto) {
         return this.postService.createPost({ ...body, userId: user.id });
     }

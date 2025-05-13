@@ -50,7 +50,7 @@ export class PageController {
     }
 
     @Post()
-    @AuthRoleGuard([])
+    @AuthRoleGuard(['employee'])
     @ApiPageOkResponse({ type: CreatePageResponseDto })
     createPage(
         @AuthUser() user: JwtPayloadDto,
@@ -60,14 +60,14 @@ export class PageController {
     }
 
     @Put(':id')
-    @AuthRoleGuard([])
+    @AuthRoleGuard(['employee'])
     @ApiPageOkResponse({ type: CreatePageResponseDto })
     updatePage(@Body() body: UpdatePageRequestDto, @Param('id') id: string) {
         return this.pageService.updatePage(body, id);
     }
 
     @Delete(':id')
-    @AuthRoleGuard([])
+    @AuthRoleGuard(['employee'])
     @ApiPageOkResponse({ type: CreatePageResponseDto })
     deletePage(@Param('id') id: string) {
         return this.pageService.deletePage(id);
