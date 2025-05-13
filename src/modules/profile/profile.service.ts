@@ -16,7 +16,7 @@ export class ProfileService {
     }
 
     async findOne(id: number): Promise<ProfileEntity> {
-        return this.profileRepository.findOneBy({ id });
+        return this.profileRepository.findOneBy({ userId: id });
     }
 
     async create(createProfileDto: CreateProfileDto): Promise<ProfileEntity> {
@@ -26,9 +26,15 @@ export class ProfileService {
     }
 
     async update(updateProfileDto: UpdateProfileDto): Promise<ProfileEntity> {
+        const existingProfile = await this.profileRepository.findOneBy({
+            userId: updateProfileDto.userId,
+        });
+        if (!existingProfile) {
+            throw new Error('Profile not found');
+        }
         const payload = mapDto(updateProfileDto, CreateProfileDto);
-        await this.profileRepository.update(payload.userId, payload);
-        return this.profileRepository.findOneBy({ id: payload.userId });
+        await this.profileRepository.update(existingProfile.id, payload);
+        return this.profileRepository.findOneBy({ id: existingProfile.id });
     }
 
     async remove(id: number): Promise<void> {
