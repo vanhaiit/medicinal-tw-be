@@ -1,3 +1,4 @@
+import { UserRoleRepository } from '@models/repositories/user-role.repository';
 import { UserRepository } from '@models/repositories/user.repository';
 import {
     BadRequestException,
@@ -20,7 +21,10 @@ import {
 
 @Injectable()
 export class UserService {
-    constructor(private readonly userRepository: UserRepository) {}
+    constructor(
+        private readonly userRepository: UserRepository,
+        private readonly userRoleRepository: UserRoleRepository,
+    ) {}
 
     async getAllUsers(query: GetUserRequestDto) {
         const [result, metadata]: any = await this.userRepository.getAll(query);
@@ -60,7 +64,13 @@ export class UserService {
             type: UserType.employee,
         });
 
-        return this.userRepository.save(user);
+        const res = await this.userRepository.save(user);
+
+        await this.userRoleRepository.save(
+            this.userRoleRepository.create({ userId: res.id, roleId: 2 }),
+        );
+
+        return res;
     }
 
     async updateUser(id: number, body: UserRequestDto) {
