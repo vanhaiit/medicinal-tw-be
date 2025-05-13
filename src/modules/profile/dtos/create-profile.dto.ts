@@ -23,12 +23,12 @@ export class CreateProfileDto {
         description: 'Gender of the user',
         example: 'male',
         required: false,
-        enum: ['male', 'famale'],
+        enum: ['male', 'female'],
     })
     @IsOptional()
     @IsString()
     @Expose()
-    @IsEnum(['male', 'famale'])
+    @IsEnum(['male', 'female'])
     gender?: string;
 
     @ApiProperty({
