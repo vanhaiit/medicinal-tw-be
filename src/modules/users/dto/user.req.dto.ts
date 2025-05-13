@@ -110,16 +110,6 @@ export class CreateUserRequestDto {
     @Expose()
     email: string;
 
-    @ApiPropertyOptional({
-        type: String,
-        description: 'Full name of the user',
-        example: 'John Doe',
-    })
-    @IsOptional()
-    @IsString()
-    @Expose()
-    fullName?: string;
-
     @ApiProperty({ required: true, example: '+1234567890' })
     @Expose()
     @IsString()

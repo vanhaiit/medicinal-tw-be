@@ -121,6 +121,8 @@ export class CreateOrderDto {
         description: 'Current status of the order',
         example: 'pending',
         enum: EOrderStatus,
+        default: EOrderStatus.pending,
+        required: true,
     })
     @IsString()
     @IsNotEmpty()
