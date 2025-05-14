@@ -35,4 +35,10 @@ export class DashboardController {
     async getTop10() {
         return await this.dashboardService.getTopSellingProducts();
     }
+
+    @Get('/notify')
+    @PublicRoute()
+    async getNotify() {
+        return await this.dashboardService.getNotifications();
+    }
 }
