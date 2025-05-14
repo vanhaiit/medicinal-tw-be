@@ -49,8 +49,8 @@ export class GetUserRequestDto extends PageOptionsDto {
     @IsOptional()
     search?: string;
 
-    @ApiPropertyOptional({ enum: ['title', 'createdAt'] })
-    @IsIn(['title', 'createdAt'])
+    @ApiPropertyOptional({ enum: ['username', 'createdAt'] })
+    @IsIn(['username', 'createdAt'])
     @StringFieldOption()
     readonly orderBy: string;
 
