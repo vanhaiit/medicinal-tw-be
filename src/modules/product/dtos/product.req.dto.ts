@@ -451,90 +451,72 @@ export class CreateProductReqDto {
 }
 
 export class UpdateProductReqDto {
-    @ApiPropertyOptional({ description: 'Product name', example: 'Quần' })
+    @Expose()
+    @ApiProperty({ description: 'Product name', example: 'Quần' })
     @IsOptional()
     @IsString()
-    @Expose()
     name?: string;
 
-    @ApiPropertyOptional({
-        description: 'URL-friendly slug for SEO',
-        example: 'quan-den',
-    })
-    @IsOptional()
-    @IsString()
     @Expose()
-    slug?: string;
-
-    @ApiPropertyOptional({
-        description: 'Optional SKU for the product',
-        example: 'QUAN-001',
-        required: false,
-    })
-    @IsOptional()
-    @IsString()
-    @Expose()
-    sku?: string;
-
-    @ApiPropertyOptional({
+    @ApiProperty({
         description: 'Detailed product description',
         example: 'Quần vải cao cấp',
         required: false,
     })
     @IsOptional()
     @IsString()
-    @Expose()
     description?: string;
 
-    @ApiPropertyOptional({
+    @Expose()
+    @ApiProperty({
         description: 'Short product description',
         example: 'Quần thời trang',
         required: false,
     })
     @IsOptional()
     @IsString()
-    @Expose()
     shortDescription?: string;
 
-    @ApiPropertyOptional({
+    @Expose()
+    @ApiProperty({
         description: 'Product status',
         example: EStatus.publish,
         enum: EStatus,
     })
-    @IsOptional()
     @IsEnum(EStatus)
-    @Expose()
+    @IsOptional()
     status?: EStatus;
 
-    @ApiPropertyOptional({
+    @Expose()
+    @ApiProperty({
         description: 'Whether the product is visible on the frontend',
         example: true,
     })
-    @IsOptional()
     @IsBoolean()
-    @Expose()
+    @IsOptional()
     isVisible?: boolean;
 
-    @ApiPropertyOptional({
+    @Expose()
+    @ApiProperty({
         description: 'Whether the product is marked as featured',
         example: false,
     })
-    @IsOptional()
     @IsBoolean()
-    @Expose()
+    @IsOptional()
     isFeatured?: boolean;
 
-    @ApiPropertyOptional({
+    @Expose()
+    @ApiProperty({
         description: 'URL or path to the featured image',
         example: '/images/quan.jpg',
         required: false,
     })
     @IsOptional()
     @IsString()
-    @Expose()
     featuredImage?: string;
 
-    @ApiPropertyOptional({
+    @Expose()
+    @ApiProperty({
         description: 'List of URLs or paths to gallery images',
         example: ['/images/quan1.jpg', '/images/quan2.jpg'],
         required: false,
@@ -542,10 +524,10 @@ export class UpdateProductReqDto {
     @IsOptional()
     @IsArray()
     @IsString({ each: true })
-    @Expose()
     galleryImages?: string[];
 
-    @ApiPropertyOptional({
+    @Expose()
+    @ApiProperty({
         description: 'List of tag IDs or tag names',
         example: ['tag1', 'tag2'],
         required: false,
@@ -553,39 +535,35 @@ export class UpdateProductReqDto {
     @IsOptional()
     @IsArray()
     @IsString({ each: true })
-    @Expose()
     tags?: string[];
 
-    @ApiPropertyOptional({
+    @Expose()
+    @ApiProperty({
         description: 'SEO meta title',
         example: 'Quần Đen Cao Cấp',
         required: false,
     })
     @IsOptional()
     @IsString()
-    @Expose()
     metaTitle?: string;
 
-    @ApiPropertyOptional({
+    @Expose()
+    @ApiProperty({
         description: 'SEO meta description',
         example: 'Mua quần đen chất lượng cao',
         required: false,
     })
     @IsOptional()
     @IsString()
-    @Expose()
     metaDescription?: string;
 
-    @ApiPropertyOptional({
-        description: 'Whether reviews are allowed',
-        example: true,
-    })
-    @IsOptional()
-    @IsBoolean()
     @Expose()
+    @ApiProperty({ description: 'Whether reviews are allowed', example: true })
+    @IsBoolean()
+    @IsOptional()
     reviewsAllowed?: boolean;
 
-    @ApiPropertyOptional({
+    @ApiProperty({
         description: 'List of related product IDs',
         example: [1],
         required: false,
@@ -596,7 +574,7 @@ export class UpdateProductReqDto {
     @Expose()
     relatedProducts?: number[];
 
-    @ApiPropertyOptional({
+    @ApiProperty({
         description: 'List of category IDs',
         example: [1],
         required: false,
@@ -604,20 +582,19 @@ export class UpdateProductReqDto {
     @IsOptional()
     @IsArray()
     @IsInt({ each: true })
-    @Expose()
     categoryIds?: number[];
 
-    @ApiPropertyOptional({
+    @Expose()
+    @ApiProperty({
         description: 'Sort order for display',
         example: 1,
         required: false,
     })
     @IsOptional()
     @IsInt()
-    @Expose()
     index?: number;
 
-    @ApiPropertyOptional({
+    @ApiProperty({
         description: 'List of attribute IDs',
         example: [1],
         required: false,
@@ -625,67 +602,60 @@ export class UpdateProductReqDto {
     @IsOptional()
     @IsArray()
     @IsInt({ each: true })
-    @Expose()
     attributeIds?: number[];
 
-    @ApiPropertyOptional({
-        description: 'Regular price of the item',
-        example: 100.0,
-    })
-    @IsOptional()
-    @IsNumber()
     @Expose()
+    @ApiProperty({ description: 'Regular price of the item', example: 100.0 })
+    @IsNumber()
+    @IsOptional()
     regularPrice?: number;
 
-    @ApiPropertyOptional({
+    @Expose()
+    @ApiProperty({
         description: 'Sale price of the item (if on sale)',
         example: 89.99,
         required: false,
     })
     @IsOptional()
     @IsNumber()
-    @Expose()
     salePrice?: number;
 
-    @ApiPropertyOptional({
-        description: 'Available stock quantity',
-        example: 100,
-    })
-    @IsOptional()
-    @IsInt()
     @Expose()
+    @ApiProperty({ description: 'Available stock quantity', example: 100 })
+    @IsInt()
+    @IsOptional()
     stockQuantity?: number;
 
-    @ApiPropertyOptional({
+    @Expose()
+    @ApiProperty({
         description: 'Stock status',
         example: EStockStatus.instock,
         enum: EStockStatus,
     })
-    @IsOptional()
     @IsEnum(EStockStatus)
-    @Expose()
+    @IsOptional()
     stockStatus?: EStockStatus;
 
-    @ApiPropertyOptional({
+    @Expose()
+    @ApiProperty({
         description: 'Brand name of the product',
         example: 'Nike',
         required: false,
     })
     @IsOptional()
     @IsString()
-    @Expose()
     brand?: string;
 
-    @ApiPropertyOptional({ description: 'Enable flash sale', example: true })
-    @IsOptional()
-    @IsBoolean()
     @Expose()
+    @ApiProperty({ description: 'Enable flash sale', example: true })
+    @IsBoolean()
+    @IsOptional()
     flashSale?: boolean;
 
-    @ApiPropertyOptional({ description: 'Enable bestSeller', example: true })
-    @IsOptional()
-    @IsBoolean()
     @Expose()
+    @ApiProperty({ description: 'Enable bestSeller', example: true })
+    @IsBoolean()
+    @IsOptional()
     bestSeller?: boolean;
 }
 

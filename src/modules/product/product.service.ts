@@ -190,9 +190,9 @@ export class ProductService {
     @Transactional()
     async updateProduct(id: number, body: UpdateProductReqDto) {
         await this.checkProductExist(id);
-        const { attributeIds, categoryIds } = body;
+        const { attributeIds, categoryIds, ...productData } = body;
 
-        const payload = mapDto(body, UpdateProductReqDto);
+        const payload = mapDto(productData, UpdateProductReqDto);
         await this.productRepository.update(id, payload);
 
         if (!!categoryIds?.length) {
