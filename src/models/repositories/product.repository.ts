@@ -292,27 +292,26 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
                     )
                 ) AS "items"`,
                 `COALESCE(
-                    (SELECT 
+                    (SELECT
                         jsonb_agg(
                             DISTINCT jsonb_build_object(
                                 'id', rp.id,
                                 'sku', rp.sku,
                                 'name', rp.name,
                                 'slug', rp.slug,
-                                'regularPrice', rp.regularPrice,
-                                'salePrice', rp.salePrice,
-                                'stockQuantity', rp.stockQuantity,
-                                'stockStatus', rp.stockStatus,
-                                'featuredImage', rp.featuredImage,
-                                'galleryImages', rp.galleryImages,
-                                'type', rp.type,
+                                'regularPrice', rp.regular_price,
+                                'salePrice', rp.sale_price,
+                                'stockQuantity', rp.stock_quantity,
+                                'stockStatus', rp.stock_status,
+                                'featuredImage', rp.featured_image,
+                                'galleryImages', rp.gallery_images,
                                 'status', rp.status,
-                                'isActive', rp.isActive,
-                                'index', rp.index,
+                                'isActive', rp.is_active,
+                                'index', rp.index
                             )
                         )
                      FROM products rp
-                     WHERE rp.id = ANY(products.relatedProducts)
+                     WHERE products.relatedProducts IS NOT NULL AND rp.id = ANY(SELECT jsonb_array_elements_text(products.relatedProducts)::int)
                     ),
                     '[]'::jsonb
                 ) AS "relatedProducts"`,
