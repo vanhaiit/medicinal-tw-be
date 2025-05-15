@@ -926,18 +926,6 @@ export class UpdateProductReqDto {
     @IsBoolean()
     @Expose()
     bestSeller?: boolean;
-
-    @ApiPropertyOptional({
-        description: 'List of items for the product',
-        type: [UpdateItemReqDto],
-        required: false,
-    })
-    @IsOptional()
-    @IsArray()
-    @Type(() => UpdateItemReqDto)
-    @ValidateNested({ each: true })
-    @Expose()
-    items?: UpdateItemReqDto[];
 }
 
 export class GetProductRequestDto extends PageOptionsDto {
