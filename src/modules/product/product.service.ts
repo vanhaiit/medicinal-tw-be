@@ -190,7 +190,7 @@ export class ProductService {
     @Transactional()
     async updateProduct(id: number, body: UpdateProductReqDto) {
         await this.checkProductExist(id);
-        const { items, attributeIds, categoryIds } = body;
+        const { attributeIds, categoryIds } = body;
 
         const payload = mapDto(body, UpdateProductReqDto);
         await this.productRepository.update(id, payload);
@@ -241,48 +241,6 @@ export class ProductService {
             await this.productAttributeRepository.save(
                 this.productAttributeRepository.create(attributeItems),
             );
-        }
-
-        if (!!items?.length) {
-            // Delete existing items and their attributes
-            const existingItems = await this.itemRepository.find({
-                where: { productId: id },
-            });
-            const existingItemIds = existingItems.map(item => item.id);
-
-            if (existingItemIds.length) {
-                await this.itemAttributeRepository.delete({
-                    itemId: In(existingItemIds),
-                });
-                await this.itemRepository.delete({ productId: id });
-            }
-
-            // Save new items
-            const savedItems = await this.itemRepository.save(
-                this.itemRepository.create(
-                    items.map(item => ({
-                        ...item,
-                        productId: id,
-                    })),
-                ),
-            );
-
-            // Save item attributes
-            for (const item of items) {
-                if (item.attributeValueIds?.length) {
-                    const itemAttributes = item.attributeValueIds.map(
-                        attributeValueId => ({
-                            itemId: savedItems.find(
-                                savedItem => savedItem.sku === item.sku,
-                            )?.id,
-                            attributeValueId: attributeValueId,
-                        }),
-                    );
-                    await this.itemAttributeRepository.save(
-                        this.itemAttributeRepository.create(itemAttributes),
-                    );
-                }
-            }
         }
 
         return this.getDetail(id);

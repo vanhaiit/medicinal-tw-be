@@ -1,4 +1,4 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, PartialType } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
 import {
     IsArray,
@@ -108,3 +108,5 @@ export class CreateItemDto {
     @IsOptional()
     status?: string;
 }
+
+export class UpdateItemDto extends PartialType(CreateItemDto) {}

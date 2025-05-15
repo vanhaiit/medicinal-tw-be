@@ -13,8 +13,8 @@ import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { AuthRoleGuard } from '@shared/decorators/http.decorator';
 import { PublicRoute } from '@shared/decorators/public-route.decorator';
 
-import { CreateItemDto } from './dto/create-item.dto';
-import { GetItemRequestDto, UpdateItemDto } from './dto/update-item.dto';
+import { CreateItemDto, UpdateItemDto } from './dto/create-item.dto';
+import { GetItemRequestDto } from './dto/get-item.dto';
 import { ItemService } from './item.service';
 
 @ApiTags('items')

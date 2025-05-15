@@ -1,7 +1,7 @@
 import { ItemEntity } from '@models/entities/item.entity';
 import { NotFoundException } from '@nestjs/common';
 
-import { GetItemRequestDto } from '@modules/item/dto/update-item.dto';
+import { GetItemRequestDto } from '@modules/item/dto/get-item.dto';
 
 import { CustomRepository } from '@shared/decorators/typeorm-ex.decorator';
 

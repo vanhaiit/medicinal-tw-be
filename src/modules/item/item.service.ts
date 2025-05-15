@@ -1,8 +1,8 @@
 import { ItemRepository } from '@models/repositories/item.responsitory';
 import { Injectable, NotFoundException } from '@nestjs/common';
 
-import { CreateItemDto } from './dto/create-item.dto';
-import { GetItemRequestDto, UpdateItemDto } from './dto/update-item.dto';
+import { CreateItemDto, UpdateItemDto } from './dto/create-item.dto';
+import { GetItemRequestDto } from './dto/get-item.dto';
 
 @Injectable()
 export class ItemService {
