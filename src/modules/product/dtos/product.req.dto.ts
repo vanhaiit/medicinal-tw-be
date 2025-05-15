@@ -355,6 +355,7 @@ export class CreateProductReqDto {
     @IsOptional()
     @IsArray()
     @IsInt({ each: true })
+    @Expose()
     relatedProducts?: number[];
 
     @ApiProperty({
@@ -447,6 +448,496 @@ export class CreateProductReqDto {
     @Type(() => CreateItemReqDto)
     @ValidateNested({ each: true })
     items?: CreateItemReqDto[];
+}
+
+export class UpdateItemReqDto {
+    @ApiPropertyOptional({
+        description: 'Stock Keeping Unit for item identification',
+        example: 'QUAN-S-XANH',
+        required: false,
+    })
+    @IsOptional()
+    @IsString()
+    @Expose()
+    sku?: string;
+
+    @ApiPropertyOptional({
+        description: 'Item name',
+        example: 'Quần size S màu xanh',
+    })
+    @IsOptional()
+    @IsString()
+    @Expose()
+    name?: string;
+
+    @ApiPropertyOptional({
+        description: 'URL-friendly slug for SEO',
+        example: 'quan-size-s-mau-xanh',
+        required: false,
+    })
+    @IsOptional()
+    @IsString()
+    @Expose()
+    slug?: string;
+
+    @ApiPropertyOptional({
+        description: 'Detailed description of the item',
+        example: 'Quần vải cao cấp, kích thước S, màu xanh',
+        required: false,
+    })
+    @IsOptional()
+    @IsString()
+    @Expose()
+    description?: string;
+
+    @ApiPropertyOptional({
+        description: 'Regular price of the item',
+        example: 200000,
+    })
+    @IsOptional()
+    @IsNumber()
+    @Expose()
+    regularPrice?: number;
+
+    @ApiPropertyOptional({
+        description: 'Sale price of the item (if on sale)',
+        example: 180000,
+        required: false,
+    })
+    @IsOptional()
+    @IsNumber()
+    @Expose()
+    salePrice?: number;
+
+    @ApiPropertyOptional({
+        description: 'Available stock quantity',
+        example: 100,
+    })
+    @IsOptional()
+    @IsInt()
+    @Expose()
+    stockQuantity?: number;
+
+    @ApiPropertyOptional({
+        description: 'Stock status',
+        example: EStockStatus.instock,
+        enum: EStockStatus,
+    })
+    @IsOptional()
+    @IsEnum(EStockStatus)
+    @Expose()
+    stockStatus?: EStockStatus;
+
+    @ApiPropertyOptional({
+        description: 'Enable stock management for this item',
+        example: true,
+    })
+    @IsOptional()
+    @IsBoolean()
+    @Expose()
+    manageStock?: boolean;
+
+    @ApiPropertyOptional({
+        description: 'Item weight (e.g., in kg)',
+        example: 0.5,
+        required: false,
+    })
+    @IsOptional()
+    @IsNumber()
+    @Expose()
+    weight?: number;
+
+    @ApiPropertyOptional({
+        description: 'Item length (e.g., in cm)',
+        example: 70,
+        required: false,
+    })
+    @IsOptional()
+    @IsNumber()
+    @Expose()
+    length?: number;
+
+    @ApiPropertyOptional({
+        description: 'Item width (e.g., in cm)',
+        example: 30,
+        required: false,
+    })
+    @IsOptional()
+    @IsNumber()
+    @Expose()
+    width?: number;
+
+    @ApiPropertyOptional({
+        description: 'Item height (e.g., in cm)',
+        example: 5,
+        required: false,
+    })
+    @IsOptional()
+    @IsNumber()
+    @Expose()
+    height?: number;
+
+    @ApiPropertyOptional({
+        description: 'URL or path to the item-specific featured image',
+        example: '/images/quan-s-xanh.jpg',
+        required: false,
+    })
+    @IsOptional()
+    @IsString()
+    @Expose()
+    featuredImage?: string;
+
+    @ApiPropertyOptional({
+        description: 'List of URLs or paths to item-specific gallery images',
+        example: ['/images/quan-s-xanh1.jpg', '/images/quan-s-xanh2.jpg'],
+        required: false,
+    })
+    @IsOptional()
+    @IsArray()
+    @IsString({ each: true })
+    @Expose()
+    galleryImages?: string[];
+
+    @ApiPropertyOptional({
+        description: 'Item type',
+        example: EItemType.physical,
+        enum: EItemType,
+    })
+    @IsOptional()
+    @IsEnum(EItemType)
+    @Expose()
+    type?: EItemType;
+
+    @ApiPropertyOptional({
+        description: 'Item status',
+        example: EItemStatus.publish,
+        enum: EItemStatus,
+    })
+    @IsOptional()
+    @IsEnum(EItemStatus)
+    @Expose()
+    status?: EItemStatus;
+
+    @ApiPropertyOptional({
+        description: 'Whether the item is available for purchase',
+        example: true,
+    })
+    @IsOptional()
+    @IsBoolean()
+    @Expose()
+    isActive?: boolean;
+
+    @ApiPropertyOptional({
+        description: 'SEO meta title for the item',
+        example: 'Quần Size S Màu Xanh',
+        required: false,
+    })
+    @IsOptional()
+    @IsString()
+    @Expose()
+    metaTitle?: string;
+
+    @ApiPropertyOptional({
+        description: 'SEO meta description for the item',
+        example: 'Mua quần size S màu xanh chất lượng cao',
+        required: false,
+    })
+    @IsOptional()
+    @IsString()
+    @Expose()
+    metaDescription?: string;
+
+    @ApiPropertyOptional({
+        description: 'Tax status',
+        example: ETaxStatus.taxable,
+        enum: ETaxStatus,
+    })
+    @IsOptional()
+    @IsEnum(ETaxStatus)
+    @Expose()
+    taxStatus?: ETaxStatus;
+
+    @ApiPropertyOptional({
+        description: 'Tax class for the item',
+        example: 'standard',
+        required: false,
+    })
+    @IsOptional()
+    @IsString()
+    @Expose()
+    taxClass?: string;
+
+    @ApiPropertyOptional({
+        description: 'Sort order for display',
+        example: 1,
+        required: false,
+    })
+    @IsOptional()
+    @IsInt()
+    @Expose()
+    index?: number;
+
+    @ApiPropertyOptional({
+        description: 'List of attribute value IDs',
+        example: [1],
+        required: false,
+    })
+    @IsOptional()
+    @IsArray()
+    @IsInt({ each: true })
+    @Expose()
+    attributeValueIds?: number[];
+}
+
+export class UpdateProductReqDto {
+    @ApiPropertyOptional({ description: 'Product name', example: 'Quần' })
+    @IsOptional()
+    @IsString()
+    @Expose()
+    name?: string;
+
+    @ApiPropertyOptional({
+        description: 'URL-friendly slug for SEO',
+        example: 'quan-den',
+    })
+    @IsOptional()
+    @IsString()
+    @Expose()
+    slug?: string;
+
+    @ApiPropertyOptional({
+        description: 'Optional SKU for the product',
+        example: 'QUAN-001',
+        required: false,
+    })
+    @IsOptional()
+    @IsString()
+    @Expose()
+    sku?: string;
+
+    @ApiPropertyOptional({
+        description: 'Detailed product description',
+        example: 'Quần vải cao cấp',
+        required: false,
+    })
+    @IsOptional()
+    @IsString()
+    @Expose()
+    description?: string;
+
+    @ApiPropertyOptional({
+        description: 'Short product description',
+        example: 'Quần thời trang',
+        required: false,
+    })
+    @IsOptional()
+    @IsString()
+    @Expose()
+    shortDescription?: string;
+
+    @ApiPropertyOptional({
+        description: 'Product status',
+        example: EStatus.publish,
+        enum: EStatus,
+    })
+    @IsOptional()
+    @IsEnum(EStatus)
+    @Expose()
+    status?: EStatus;
+
+    @ApiPropertyOptional({
+        description: 'Whether the product is visible on the frontend',
+        example: true,
+    })
+    @IsOptional()
+    @IsBoolean()
+    @Expose()
+    isVisible?: boolean;
+
+    @ApiPropertyOptional({
+        description: 'Whether the product is marked as featured',
+        example: false,
+    })
+    @IsOptional()
+    @IsBoolean()
+    @Expose()
+    isFeatured?: boolean;
+
+    @ApiPropertyOptional({
+        description: 'URL or path to the featured image',
+        example: '/images/quan.jpg',
+        required: false,
+    })
+    @IsOptional()
+    @IsString()
+    @Expose()
+    featuredImage?: string;
+
+    @ApiPropertyOptional({
+        description: 'List of URLs or paths to gallery images',
+        example: ['/images/quan1.jpg', '/images/quan2.jpg'],
+        required: false,
+    })
+    @IsOptional()
+    @IsArray()
+    @IsString({ each: true })
+    @Expose()
+    galleryImages?: string[];
+
+    @ApiPropertyOptional({
+        description: 'List of tag IDs or tag names',
+        example: ['tag1', 'tag2'],
+        required: false,
+    })
+    @IsOptional()
+    @IsArray()
+    @IsString({ each: true })
+    @Expose()
+    tags?: string[];
+
+    @ApiPropertyOptional({
+        description: 'SEO meta title',
+        example: 'Quần Đen Cao Cấp',
+        required: false,
+    })
+    @IsOptional()
+    @IsString()
+    @Expose()
+    metaTitle?: string;
+
+    @ApiPropertyOptional({
+        description: 'SEO meta description',
+        example: 'Mua quần đen chất lượng cao',
+        required: false,
+    })
+    @IsOptional()
+    @IsString()
+    @Expose()
+    metaDescription?: string;
+
+    @ApiPropertyOptional({
+        description: 'Whether reviews are allowed',
+        example: true,
+    })
+    @IsOptional()
+    @IsBoolean()
+    @Expose()
+    reviewsAllowed?: boolean;
+
+    @ApiPropertyOptional({
+        description: 'List of related product IDs',
+        example: [1],
+        required: false,
+    })
+    @IsOptional()
+    @IsArray()
+    @IsInt({ each: true })
+    @Expose()
+    relatedProducts?: number[];
+
+    @ApiPropertyOptional({
+        description: 'List of category IDs',
+        example: [1],
+        required: false,
+    })
+    @IsOptional()
+    @IsArray()
+    @IsInt({ each: true })
+    @Expose()
+    categoryIds?: number[];
+
+    @ApiPropertyOptional({
+        description: 'Sort order for display',
+        example: 1,
+        required: false,
+    })
+    @IsOptional()
+    @IsInt()
+    @Expose()
+    index?: number;
+
+    @ApiPropertyOptional({
+        description: 'List of attribute IDs',
+        example: [1],
+        required: false,
+    })
+    @IsOptional()
+    @IsArray()
+    @IsInt({ each: true })
+    @Expose()
+    attributeIds?: number[];
+
+    @ApiPropertyOptional({
+        description: 'Regular price of the item',
+        example: 100.0,
+    })
+    @IsOptional()
+    @IsNumber()
+    @Expose()
+    regularPrice?: number;
+
+    @ApiPropertyOptional({
+        description: 'Sale price of the item (if on sale)',
+        example: 89.99,
+        required: false,
+    })
+    @IsOptional()
+    @IsNumber()
+    @Expose()
+    salePrice?: number;
+
+    @ApiPropertyOptional({
+        description: 'Available stock quantity',
+        example: 100,
+    })
+    @IsOptional()
+    @IsInt()
+    @Expose()
+    stockQuantity?: number;
+
+    @ApiPropertyOptional({
+        description: 'Stock status',
+        example: EStockStatus.instock,
+        enum: EStockStatus,
+    })
+    @IsOptional()
+    @IsEnum(EStockStatus)
+    @Expose()
+    stockStatus?: EStockStatus;
+
+    @ApiPropertyOptional({
+        description: 'Brand name of the product',
+        example: 'Nike',
+        required: false,
+    })
+    @IsOptional()
+    @IsString()
+    @Expose()
+    brand?: string;
+
+    @ApiPropertyOptional({ description: 'Enable flash sale', example: true })
+    @IsOptional()
+    @IsBoolean()
+    @Expose()
+    flashSale?: boolean;
+
+    @ApiPropertyOptional({ description: 'Enable bestSeller', example: true })
+    @IsOptional()
+    @IsBoolean()
+    @Expose()
+    bestSeller?: boolean;
+
+    @ApiPropertyOptional({
+        description: 'List of items for the product',
+        type: [UpdateItemReqDto],
+        required: false,
+    })
+    @IsOptional()
+    @IsArray()
+    @Type(() => UpdateItemReqDto)
+    @ValidateNested({ each: true })
+    @Expose()
+    items?: UpdateItemReqDto[];
 }
 
 export class GetProductRequestDto extends PageOptionsDto {

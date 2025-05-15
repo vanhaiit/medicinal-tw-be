@@ -21,6 +21,7 @@ import { PublicRoute } from '@shared/decorators/public-route.decorator';
 import {
     CreateProductReqDto,
     GetProductRequestDto,
+    UpdateProductReqDto,
 } from './dtos/product.req.dto';
 import { ProductResDto } from './dtos/product.res.dto';
 import { ProductService } from './product.service';
@@ -53,7 +54,7 @@ export class ProductController {
     @Put(':id')
     @AuthRoleGuard(['employee'])
     @ApiPageOkResponse({ type: ProductResDto })
-    updateProduct(@Param('id') id: number, @Body() body: CreateProductReqDto) {
+    updateProduct(@Param('id') id: number, @Body() body: UpdateProductReqDto) {
         return this.productService.updateProduct(id, body);
     }
 

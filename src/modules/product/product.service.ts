@@ -20,6 +20,7 @@ import mapDto from '@shared/helpers/mapdto';
 import {
     CreateProductReqDto,
     GetProductRequestDto,
+    UpdateProductReqDto,
 } from './dtos/product.req.dto';
 
 @Injectable()
@@ -187,11 +188,11 @@ export class ProductService {
     }
 
     @Transactional()
-    async updateProduct(id: number, body: CreateProductReqDto) {
+    async updateProduct(id: number, body: UpdateProductReqDto) {
         await this.checkProductExist(id);
         const { items, attributeIds, categoryIds } = body;
 
-        const payload = mapDto(body, CreateProductReqDto);
+        const payload = mapDto(body, UpdateProductReqDto);
         await this.productRepository.update(id, payload);
 
         if (!!categoryIds?.length) {

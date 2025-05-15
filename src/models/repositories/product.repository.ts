@@ -216,7 +216,6 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
                 'products.metaDescription AS "metaDescription"',
                 'products.reviewsAllowed AS "reviewsAllowed"',
                 'products.reviewCount AS "reviewCount"',
-                'products.relatedProducts AS "relatedProducts"',
                 'products.index AS "index"',
                 'products.regularPrice AS "regularPrice"',
                 'products.salePrice AS "salePrice"',
@@ -292,6 +291,31 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
                         )
                     )
                 ) AS "items"`,
+                `COALESCE(
+                    (SELECT 
+                        jsonb_agg(
+                            DISTINCT jsonb_build_object(
+                                'id', rp.id,
+                                'sku', rp.sku,
+                                'name', rp.name,
+                                'slug', rp.slug,
+                                'regularPrice', rp.regularPrice,
+                                'salePrice', rp.salePrice,
+                                'stockQuantity', rp.stockQuantity,
+                                'stockStatus', rp.stockStatus,
+                                'featuredImage', rp.featuredImage,
+                                'galleryImages', rp.galleryImages,
+                                'type', rp.type,
+                                'status', rp.status,
+                                'isActive', rp.isActive,
+                                'index', rp.index,
+                            )
+                        )
+                     FROM products rp
+                     WHERE rp.id = ANY(products.relatedProducts)
+                    ),
+                    '[]'::jsonb
+                ) AS "relatedProducts"`,
             ])
             .leftJoin(
                 CommentEntity,
