@@ -192,9 +192,6 @@ export class ProductService {
         await this.checkProductExist(id);
         const { attributeIds, categoryIds, ...productData } = body;
 
-        const payload = mapDto(productData, UpdateProductReqDto);
-        await this.productRepository.update(id, payload);
-
         if (!!categoryIds?.length) {
             // Delete existing categories
             await this.productCategoryRepository.delete({ productId: id });
@@ -242,6 +239,9 @@ export class ProductService {
                 this.productAttributeRepository.create(attributeItems),
             );
         }
+
+        const payload = mapDto(productData, UpdateProductReqDto);
+        await this.productRepository.update(id, payload);
 
         return this.getDetail(id);
     }
