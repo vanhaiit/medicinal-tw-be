@@ -677,7 +677,7 @@ export class GetProductRequestDto extends PageOptionsDto {
         required: true,
     })
     @Transform(({ value }) =>
-        value === 'true' ? true : value === 'false' ? false : false,
+        value === 'true' ? true : value === 'false' ? false : true,
     )
     isActive?: boolean;
 
