@@ -276,6 +276,14 @@ export class CreateProductReqDto {
 
     @Expose()
     @ApiProperty({
+        description: 'Whether the item is available for purchase',
+        example: true,
+    })
+    @IsBoolean()
+    isActive: boolean;
+
+    @Expose()
+    @ApiProperty({
         description: 'Whether the product is visible on the frontend',
         example: true,
     })
@@ -504,6 +512,15 @@ export class UpdateProductReqDto {
     @IsBoolean()
     @IsOptional()
     isFeatured?: boolean;
+
+    @Expose()
+    @ApiProperty({
+        description: 'Whether the item is available for purchase',
+        example: true,
+    })
+    @IsBoolean()
+    @IsOptional()
+    isActive?: boolean;
 
     @Expose()
     @ApiProperty({

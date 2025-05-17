@@ -43,7 +43,15 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
                 'products.bestSeller AS "bestSeller"',
                 'products.isActive AS "isActive"',
                 'COALESCE(AVG(NULLIF(comments.rating, 0)), 0) AS "avgRating"',
-                `jsonb_agg(DISTINCT jsonb_build_object('name', categories.name, 'id', categories.id)) AS "categories"`,
+                `COALESCE(
+                    jsonb_agg(DISTINCT 
+                        jsonb_build_object(
+                            'name', "categories"."name", 
+                            'id', "categories"."id",
+                            'image', "categories"."image"
+                        )
+                    ) FILTER (WHERE "categories"."id" IS NOT NULL), '[]'::jsonb
+                ) as "categories"`,
                 `jsonb_agg(
                     DISTINCT jsonb_build_object(
                         'id', items.id,
@@ -228,30 +236,34 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
                 'COUNT(DISTINCT comments.id) AS "commentCount"',
                 'COALESCE(AVG(NULLIF(comments.rating, 0)), 0) AS "avgRating"',
                 '(SELECT COUNT(*) FROM wishlist w WHERE w.product_id = products.id AND w.deleted_at IS NULL) AS "totalLike"',
-                `jsonb_agg(DISTINCT 
-                    jsonb_build_object(
-                        'name', "categories"."name", 
-                        'id', "categories"."id",
-                        'image', "categories"."image"
-                    )
-                 ) as "categories"`,
-                `jsonb_agg(DISTINCT 
-                    jsonb_build_object(
-                        'name', attribute.name, 
-                        'id', attribute.id,
-                        'attributeValues', (
-                            SELECT jsonb_agg(
-                                DISTINCT jsonb_build_object(
-                                    'id', av.id,
-                                    'name', av.value,
-                                    'index', av.index,
-                                    'image', av.image
-                                )
-                            )
-                            FROM attribute_values av
-                            WHERE av.attribute_id = attribute.id AND av.deleted_at IS NULL
+                `COALESCE(
+                    jsonb_agg(DISTINCT 
+                        jsonb_build_object(
+                            'name', "categories"."name", 
+                            'id', "categories"."id",
+                            'image', "categories"."image"
                         )
-                    )
+                    ) FILTER (WHERE "categories"."id" IS NOT NULL), '[]'::jsonb
+                ) as "categories"`,
+                `COALESCE(
+                    jsonb_agg(DISTINCT 
+                        jsonb_build_object(
+                            'name', attribute.name, 
+                            'id', attribute.id,
+                            'attributeValues', (
+                                SELECT jsonb_agg(
+                                    DISTINCT jsonb_build_object(
+                                        'id', av.id,
+                                        'name', av.value,
+                                        'index', av.index,
+                                        'image', av.image
+                                    )
+                                )
+                                FROM attribute_values av
+                                WHERE av.attribute_id = attribute.id AND av.deleted_at IS NULL
+                            )
+                        )
+                    ) FILTER (WHERE "attribute"."id" IS NOT NULL), '[]'::jsonb
                 ) AS "attributes"`,
                 `jsonb_agg(
                     DISTINCT jsonb_build_object(
