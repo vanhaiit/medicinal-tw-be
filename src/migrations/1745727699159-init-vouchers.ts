@@ -38,12 +38,12 @@ export class InitVouchers1745727699159 implements MigrationInterface {
                     },
                     {
                         name: 'start_at',
-                        type: 'integer',
+                        type: 'bigint',
                         isNullable: true,
                     },
                     {
                         name: 'expires_at',
-                        type: 'integer',
+                        type: 'bigint',
                         isNullable: true,
                     },
                     {
