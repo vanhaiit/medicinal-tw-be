@@ -12,7 +12,14 @@ export class CartService {
     ) {}
 
     async addToCart(userId: number, dto: AddToCartDto) {
-        await this.itemRepository.checkItemExist(dto.itemId);
+        const missingId = await this.itemRepository.checkItemExist(dto.itemId);
+
+        if (missingId) {
+            throw new HttpException(
+                `Item with ID ${missingId} not found`,
+                HttpStatus.BAD_REQUEST,
+            );
+        }
 
         let cartItem = await this.cartRepository.findOne({
             where: {
@@ -49,12 +56,10 @@ export class CartService {
 
     async removeFromCart(userId: number, itemIds: number[]) {
         if (itemIds.length) {
-            const qb = this.cartRepository
-                .createQueryBuilder()
-                .delete()
-                .where('user_id = :userId', { userId })
-                .andWhere('item_id IN (:...itemIds)', { itemIds });
-            const result = await qb.execute();
+            const result = await this.cartRepository.removeFromCart(
+                userId,
+                itemIds,
+            );
             if (!result.affected) {
                 throw new HttpException(
                     'No items found in cart',

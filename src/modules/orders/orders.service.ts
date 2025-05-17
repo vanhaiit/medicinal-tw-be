@@ -1,3 +1,5 @@
+import { CartRepository } from '@models/repositories/cart.repository';
+import { ItemRepository } from '@models/repositories/item.responsitory';
 import { OrderItemRepository } from '@models/repositories/order-item.repository';
 import { OrderRepository } from '@models/repositories/order.repository';
 import { VoucherRepository } from '@models/repositories/voucher.repositoty';
@@ -16,6 +18,8 @@ export class OrdersService {
         private readonly orderRepository: OrderRepository,
         private readonly orderItemRepository: OrderItemRepository,
         private readonly voucherRepository: VoucherRepository,
+        private readonly itemRepository: ItemRepository,
+        private readonly cartRepository: CartRepository,
     ) {}
 
     async findAll(query: GetOrderRequestDto) {
@@ -25,8 +29,10 @@ export class OrdersService {
         return result.toPageDto(metadata);
     }
 
-    async create(body: CreateOrderDto) {
+    async create(body: CreateOrderDto, userId: number) {
         const payload = mapDto(body, CreateOrderDto);
+
+        const itemIds = payload.orderItems.map(e => e.itemId);
 
         if (!!payload?.voucherId) {
             const voucher = await this.voucherRepository.checkVoucher(
@@ -47,6 +53,15 @@ export class OrdersService {
             }),
         );
 
+        const missingIds = await this.itemRepository.checkItemsExist(itemIds);
+
+        if (missingIds) {
+            throw new HttpException(
+                `Items with IDs ${missingIds.join(', ')} not found`,
+                HttpStatus.BAD_REQUEST,
+            );
+        }
+
         // Create and save order items
         const orderItems = payload.orderItems.map(item => ({
             ...item,
@@ -56,6 +71,19 @@ export class OrdersService {
         await this.orderItemRepository.save(
             this.orderItemRepository.create(orderItems),
         );
+
+        if (userId) {
+            const result = await this.cartRepository.removeFromCart(
+                userId,
+                itemIds,
+            );
+            if (!result.affected) {
+                throw new HttpException(
+                    'No items found in cart',
+                    HttpStatus.NOT_FOUND,
+                );
+            }
+        }
 
         return order;
     }

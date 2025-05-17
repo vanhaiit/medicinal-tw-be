@@ -1,5 +1,5 @@
 import { ItemEntity } from '@models/entities/item.entity';
-import { NotFoundException } from '@nestjs/common';
+import { In } from 'typeorm';
 
 import { GetItemRequestDto } from '@modules/item/dto/get-item.dto';
 
@@ -9,11 +9,25 @@ import { BaseRepository } from './base.repository';
 
 @CustomRepository(ItemEntity)
 export class ItemRepository extends BaseRepository<ItemEntity> {
-    async checkItemExist(id: number): Promise<void> {
+    async checkItemExist(id: number): Promise<any> {
         const item = await this.findOne({ where: { id } });
         if (!item) {
-            throw new NotFoundException(`Item with ID ${id} not found`);
+            return id;
         }
+        return;
+    }
+
+    async checkItemsExist(ids: number[]): Promise<any> {
+        const items = await this.find({ where: { id: In(ids) } });
+
+        if (items.length !== ids.length) {
+            const missingIds = ids.filter(
+                id => !items.some(item => item.id === id),
+            );
+            return missingIds;
+        }
+
+        return;
     }
 
     async getAll(options?: GetItemRequestDto) {

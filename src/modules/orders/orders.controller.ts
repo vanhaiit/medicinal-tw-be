@@ -11,7 +11,7 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
-import { AuthUser } from '@shared/decorators/auth-user.decorator';
+import { AuthUser, TokenUser } from '@shared/decorators/auth-user.decorator';
 import { AuthRoleGuard } from '@shared/decorators/http.decorator';
 import { PublicRoute } from '@shared/decorators/public-route.decorator';
 
@@ -27,8 +27,8 @@ export class OrdersController {
 
     @Post()
     @PublicRoute()
-    create(@Body() body: CreateOrderDto) {
-        return this.ordersService.create(body);
+    create(@TokenUser() user: any, @Body() body: CreateOrderDto) {
+        return this.ordersService.create(body, user.id);
     }
 
     @Get()
