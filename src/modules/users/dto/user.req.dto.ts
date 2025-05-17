@@ -61,6 +61,7 @@ export class GetUserRequestDto extends PageOptionsDto {
     })
     @IsIn([UserType.employee, UserType.customer])
     @IsString()
+    @IsOptional()
     type: string;
 }
 
