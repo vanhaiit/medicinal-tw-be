@@ -110,29 +110,29 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
             });
         }
 
-        if (options?.isActive) {
+        if (options?.isActive !== undefined) {
             query.andWhere('products.isActive = :isActive', {
                 isActive: options.isActive,
             });
         }
-        if (options?.flashSale) {
+        if (options?.flashSale !== undefined) {
             query.andWhere('products.flashSale = :flashSale', {
                 flashSale: options.flashSale,
             });
         }
-        if (options?.bestSeller) {
+        if (options?.bestSeller !== undefined) {
             query.andWhere('products.bestSeller = :bestSeller', {
                 bestSeller: options.bestSeller,
             });
         }
 
-        if (options?.minPrice) {
+        if (options?.minPrice !== undefined) {
             query.andWhere('products.salePrice >= :minPrice', {
                 minPrice: options.minPrice,
             });
         }
 
-        if (options?.maxPrice) {
+        if (options?.maxPrice !== undefined) {
             query.andWhere('products.salePrice <= :maxPrice', {
                 maxPrice: options.maxPrice,
             });
