@@ -106,4 +106,21 @@ export class CartService {
         await this.cartRepository.save(cartItem);
         return { message: 'Cart item quantity updated', cartItem };
     }
+
+    async addManyToCart(userId: number, dtos: AddToCartDto[]) {
+        const results = [];
+        for (const dto of dtos) {
+            try {
+                const result = await this.addToCart(userId, dto);
+                results.push({ success: true, itemId: dto.itemId, result });
+            } catch (error) {
+                results.push({
+                    success: false,
+                    itemId: dto.itemId,
+                    error: error.message,
+                });
+            }
+        }
+        return results;
+    }
 }

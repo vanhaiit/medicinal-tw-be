@@ -48,3 +48,13 @@ export class DeleteCartRequestDto {
     @Type(() => Number)
     ids?: number[];
 }
+
+export class AddManyToCartDto {
+    @ApiProperty({
+        type: [AddToCartDto],
+        description: 'List of items to add to cart',
+    })
+    @IsArray()
+    @Type(() => AddToCartDto)
+    items: AddToCartDto[];
+}

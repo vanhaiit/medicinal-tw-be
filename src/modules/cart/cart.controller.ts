@@ -16,6 +16,7 @@ import { AuthRoleGuard } from '@shared/decorators/http.decorator';
 
 import { CartService } from './cart.service';
 import {
+    AddManyToCartDto,
     AddToCartDto,
     DeleteCartRequestDto,
     UpdateCartDto,
@@ -60,5 +61,11 @@ export class CartController {
     @AuthRoleGuard([])
     getCart(@AuthUser() user: UserEntity) {
         return this.cartService.getCart(user.id);
+    }
+
+    @Post('many')
+    @AuthRoleGuard([])
+    addManyToCart(@AuthUser() user: UserEntity, @Body() dto: AddManyToCartDto) {
+        return this.cartService.addManyToCart(user.id, dto.items);
     }
 }
