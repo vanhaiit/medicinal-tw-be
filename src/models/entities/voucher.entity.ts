@@ -13,33 +13,30 @@ export class VoucherEntity {
 
     @Column({
         name: 'discount_value',
-        type: 'decimal',
-        precision: 10,
-        scale: 2,
+        type: 'float',
     })
     discountValue: number;
 
     @Column({
         name: 'condition_apply',
-        type: 'decimal',
-        precision: 10,
-        scale: 2,
+        type: 'float',
+        nullable: true,
     })
     conditionApply: number;
 
     @Column({ name: 'is_active', type: 'bool', default: true })
     isActive: boolean;
 
-    @Column({ name: 'start_at', type: 'timestamp', nullable: true })
+    @Column({ name: 'start_at', type: 'bigint', nullable: true })
     startAt: number | null;
 
-    @Column({ name: 'expires_at', type: 'timestamp', nullable: true })
+    @Column({ name: 'expires_at', type: 'bigint', nullable: true })
     expiresAt: number | null;
 
-    @Column({ type: 'varchar' })
+    @Column({ type: 'varchar', nullable: true })
     image: string;
 
-    @Column({ name: 'image_mobile', type: 'varchar' })
+    @Column({ name: 'image_mobile', type: 'varchar', nullable: true })
     imageMobile: string;
 
     @Column({

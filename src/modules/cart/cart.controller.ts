@@ -7,6 +7,7 @@ import {
     Param,
     Post,
     Put,
+    Query,
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
@@ -14,7 +15,11 @@ import { AuthUser } from '@shared/decorators/auth-user.decorator';
 import { AuthRoleGuard } from '@shared/decorators/http.decorator';
 
 import { CartService } from './cart.service';
-import { AddToCartDto, UpdateCartDto } from './dtos/cart.req.dto';
+import {
+    AddToCartDto,
+    DeleteCartRequestDto,
+    UpdateCartDto,
+} from './dtos/cart.req.dto';
 
 @ApiTags('Cart')
 @Controller('cart')
@@ -31,9 +36,9 @@ export class CartController {
     @AuthRoleGuard([])
     removeFromCart(
         @AuthUser() user: UserEntity,
-        @Body('itemIds') itemIds: number[],
+        @Query() query: DeleteCartRequestDto,
     ) {
-        return this.cartService.removeFromCart(user.id, itemIds);
+        return this.cartService.removeFromCart(user.id, query.ids);
     }
 
     @Put(':itemId')

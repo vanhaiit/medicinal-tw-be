@@ -48,19 +48,7 @@ export class CartService {
     }
 
     async removeFromCart(userId: number, itemIds: number[]) {
-        if (itemIds.length === 1) {
-            const result = await this.cartRepository.delete({
-                userId,
-                itemId: itemIds[0],
-            });
-            if (!result.affected) {
-                throw new HttpException(
-                    'Item not found in cart',
-                    HttpStatus.NOT_FOUND,
-                );
-            }
-            return { message: 'Item removed from cart' };
-        } else if (itemIds.length > 1) {
+        if (itemIds.length) {
             const qb = this.cartRepository
                 .createQueryBuilder()
                 .delete()

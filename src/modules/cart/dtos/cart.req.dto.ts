@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsInt, Min } from 'class-validator';
+import { Expose, Transform, Type } from 'class-transformer';
+import { IsArray, IsInt, IsNumber, IsOptional, Min } from 'class-validator';
 
 export class AddToCartDto {
     @ApiProperty({ description: 'Product ID to add to cart', example: 1 })
@@ -31,4 +32,19 @@ export class UpdateCartDto {
         required: false,
     })
     note?: string;
+}
+
+export class DeleteCartRequestDto {
+    @ApiProperty({
+        type: [Number],
+        description: 'Array of comment IDs to delete',
+        required: false,
+    })
+    @Expose()
+    @IsArray()
+    @IsNumber({}, { each: true })
+    @IsOptional()
+    @Transform(({ value }) => (Array.isArray(value) ? value : [value]))
+    @Type(() => Number)
+    ids?: number[];
 }
