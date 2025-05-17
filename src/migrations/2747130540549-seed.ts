@@ -22,7 +22,7 @@ export class Seed2747130540549 implements MigrationInterface {
         await queryRunner.query(`
             INSERT INTO "user" (id, username, email, phone, bod, is_locked, status, description, hash, salt, type, created_at, updated_at)
             VALUES 
-            (1, 'string', 'abc@gmail.com', '0987654321', 'string', 'UNLOCKED', 'ACTIVE', '', '$2b$10$pinX8QyPFkFdIsr3WkPD8u5/8N4eY4FKeiTNqLmpYHkJurtDzB52W', '$2b$10$pinX8QyPFkFdIsr3WkPD8u', 'customer', '2025-05-12 16:56:37.791', '2025-05-12 16:56:37.791')
+            (1, 'string', 'abc@gmail.com', '0987654321', 'string', 'UNLOCKED', 'ACTIVE', '', '$2b$10$pinX8QyPFkFdIsr3WkPD8u5/8N4eY4FKeiTNqLmpYHkJurtDzB52W', '$2b$10$pinX8QyPFkFdIsr3WkPD8u', 'employee', '2025-05-12 16:56:37.791', '2025-05-12 16:56:37.791')
         `);
 
         // Seed role_permissions
