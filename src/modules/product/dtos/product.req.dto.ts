@@ -687,7 +687,7 @@ export class GetProductRequestDto extends PageOptionsDto {
         required: false,
     })
     @Transform(({ value }) =>
-        value === 'true' ? true : value === 'false' ? false : false,
+        value === 'true' ? true : value === 'false' ? false : undefined,
     )
     @IsOptional()
     flashSale?: boolean;
@@ -698,7 +698,7 @@ export class GetProductRequestDto extends PageOptionsDto {
         required: false,
     })
     @Transform(({ value }) =>
-        value === 'true' ? true : value === 'false' ? false : false,
+        value === 'true' ? true : value === 'false' ? false : undefined,
     )
     @IsOptional()
     bestSeller?: boolean;
