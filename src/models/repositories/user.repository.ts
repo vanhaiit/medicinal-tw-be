@@ -102,9 +102,11 @@ export class UserRepository extends BaseRepository<UserEntity> {
                 'profile.avatar as "profileAvatar"',
                 'profile.updatedAt as "profileUpdatedAt"',
                 'profile.createdAt as "profileCreatedAt"',
+                '(SELECT COUNT(*) FROM cart WHERE cart.user_id = user.id) as "cartItemCount"',
             ])
             .where('user.id = :id', { id })
-            .leftJoin('user.profile', 'profile');
+            .leftJoin('user.profile', 'profile')
+            .leftJoin('user.carts', 'cart');
         return query.getRawOne();
     }
 }
