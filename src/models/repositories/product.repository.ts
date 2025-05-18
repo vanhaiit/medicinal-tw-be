@@ -42,6 +42,9 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
                 'products.flashSale AS "flashSale"',
                 'products.bestSeller AS "bestSeller"',
                 'products.isActive AS "isActive"',
+                'products.attributeValueIds AS "attributeValueIds"',
+                'products.createdAt AS "createdAt"',
+                'products.updatedAt AS "updatedAt"',
                 'COALESCE(AVG(NULLIF(comments.rating, 0)), 0) AS "avgRating"',
                 `COALESCE(
                     jsonb_agg(DISTINCT 
@@ -233,6 +236,9 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
                 'products.flashSale AS "flashSale"',
                 'products.bestSeller AS "bestSeller"',
                 'products.isActive AS "isActive"',
+                'products.attributeValueIds AS "attributeValueIds"',
+                'products.createdAt AS "createdAt"',
+                'products.updatedAt AS "updatedAt"',
                 'COUNT(DISTINCT comments.id) AS "commentCount"',
                 'COALESCE(AVG(NULLIF(comments.rating, 0)), 0) AS "avgRating"',
                 '(SELECT COUNT(*) FROM wishlist w WHERE w.product_id = products.id AND w.deleted_at IS NULL) AS "totalLike"',
