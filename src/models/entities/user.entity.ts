@@ -7,6 +7,7 @@ import {
     PrimaryGeneratedColumn,
 } from 'typeorm';
 
+import { CartEntity } from './cart.entity';
 import { OrderEntity } from './order.entity';
 import { ProfileEntity } from './profile.entity';
 import { UsersRoleEntity } from './users-role.entity';
@@ -75,4 +76,7 @@ export class UserEntity {
 
     @OneToOne(() => ProfileEntity, profile => profile.user)
     profile: ProfileEntity;
+
+    @OneToMany(() => CartEntity, cart => cart.user)
+    carts: CartEntity[];
 }
