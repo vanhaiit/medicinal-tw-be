@@ -321,6 +321,17 @@ export class CreateProductReqDto {
 
     @Expose()
     @ApiProperty({
+        description: 'List of attributeValueIds',
+        example: [1],
+        required: true,
+    })
+    @IsOptional()
+    @IsArray()
+    @IsInt({ each: true })
+    attributeValueIds?: number[];
+
+    @Expose()
+    @ApiProperty({
         description: 'List of tag IDs or tag names',
         example: ['tag1', 'tag2'],
         required: false,
@@ -542,6 +553,17 @@ export class UpdateProductReqDto {
     @IsArray()
     @IsString({ each: true })
     galleryImages?: string[];
+
+    @Expose()
+    @ApiProperty({
+        description: 'List of attributeValueIds',
+        example: [1, 2],
+        required: false,
+    })
+    @IsOptional()
+    @IsArray()
+    @IsInt({ each: true })
+    attributeValueIds?: number[];
 
     @Expose()
     @ApiProperty({

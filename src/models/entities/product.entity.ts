@@ -107,6 +107,14 @@ export class ProductEntity {
     galleryImages: string[];
 
     @Column({
+        name: 'attribute_value_ids',
+        type: 'jsonb',
+        nullable: true,
+        comment: 'List of tag IDs or tag names',
+    })
+    attributeValueIds: number[];
+
+    @Column({
         name: 'tags',
         type: 'jsonb',
         nullable: true,

@@ -163,6 +163,14 @@ export class ProductResDto {
     tags?: string[];
 
     @ApiProperty({
+        description: 'List of attributeValueIds',
+        example: [1],
+        required: false,
+    })
+    @Expose()
+    attributeValueIds?: number[];
+
+    @ApiProperty({
         description: 'SEO meta title',
         example: 'Quần Đen Cao Cấp',
         required: false,

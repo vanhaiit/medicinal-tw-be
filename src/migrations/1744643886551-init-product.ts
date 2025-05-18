@@ -83,6 +83,12 @@ export class InitProduct1744643886551 implements MigrationInterface {
                         comment: 'List of URLs or paths to gallery images',
                     },
                     {
+                        name: 'attribute_value_ids',
+                        type: 'jsonb',
+                        isNullable: true,
+                        comment: 'List of attribute_value_ids',
+                    },
+                    {
                         name: 'tags',
                         type: 'jsonb',
                         isNullable: true,
