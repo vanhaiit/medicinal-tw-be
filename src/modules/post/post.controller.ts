@@ -35,7 +35,7 @@ export class PostController {
 
     @Get(':id')
     @PublicRoute()
-    getDetail(@Param('id') id: number) {
+    getDetail(@Param('id') id: number | string) {
         return this.postService.getPostDetail(id);
     }
 

@@ -52,7 +52,7 @@ export class PostService {
         });
     }
 
-    async getPostDetail(id: number) {
-        return this.postRepository.getDetail(id);
+    async getPostDetail(identifier: number | string) {
+        return this.postRepository.getDetail(identifier);
     }
 }

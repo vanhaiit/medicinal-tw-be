@@ -44,11 +44,16 @@ export class PostRepository extends BaseRepository<PostEntity> {
         return query.getMany();
     }
 
-    async getDetail(id: number) {
-        return this.createQueryBuilder('post')
+    async getDetail(identifier: number | string) {
+        const query = this.createQueryBuilder('post')
             .leftJoinAndSelect('post.category', 'category')
             .leftJoinAndSelect('post.user', 'user')
-            .where('post.id = :id', { id })
-            .getOne();
+            .where(
+                typeof identifier === 'number'
+                    ? 'post.id = :identifier'
+                    : 'post.slug = :identifier',
+                { identifier },
+            );
+        return query.getOne();
     }
 }
