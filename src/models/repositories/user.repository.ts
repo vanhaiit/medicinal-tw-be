@@ -81,6 +81,8 @@ export class UserRepository extends BaseRepository<UserEntity> {
 
     async getUserById(id: number): Promise<UserEntity> {
         const query = this.createQueryBuilder('user')
+            .leftJoin('user.profile', 'profile')
+            .leftJoin('user.carts', 'cart')
             .select([
                 'user.id as "userId"',
                 'user.username as "userName"',
@@ -102,11 +104,9 @@ export class UserRepository extends BaseRepository<UserEntity> {
                 'profile.avatar as "profileAvatar"',
                 'profile.updatedAt as "profileUpdatedAt"',
                 'profile.createdAt as "profileCreatedAt"',
-                '(SELECT COUNT(*) FROM cart WHERE cart.user_id = user.id) as "cartItemCount"',
+                '(SELECT COUNT(*) FROM carts WHERE carts.user_id = user.id) as "cartItemCount"',
             ])
-            .where('user.id = :id', { id })
-            .leftJoin('user.profile', 'profile')
-            .leftJoin('user.carts', 'cart');
+            .where('user.id = :id', { id });
         return query.getRawOne();
     }
 }
