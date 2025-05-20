@@ -16,7 +16,11 @@ import { AuthRoleGuard } from '@shared/decorators/http.decorator';
 import { PublicRoute } from '@shared/decorators/public-route.decorator';
 
 import { CreateOrderDto } from './dto/create-order.dto';
-import { DeleteOrderRequestDto, GetOrderRequestDto } from './dto/order.req.dto';
+import {
+    DeleteOrderRequestDto,
+    GetOrderOwnerRequestDto,
+    GetOrderRequestDto,
+} from './dto/order.req.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { OrdersService } from './orders.service';
 
@@ -45,8 +49,11 @@ export class OrdersController {
 
     @Get('owner')
     @AuthRoleGuard([])
-    findByUserId(@AuthUser() user: UserEntity) {
-        return this.ordersService.findByUserId(user.id);
+    findByUserId(
+        @AuthUser() user: UserEntity,
+        @Query() query: GetOrderOwnerRequestDto,
+    ) {
+        return this.ordersService.findByUserId(user.id, query);
     }
 
     @Put(':id')

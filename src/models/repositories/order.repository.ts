@@ -1,6 +1,9 @@
 import { OrderEntity } from '@models/entities/order.entity';
 
-import { GetOrderRequestDto } from '@modules/orders/dto/order.req.dto';
+import {
+    GetOrderOwnerRequestDto,
+    GetOrderRequestDto,
+} from '@modules/orders/dto/order.req.dto';
 
 import { CustomRepository } from '@shared/decorators/typeorm-ex.decorator';
 import { PageOptionsDto } from '@shared/dtos/page-options.dto';
@@ -19,11 +22,29 @@ export class OrderRepository extends BaseRepository<OrderEntity> {
             .getOne();
     }
 
-    async getOrdersByUserId(userId: number): Promise<OrderEntity[]> {
-        return this.createQueryBuilder('orders')
+    async getOrdersByUserId(
+        userId: number,
+        options: GetOrderOwnerRequestDto,
+    ): Promise<OrderEntity[]> {
+        const query = this.createQueryBuilder('orders')
             .leftJoinAndSelect('orders.orderItems', 'orderItems')
             .leftJoinAndSelect('orderItems.item', 'item')
-            .where('orders.user_id = :userId', { userId })
+            .leftJoinAndSelect('orders.user', 'user');
+
+        if (options.status) {
+            query.andWhere('orders.status = :status', {
+                status: options.status,
+            });
+        }
+
+        if (options.paymentMethod) {
+            query.andWhere('orders.payment_method = :paymentMethod', {
+                paymentMethod: options.paymentMethod,
+            });
+        }
+
+        return query
+            .andWhere('orders.user_id = :userId', { userId })
             .orderBy('orders.createdAt', 'DESC')
             .getMany();
     }

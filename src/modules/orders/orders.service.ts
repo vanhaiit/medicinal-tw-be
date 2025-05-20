@@ -9,7 +9,11 @@ import { httpErrors } from 'constant/http-error.constant';
 import mapDto from '@shared/helpers/mapdto';
 
 import { CreateOrderDto } from './dto/create-order.dto';
-import { DeleteOrderRequestDto, GetOrderRequestDto } from './dto/order.req.dto';
+import {
+    DeleteOrderRequestDto,
+    GetOrderOwnerRequestDto,
+    GetOrderRequestDto,
+} from './dto/order.req.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 
 @Injectable()
@@ -92,8 +96,8 @@ export class OrdersService {
         return this.orderRepository.getOrderWithItems(id);
     }
 
-    async findByUserId(userId: number) {
-        return this.orderRepository.getOrdersByUserId(userId);
+    async findByUserId(userId: number, options: GetOrderOwnerRequestDto) {
+        return this.orderRepository.getOrdersByUserId(userId, options);
     }
 
     async update(id: number, body: UpdateOrderDto) {

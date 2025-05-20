@@ -1,6 +1,14 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Expose, Transform, Type } from 'class-transformer';
-import { IsArray, IsIn, IsNumber, IsOptional, IsString } from 'class-validator';
+import {
+    IsArray,
+    IsEnum,
+    IsIn,
+    IsNumber,
+    IsOptional,
+    IsString,
+} from 'class-validator';
+import { EOrderStatus } from 'constant/order.constant';
 
 import { StringFieldOption } from '@shared/decorators/field.decorator';
 import { PageOptionsDto } from '@shared/dtos/page-options.dto';
@@ -16,10 +24,15 @@ export class GetOrderRequestDto extends PageOptionsDto {
     @IsOptional()
     search: string;
 
-    @ApiPropertyOptional({ required: false })
-    @IsString()
+    @Expose()
+    @ApiProperty({
+        description: 'Product status',
+        example: EOrderStatus.completed,
+        enum: EOrderStatus,
+    })
+    @IsEnum(EOrderStatus)
     @IsOptional()
-    status: string;
+    status?: EOrderStatus;
 
     @ApiPropertyOptional({ required: false })
     @IsString()
@@ -31,6 +44,23 @@ export class GetOrderRequestDto extends PageOptionsDto {
     @IsOptional()
     @Type(() => Number)
     userId: number;
+}
+
+export class GetOrderOwnerRequestDto {
+    @Expose()
+    @ApiProperty({
+        description: 'Product status',
+        example: EOrderStatus.completed,
+        enum: EOrderStatus,
+    })
+    @IsEnum(EOrderStatus)
+    @IsOptional()
+    status?: EOrderStatus;
+
+    @ApiPropertyOptional({ required: false })
+    @IsString()
+    @IsOptional()
+    paymentMethod: string;
 }
 
 export class DeleteOrderRequestDto {
