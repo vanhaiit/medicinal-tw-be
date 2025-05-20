@@ -1,3 +1,4 @@
+import { ProfileRepository } from '@models/repositories/profile.repository';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
@@ -12,7 +13,10 @@ import { UserRepository } from 'models/repositories/user.repository';
 import { Raw } from 'typeorm';
 import { Transactional } from 'typeorm-transactional';
 
+import { CreateProfileDto } from '@modules/profile/dtos/create-profile.dto';
+
 import { JwtPayloadDto } from '@shared/dtos/jwt-payload.dto';
+import mapDto from '@shared/helpers/mapdto';
 import { getRedisUserKey } from '@shared/utils/redis';
 
 import {
@@ -26,7 +30,8 @@ export class AuthService {
     constructor(
         private readonly configService: ConfigService,
         private readonly jwtService: JwtService,
-        private readonly userRepository: UserRepository, // @Inject('REDIS_CACHE_MANAGER') private readonly cacheManager: Cache,
+        private readonly userRepository: UserRepository,
+        private readonly profileRepository: ProfileRepository, // @Inject('REDIS_CACHE_MANAGER') private readonly cacheManager: Cache,
     ) {}
 
     checkUserExist(email: string) {
@@ -75,7 +80,18 @@ export class AuthService {
                 HttpStatus.BAD_REQUEST,
             );
 
-        return await this.createNewUser(data);
+        const user = await this.createNewUser(data);
+
+        const payload = mapDto(
+            { userId: user.id, phone: data.phone },
+            CreateProfileDto,
+        );
+
+        const profile = this.profileRepository.create(payload);
+
+        await this.profileRepository.save(profile);
+
+        return user;
     }
 
     async login(data: LoginBodyRequestDto) {

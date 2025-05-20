@@ -1,3 +1,4 @@
+import { ProfileRepository } from '@models/repositories/profile.repository';
 import { UserRepository } from '@models/repositories/user.repository';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -32,7 +33,10 @@ import { PublicStrategy } from './public.strategy';
         }),
 
         ConfigModule,
-        TypeOrmExModule.forCustomRepository([UserRepository]),
+        TypeOrmExModule.forCustomRepository([
+            UserRepository,
+            ProfileRepository,
+        ]),
     ],
     providers: [AuthService, JwtStrategy, PublicStrategy, MailerService],
     controllers: [AuthController, AdminAuthController],
