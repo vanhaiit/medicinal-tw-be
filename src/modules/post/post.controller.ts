@@ -35,8 +35,14 @@ export class PostController {
 
     @Get(':id')
     @PublicRoute()
-    getDetail(@Param('id') id: number | string) {
-        return this.postService.getPostDetail(id);
+    getDetail(@Param('id') id: string) {
+        let condition: { id?: number; slug?: string } = {};
+        if (typeof id === 'number' || !isNaN(Number(id))) {
+            condition = { id: Number(id) };
+        } else {
+            condition = { slug: id };
+        }
+        return this.postService.getPostDetail(condition.id, condition.slug);
     }
 
     @Delete()

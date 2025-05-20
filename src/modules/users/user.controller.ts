@@ -40,7 +40,7 @@ export class UserController {
     }
 
     @Get(':id')
-    @AuthRoleGuard(['employee'])
+    @AuthRoleGuard([])
     getDetail(@Param('id') id: number, @AuthUser() user: UserEntity) {
         return this.userService.findUserById(id || user.id);
     }

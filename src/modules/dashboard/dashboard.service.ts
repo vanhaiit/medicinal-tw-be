@@ -271,7 +271,7 @@ export class DashboardService {
         }
 
         return {
-            labels: result.map(r => r.product),
+            labels: result.map(r => r.product.name),
             data: result.map(r => parseInt(r.sales)),
         };
     }

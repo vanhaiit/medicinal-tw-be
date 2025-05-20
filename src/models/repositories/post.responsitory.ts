@@ -44,16 +44,32 @@ export class PostRepository extends BaseRepository<PostEntity> {
         return query.getMany();
     }
 
-    async getDetail(identifier: number | string) {
+    async getDetail(id?: number, slug?: string) {
         const query = this.createQueryBuilder('post')
-            .leftJoinAndSelect('post.category', 'category')
-            .leftJoinAndSelect('post.user', 'user')
-            .where(
-                typeof identifier === 'number'
-                    ? 'post.id = :identifier'
-                    : 'post.slug = :identifier',
-                { identifier },
-            );
-        return query.getOne();
+            .select([
+                'post.id AS "id"',
+                'post.userId AS "userId"',
+                'post.categoryId AS "categoryId"',
+                'post.title AS "title"',
+                'post.slug AS "slug"',
+                'post.content AS "content"',
+                'post.status AS "status"',
+                'post.shortDescription AS "shortDescription"',
+                'post.featuredImage AS "featuredImage"',
+                'post.galleryImages AS "galleryImages"',
+                'post.createdAt AS "createdAt"',
+                'post.updatedAt AS "updatedAt"',
+                'category.name AS "categoryName"',
+                'category.shortDescription AS "categoryShortDescription"',
+                'category.image AS "categoryImage"',
+                'category.slug AS "categorySlug"',
+                'user.email AS "userEmail"',
+                'user.username AS "userUsername"',
+            ])
+            .leftJoin('post.category', 'category')
+            .leftJoin('post.user', 'user')
+            .where('post.id = :id', { id })
+            .orWhere('post.slug = :slug', { slug });
+        return query.getRawOne();
     }
 }
