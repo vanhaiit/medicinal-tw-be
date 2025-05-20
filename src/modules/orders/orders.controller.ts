@@ -28,7 +28,7 @@ export class OrdersController {
     @Post()
     @PublicRoute()
     create(@TokenUser() user: any, @Body() body: CreateOrderDto) {
-        return this.ordersService.create(body, user.id);
+        return this.ordersService.create(body, user?.id);
     }
 
     @Get()

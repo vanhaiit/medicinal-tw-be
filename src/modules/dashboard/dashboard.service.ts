@@ -227,13 +227,12 @@ export class DashboardService {
         );
 
         const query = `
-            WITH product_sales AS (
+            WITH item_sales AS (
                 SELECT 
-                    p.name as product,
+                    i.name as item,
                     COALESCE(SUM(oi.quantity), 0) as sales
                 FROM 
-                    public.products p
-                    LEFT JOIN public.items i ON i.product_id = p.id
+                    public.items i
                     LEFT JOIN public.order_items oi ON oi.item_id = i.id
                     LEFT JOIN public.orders o ON o.id = oi.order_id
                 WHERE 
@@ -241,16 +240,16 @@ export class DashboardService {
                     AND o.created_at <= $2
                     AND o.status = '${EOrderStatus.completed}'
                 GROUP BY 
-                    p.name
+                    i.name
                 ORDER BY 
                     sales DESC
                 LIMIT 10
             )
             SELECT 
-                product,
+                item,
                 sales
             FROM 
-                product_sales
+                item_sales
             WHERE 
                 sales > 0
             ORDER BY 
@@ -264,15 +263,9 @@ export class DashboardService {
 
         // If no results, return empty arrays
         if (!result || result.length === 0) {
-            return {
-                labels: [],
-                data: [],
-            };
+            return result;
         }
 
-        return {
-            labels: result.map(r => r.product.name),
-            data: result.map(r => parseInt(r.sales)),
-        };
+        return result;
     }
 }

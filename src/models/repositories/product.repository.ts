@@ -111,7 +111,7 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
                     { userId },
                 )
                 .addSelect(
-                    `BOOL_OR(wishlist.productId IS NOT NULL) AS isLiked`,
+                    `BOOL_OR(wishlist.productId IS NOT NULL) AS "isLiked"`,
                 );
         }
 
@@ -370,7 +370,7 @@ export class ProductRepository extends BaseRepository<ProductEntity> {
                     { userId },
                 )
                 .addSelect(
-                    `BOOL_OR(wishlist.productId IS NOT NULL) AS isLiked`,
+                    `BOOL_OR(wishlist.productId IS NOT NULL) AS "isLiked"`,
                 );
         }
         return await query.getRawOne();
