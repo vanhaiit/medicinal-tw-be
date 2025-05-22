@@ -19,8 +19,8 @@ export class ProfileEntity {
     @Column({ name: 'user_id' })
     userId: number;
 
-    @Column({ name: 'full_name', type: 'varchar', length: 255 })
-    fullName: string;
+    @Column({ name: 'full_name', type: 'varchar', length: 255, nullable: true })
+    fullName?: string;
 
     @Column({ name: 'gender', type: 'varchar', length: 10, nullable: true })
     gender?: string;

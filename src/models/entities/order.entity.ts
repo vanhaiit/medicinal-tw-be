@@ -124,6 +124,20 @@ export class OrderEntity {
     rate: number;
 
     @Column({
+        nullable: true,
+        comment: 'shipping code',
+        name: 'shipping_code',
+    })
+    shippingCode: string;
+
+    @Column({
+        nullable: true,
+        comment: 'shipping branch',
+        name: 'shipping_branch',
+    })
+    shippingBranch: string;
+
+    @Column({
         name: 'created_at',
         type: 'timestamp',
         default: () => 'CURRENT_TIMESTAMP',

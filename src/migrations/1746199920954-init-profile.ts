@@ -24,7 +24,7 @@ export class InitProfile1746199920954 implements MigrationInterface {
                         name: 'full_name',
                         type: 'varchar',
                         length: '255',
-                        isNullable: false,
+                        isNullable: true,
                         comment: 'Tên đầy đủ',
                     },
                     {

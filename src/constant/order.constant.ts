@@ -5,6 +5,11 @@ export enum EOrderStatus {
     cancelled = 'cancelled',
 }
 
+export enum EOrderShippingBranch {
+    ghn = 'GHN',
+    ghtk = 'GHTK',
+}
+
 export enum EOrderPaymentMethod {
     cash = 1,
     creditCard = 2,

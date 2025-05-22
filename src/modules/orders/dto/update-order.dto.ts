@@ -3,12 +3,17 @@ import { Expose, Type } from 'class-transformer';
 import {
     IsEmail,
     IsEnum,
+    IsNotEmpty,
     IsNumber,
     IsOptional,
     IsString,
     ValidateNested,
 } from 'class-validator';
-import { EOrderPaymentMethod, EOrderStatus } from 'constant/order.constant';
+import {
+    EOrderPaymentMethod,
+    EOrderShippingBranch,
+    EOrderStatus,
+} from 'constant/order.constant';
 
 import { CreateOrderItemDto } from './create-order-item.dto';
 
@@ -62,6 +67,27 @@ export class UpdateOrderDto {
     @IsString()
     @IsOptional()
     description?: string;
+
+    @Expose()
+    @ApiProperty({
+        description: 'Shipping code',
+        example: 'GH328728394',
+    })
+    @IsString()
+    @IsOptional()
+    shippingCode: string;
+
+    @Expose()
+    @ApiProperty({
+        description: 'Current status of the order',
+        example: EOrderShippingBranch.ghn,
+        enum: EOrderShippingBranch,
+        required: false,
+    })
+    @IsString()
+    @IsEnum(EOrderShippingBranch)
+    @IsOptional()
+    shippingBranch: string;
 
     @Expose()
     @ApiProperty({

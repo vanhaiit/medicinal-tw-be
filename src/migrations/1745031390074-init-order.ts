@@ -100,6 +100,16 @@ export class InitOrder1745031390074 implements MigrationInterface {
                         isNullable: true,
                     },
                     {
+                        name: 'shipping_code',
+                        type: 'varchar',
+                        isNullable: true,
+                    },
+                    {
+                        name: 'shipping_branch',
+                        type: 'varchar',
+                        isNullable: true,
+                    },
+                    {
                         name: 'created_at',
                         type: 'timestamp',
                         default: 'CURRENT_TIMESTAMP',
