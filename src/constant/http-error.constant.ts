@@ -5,8 +5,12 @@ export const httpErrors = {
         code: 'USER_00031',
     },
     USERNAME_EXISTED: {
-        message: 'Tên người dùng đã tồn tại.',
+        message: 'Người dùng đã tồn tại.',
         code: 'USER_00034',
+    },
+    CODE_INVALID: {
+        message: 'Mã xác thực không đúng.',
+        code: 'USER_00035',
     },
     PASSWORD_IS_CORRECT: {
         message: 'Mật khẩu không chính xác.',

@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Expose } from 'class-transformer';
-import { IsEmail, IsOptional, IsPhoneNumber, IsString } from 'class-validator';
+import { IsEmail, IsNumber, IsOptional, IsPhoneNumber, IsString } from 'class-validator';
 
 import { StringField } from '@shared/decorators/field.decorator';
 
@@ -22,6 +22,11 @@ export class SignUpRequestDto {
     @IsString()
     @IsOptional()
     username: string;
+
+
+    @ApiProperty({required: true, example: 526736})
+    @IsNumber()
+    code: number;
 
     @ApiProperty({ example: '0987654321' })
     @Expose()

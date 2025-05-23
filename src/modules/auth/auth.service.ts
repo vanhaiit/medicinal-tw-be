@@ -32,7 +32,7 @@ export class AuthService {
         private readonly jwtService: JwtService,
         private readonly userRepository: UserRepository,
         private readonly profileRepository: ProfileRepository, // @Inject('REDIS_CACHE_MANAGER') private readonly cacheManager: Cache,
-    ) {}
+    ) { }
 
     checkUserExist(email: string) {
         return this.userRepository.existsBy({
@@ -70,15 +70,36 @@ export class AuthService {
 
     @Transactional()
     async signUp(data: SignUpRequestDto) {
-        const { email } = data;
+        const { email, code, phone } = data;
 
         const existPhone = await this.checkUserExist(email);
 
-        if (existPhone)
+        if (existPhone) {
             throw new HttpException(
                 httpErrors.USERNAME_EXISTED,
                 HttpStatus.BAD_REQUEST,
             );
+        }
+
+        const ESMS_CHECK_URL = this.configService.get<string>('ESMS_CHECK_URL');
+        const ESMS_API_KEY = this.configService.get<string>(
+            'ESMS_API_KEY',
+        )
+        const ESMS_API_SECRET = this.configService.get<string>(
+            'ESMS_API_SECRET',
+        );
+
+        const url = `${ESMS_CHECK_URL}?ApiKey=${ESMS_API_KEY}&SecretKey=${ESMS_API_SECRET}&Phone=${phone}&Code=${code}`;
+
+        const response = await fetch(url);
+        const sms = await response.json();
+
+        if (sms?.CodeResult === "117") {
+            throw new HttpException(
+                httpErrors.CODE_INVALID,
+                HttpStatus.BAD_REQUEST,
+            );
+        }
 
         const user = await this.createNewUser(data);
 
@@ -193,6 +214,39 @@ export class AuthService {
         )}/reset-password?token=${token?.accessToken}`;
 
         return { url: resetUrl };
+    }
+
+    async getOTP(phone: string) {
+
+        const phoneRegex = /^(0|\+84)([3|5|7|8|9])([0-9]{8})$/;
+        if (!phoneRegex.test(phone)) {
+            throw new HttpException(
+                'Invalid phone number format',
+                HttpStatus.BAD_REQUEST
+            );
+        }
+
+        const ESMS_URL = this.configService.get<string>('ESMS_URL');
+        const ESMS_API_KEY = this.configService.get<string>(
+            'ESMS_API_KEY',
+        )
+        const ESMS_API_SECRET = this.configService.get<string>(
+            'ESMS_API_SECRET',
+        );
+        const ESMS_MSG = this.configService.get<string>('ESMS_MSG');
+
+        const ESMS_BRANCH = this.configService.get<string>('ESMS_BRANCH');
+
+
+        const url = `${ESMS_URL}?Phone=${phone}&ApiKey=${ESMS_API_KEY}&SecretKey=${ESMS_API_SECRET}&TimeAlive=2&Brandname=${ESMS_BRANCH}&Type=2&message=${ESMS_MSG}&IsNumber=1`
+
+        const response = await fetch(url);
+
+        if (!response.ok) {
+            throw new HttpException('Failed to send OTP', HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        return await response.json();
     }
 
     private getToken(payload: Omit<JwtPayloadDto, 'iat' | 'exp'>) {

@@ -15,6 +15,7 @@ import {
     GetOrderRequestDto,
 } from './dto/order.req.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
+import { Transactional } from 'typeorm-transactional';
 
 @Injectable()
 export class OrdersService {
@@ -33,6 +34,7 @@ export class OrdersService {
         return result.toPageDto(metadata);
     }
 
+    @Transactional()
     async create(body: CreateOrderDto, userId: number) {
         const payload = mapDto(body, CreateOrderDto);
 
@@ -77,16 +79,10 @@ export class OrdersService {
         );
 
         if (userId) {
-            const result = await this.cartRepository.removeFromCart(
+            await this.cartRepository.removeFromCart(
                 userId,
                 itemIds,
             );
-            if (!result.affected) {
-                throw new HttpException(
-                    'No items found in cart',
-                    HttpStatus.NOT_FOUND,
-                );
-            }
         }
 
         return order;

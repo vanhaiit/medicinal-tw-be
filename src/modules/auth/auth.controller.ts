@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 
 import { ApiPageOkResponse } from '@shared/decorators/api-ok-response.decorator';
@@ -64,5 +64,12 @@ export class AuthController {
     @ApiPageOkResponse({ type: ForgotPasswordResponseDto })
     getSecretKey(@Body() body: ForgotPasswordRequestDto) {
         return this.authService.forgotPassword(body.email);
+    }
+
+    @Get('otp/:phone')
+    @PublicRoute()
+    @ApiPageOkResponse({ type: ForgotPasswordResponseDto })
+    getOTP( @Param('phone') phone: string,) {
+        return this.authService.getOTP(phone);
     }
 }
