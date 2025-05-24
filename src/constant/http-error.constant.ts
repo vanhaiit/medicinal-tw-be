@@ -8,6 +8,11 @@ export const httpErrors = {
         message: 'Người dùng đã tồn tại.',
         code: 'USER_00034',
     },
+
+    USERNAME_PHONE_EXISTED: {
+        message: 'Sdt đã tồn tại.',
+        code: 'USER_00034',
+    },
     CODE_INVALID: {
         message: 'Mã xác thực không đúng.',
         code: 'USER_00035',

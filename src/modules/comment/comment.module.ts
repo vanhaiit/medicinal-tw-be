@@ -9,12 +9,14 @@ import { TypeOrmExModule } from '@shared/decorators/typeorm-ex.module';
 
 import { CommentController } from './comment.controller';
 import { CommentService } from './comment.service';
+import { ProductRepository } from '@models/repositories/product.repository';
 
 @Module({
     imports: [
         TypeOrmExModule.forCustomRepository([
             CommentRepository,
             ProductCategoryRepository,
+            ProductRepository
         ]),
     ],
     controllers: [CommentController],

@@ -51,4 +51,10 @@ export class CommentController {
     createComment(@Body() body: CommentRequestDto) {
         return this.commentService.createComment(body);
     }
+
+    @Get('rate-count/:productId')
+    @PublicRoute()
+    getRateCount(@Query('productId') productId: number) {
+        return this.commentService.getRateCount(productId);
+    }
 }

@@ -226,6 +226,17 @@ export class AuthService {
             );
         }
 
+        const user = await this.userRepository.findOne({
+            where: { phone },
+        });
+
+        if (user) {
+            throw new HttpException(
+                httpErrors.USERNAME_EXISTED,
+                HttpStatus.BAD_REQUEST,
+            );
+        }
+
         const ESMS_URL = this.configService.get<string>('ESMS_URL');
         const ESMS_API_KEY = this.configService.get<string>(
             'ESMS_API_KEY',
