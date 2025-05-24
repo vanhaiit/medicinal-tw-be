@@ -24,6 +24,7 @@ import {
     LoginBodyRequestDto,
     SignUpRequestDto,
 } from './dtos/auth.request.dto';
+import { getOtpSms, verifyOtpSms } from '@shared/utils/sms';
 
 @Injectable()
 export class AuthService {
@@ -81,24 +82,20 @@ export class AuthService {
             );
         }
 
-        const ESMS_CHECK_URL = this.configService.get<string>('ESMS_CHECK_URL');
-        const ESMS_API_KEY = this.configService.get<string>(
-            'ESMS_API_KEY',
-        )
-        const ESMS_API_SECRET = this.configService.get<string>(
-            'ESMS_API_SECRET',
-        );
-
-        const url = `${ESMS_CHECK_URL}?ApiKey=${ESMS_API_KEY}&SecretKey=${ESMS_API_SECRET}&Phone=${phone}&Code=${code}`;
-
-        const response = await fetch(url);
-        const sms = await response.json();
-
-        if (sms?.CodeResult === "117") {
-            throw new HttpException(
-                httpErrors.CODE_INVALID,
-                HttpStatus.BAD_REQUEST,
-            );
+        const sms = await verifyOtpSms(phone, code);
+        switch (sms?.CodeResult) {
+            case "117":
+                throw new HttpException(
+                    httpErrors.CODE_INVALID,
+                    HttpStatus.BAD_REQUEST,
+                );
+            case "101":
+                throw new HttpException(
+                    'Authorize Failed',
+                    HttpStatus.BAD_REQUEST,
+                );
+            default:
+                break;
         }
 
         const user = await this.createNewUser(data);
@@ -237,27 +234,7 @@ export class AuthService {
             );
         }
 
-        const ESMS_URL = this.configService.get<string>('ESMS_URL');
-        const ESMS_API_KEY = this.configService.get<string>(
-            'ESMS_API_KEY',
-        )
-        const ESMS_API_SECRET = this.configService.get<string>(
-            'ESMS_API_SECRET',
-        );
-        const ESMS_MSG = this.configService.get<string>('ESMS_MSG');
-
-        const ESMS_BRANCH = this.configService.get<string>('ESMS_BRANCH');
-
-
-        const url = `${ESMS_URL}?Phone=${phone}&ApiKey=${ESMS_API_KEY}&SecretKey=${ESMS_API_SECRET}&TimeAlive=2&Brandname=${ESMS_BRANCH}&Type=2&message=${ESMS_MSG}&IsNumber=1`
-
-        const response = await fetch(url);
-
-        if (!response.ok) {
-            throw new HttpException('Failed to send OTP', HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-
-        return await response.json();
+        return await getOtpSms(phone);
     }
 
     private getToken(payload: Omit<JwtPayloadDto, 'iat' | 'exp'>) {

@@ -172,7 +172,8 @@ export class UpdateOrderDto {
     })
     @IsNumber()
     @IsEnum(EOrderPaymentMethod) // Assuming these are the payment method IDs
-    paymentMethod: number;
+    @IsOptional()
+    paymentMethod?: number;
 
     @Expose()
     @ApiProperty({

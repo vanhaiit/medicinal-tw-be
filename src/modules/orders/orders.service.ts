@@ -16,6 +16,8 @@ import {
 } from './dto/order.req.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
 import { Transactional } from 'typeorm-transactional';
+import { sendSms } from '@shared/utils/sms';
+import { EOrderStatus } from 'constant/order.constant';
 
 @Injectable()
 export class OrdersService {
@@ -25,7 +27,7 @@ export class OrdersService {
         private readonly voucherRepository: VoucherRepository,
         private readonly itemRepository: ItemRepository,
         private readonly cartRepository: CartRepository,
-    ) {}
+    ) { }
 
     async findAll(query: GetOrderRequestDto) {
         const [result, metadata]: any = await this.orderRepository.getAll(
@@ -85,6 +87,13 @@ export class OrdersService {
             );
         }
 
+        if (body?.toPhone) {
+            sendSms(
+                body?.toPhone,
+                `Cảm ơn bạn đã đặt hàng tại Nguyễn Hiền. Mã đơn hàng của bạn là ORDER_${order.id}. Chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất.`,
+            )
+        }
+
         return order;
     }
 
@@ -104,7 +113,17 @@ export class OrdersService {
                 HttpStatus.BAD_REQUEST,
             );
         }
+
+
         const payload = mapDto(body, UpdateOrderDto);
+
+        if (order.status !== EOrderStatus.pending && payload.status === EOrderStatus.pending) {
+            throw new HttpException(
+                'Đơn hàng đã xác nhận không thể thực hiện hành động này!',
+                HttpStatus.BAD_REQUEST,
+            );
+        }
+
         const updatedOrder = {
             ...order,
             ...payload,
@@ -128,7 +147,32 @@ export class OrdersService {
         }
 
         delete updatedOrder.orderItems;
-        return await this.orderRepository.save(updatedOrder);
+
+        const result = await this.orderRepository.save(updatedOrder);
+
+        switch (result?.status) {
+            case EOrderStatus.processing:
+                sendSms(
+                    order?.toPhone,
+                    `Đơn hàng ORDER_${result.id} của bạn đã được xác nhận và chuyển cho đơn vị vận chuyển. Hãy chú ý điện thoại để nhận thông tin giao hàng sớm nhất nhé!`,
+                );
+                break;
+
+            case EOrderStatus.completed:
+                sendSms(
+                    order?.toPhone,
+                    `Đơn hàng ORDER_${result.id} của bạn đã được giao thành công. Cảm ơn bạn đã mua sắm tại Nguyễn Hiền!`,
+                );
+                break;
+            case EOrderStatus.cancelled:
+                sendSms(
+                    order?.toPhone,
+                    `Đơn hàng ORDER_${result.id} của bạn đã bị hủy. Nếu có thắc mắc, vui lòng liên hệ với chúng tôi qua hotline.`,
+                );
+                break;
+            default:
+                break;
+        }
     }
 
     async remove(query: DeleteOrderRequestDto) {
