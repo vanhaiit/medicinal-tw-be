@@ -12,7 +12,7 @@ import { VoucherResponseDto } from './dtos/voucher.response.dto';
 
 @Injectable()
 export class VoucherService {
-    constructor(private readonly voucherRepository: VoucherRepository) {}
+    constructor(private readonly voucherRepository: VoucherRepository) { }
 
     async createVoucher(body: VoucherRequestDto): Promise<VoucherResponseDto> {
         const [, count] = await this.voucherRepository.findAndCount({
@@ -52,17 +52,6 @@ export class VoucherService {
         id: number,
         body: VoucherRequestDto,
     ): Promise<VoucherRequestDto> {
-        const [v, count] = await this.voucherRepository.findAndCount({
-            where: { code: body.code },
-        });
-
-        if (count > 0 && v?.[0]?.id !== id) {
-            throw new HttpException(
-                httpErrors.VOUCHER_CODE_EXIST,
-                HttpStatus.BAD_REQUEST,
-            );
-        }
-
         const voucher = await this.voucherRepository.findOne({ where: { id } });
         if (!voucher) {
             throw new HttpException(

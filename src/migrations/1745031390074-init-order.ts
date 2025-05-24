@@ -59,6 +59,11 @@ export class InitOrder1745031390074 implements MigrationInterface {
                         type: 'varchar',
                         isNullable: false,
                     },
+                     {
+                        name: 'type_address',
+                        type: 'varchar',
+                        isNullable: true,
+                    },
                     {
                         name: 'voucher_id',
                         type: 'integer',

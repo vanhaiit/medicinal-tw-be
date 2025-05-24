@@ -8,6 +8,8 @@ export enum EOrderStatus {
 export enum EOrderShippingBranch {
     ghn = 'GHN',
     ghtk = 'GHTK',
+    vettel = 'VIETTEL',
+    vnpost = 'VNPOST'
 }
 
 export enum EOrderPaymentMethod {

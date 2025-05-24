@@ -12,6 +12,7 @@ import {
 import { OrderItemEntity } from './order-item.entity';
 import { UserEntity } from './user.entity';
 import { VoucherEntity } from './voucher.entity';
+import { EAddressType } from 'constant/address.constant';
 
 @Entity('orders')
 export class OrderEntity {
@@ -136,6 +137,15 @@ export class OrderEntity {
         name: 'shipping_branch',
     })
     shippingBranch: string;
+
+   @Column({
+        nullable: true,
+        comment: 'type of address',
+        name: 'type_address',
+        default: EAddressType.home,
+        enum: EAddressType,
+    })
+    typeAddress: string;
 
     @Column({
         name: 'created_at',

@@ -67,6 +67,13 @@ export class InitAddress1746202438924 implements MigrationInterface {
                         default: false,
                         comment: 'Địa chỉ mặc định',
                     },
+                     {
+                        name: 'type_address',
+                        type: 'varchar',
+                        length: '100',
+                        isNullable: false,
+                        default: 'home',
+                    },
                     {
                         name: 'created_at',
                         type: 'timestamp',

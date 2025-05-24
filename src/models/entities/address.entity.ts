@@ -10,6 +10,7 @@ import {
 } from 'typeorm';
 
 import { UserEntity } from './user.entity';
+import { EAddressType } from 'constant/address.constant';
 
 @Entity('addresses')
 export class AddressEntity {
@@ -40,6 +41,15 @@ export class AddressEntity {
 
     @Column({ name: 'address_detail', type: 'text' })
     addressDetail: string;
+
+   @Column({
+        nullable: true,
+        comment: 'type of address',
+        name: 'type_address',
+        default: EAddressType.home,
+        enum: EAddressType,
+    })
+    typeAddress: string;
 
     @Column({ name: 'is_default', type: 'boolean', default: false })
     isDefault: boolean;

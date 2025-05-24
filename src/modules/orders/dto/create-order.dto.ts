@@ -17,6 +17,7 @@ import {
 } from 'constant/order.constant';
 
 import { CreateOrderItemDto } from './create-order-item.dto';
+import { EAddressType } from 'constant/address.constant';
 
 export class CreateOrderDto {
     @Expose()
@@ -174,6 +175,16 @@ export class CreateOrderDto {
     @IsNotEmpty()
     @IsEnum(EOrderPaymentMethod) // Assuming these are the payment method IDs
     paymentMethod: number;
+
+    @Expose()
+    @ApiProperty({
+        description: 'address type',
+        example: EAddressType.home,
+        enum: EAddressType,
+    })
+    @IsEnum(EAddressType)
+    @IsOptional()
+    typeAddress?: EAddressType;
 
     @Expose()
     @ApiProperty({
