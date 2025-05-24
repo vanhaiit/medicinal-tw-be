@@ -142,7 +142,7 @@ export class OrderEntity {
         nullable: true,
         comment: 'type of address',
         name: 'type_address',
-        default: EAddressType.home,
+        default: `"${EAddressType.home}"`,
         enum: EAddressType,
     })
     typeAddress: string;

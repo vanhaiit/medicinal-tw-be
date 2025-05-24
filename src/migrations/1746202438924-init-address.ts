@@ -72,7 +72,6 @@ export class InitAddress1746202438924 implements MigrationInterface {
                         type: 'varchar',
                         length: '100',
                         isNullable: false,
-                        default: 'home',
                     },
                     {
                         name: 'created_at',

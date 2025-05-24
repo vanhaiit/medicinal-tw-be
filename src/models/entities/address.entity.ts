@@ -46,8 +46,6 @@ export class AddressEntity {
         nullable: true,
         comment: 'type of address',
         name: 'type_address',
-        default: EAddressType.home,
-        enum: EAddressType,
     })
     typeAddress: string;
 
