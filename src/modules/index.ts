@@ -17,6 +17,7 @@ import { ProductModule } from './product/product.module';
 import { ProfileModule } from './profile/profile.module';
 import { UploadModule } from './upload/upload.module';
 import { UserModule } from './users/user.module';
+import { VnPaytModule } from './vnpay/vnpay.module';
 import { VoucherModule } from './voucher/voucher.module';
 import { WishlistModule } from './wishlist/wishlist.module';
 
@@ -41,4 +42,5 @@ export const MODULES = [
     ContactModule,
     WishlistModule,
     DashboardModule,
+    VnPaytModule,
 ];
