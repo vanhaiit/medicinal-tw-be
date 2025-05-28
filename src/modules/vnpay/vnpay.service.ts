@@ -3,9 +3,15 @@ import * as querystring from 'querystring';
 import * as crypto from 'crypto'; // Import module crypto
 import { VnPayRequestDto } from './dto/vnpay.dto';
 import dayjs from 'dayjs';
+import { OrderRepository } from '@models/repositories/order.repository';
+import { EOrderPaymentStatus, EOrderStatus } from 'constant/order.constant';
+import { sendSms } from '@shared/utils/sms';
 
 @Injectable()
 export class VnPayService {
+    constructor(
+        private readonly orderRepository: OrderRepository,
+    ) { }
     private vnp_TmnCode = 'M3KV0AWY';
     private vnp_HashSecret = 'QDSM0KAY4X4DGGTW783C4P5Z2FRTXCM6';
     private vnp_Url = 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html';
@@ -25,7 +31,7 @@ export class VnPayService {
             vnp_OrderInfo: 'thanhtoandonhang',
             vnp_OrderType: 'other',
             vnp_Amount: 0,
-            vnp_ReturnUrl: 'https://domainmerchant.vn/ReturnUrl',
+            vnp_ReturnUrl: 'http://113.160.192.163:4000/ReturnUrl',
             vnp_IpAddr: '127.0.0.1',
             vnp_CreateDate,
             ...body
@@ -52,6 +58,53 @@ export class VnPayService {
         console.log('Final URL:', paymentUrl);
 
         return paymentUrl;
+    }
+
+    async verifyIpnUrl(vnpParams: any) {
+        try {
+            const secureHash = vnpParams['vnp_SecureHash'];
+
+            // Remove hash and hash type from params before verification
+            delete vnpParams['vnp_SecureHash'];
+            delete vnpParams['vnp_SecureHashType'];
+
+
+            // Sort parameters before signing
+            const sortedParams = this.sortObject(vnpParams);
+
+            // Create sign data
+            const signData = decodeURIComponent(querystring.stringify(sortedParams));
+
+            // Create hash
+            const hmac = crypto.createHmac('sha512', this.vnp_HashSecret);
+            const signed = hmac.update(signData, 'utf-8').digest('hex');
+
+            // Compare hashes
+            if (secureHash === signed) {
+                const orderId = vnpParams['vnp_TxnRef'];
+                const rspCode = vnpParams['vnp_ResponseCode'];
+                const order = await this.orderRepository.findOne({ where: { id: orderId } });
+                await this.orderRepository.update(order.id, { paymentStatus: rspCode === '00' ? EOrderPaymentStatus.payed : EOrderPaymentStatus.payFailed });
+                sendSms(
+                    order?.toPhone,
+                    `Đơn hàng ORDER_${order.id} thanh toán thành công!`,
+                );
+                return {
+                    RspCode: '00',
+                    Message: 'success'
+                };
+            } else {
+                return {
+                    RspCode: '97',
+                    Message: 'Fail checksum'
+                };
+            }
+        } catch (error) {
+            return {
+                RspCode: '99',
+                Message: 'Unknown error'
+            };
+        }
     }
 
     private sortObject(obj: any) {

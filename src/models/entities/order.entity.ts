@@ -1,4 +1,4 @@
-import { EOrderPaymentMethod, EOrderStatus } from 'constant/order.constant';
+import { EOrderPaymentMethod, EOrderPaymentStatus, EOrderStatus } from 'constant/order.constant';
 import {
     Column,
     Entity,
@@ -92,7 +92,7 @@ export class OrderEntity {
 
     @Column({
         comment:
-            'Current status of the order (e.g., pending, processing, completed)',
+            'Current status of the order (e.g., pending, deliver, pay, completed)',
         enum: EOrderStatus,
         default: EOrderStatus.pending,
     })
@@ -111,6 +111,14 @@ export class OrderEntity {
         default: EOrderPaymentMethod.cash,
     })
     paymentMethod: number;
+
+
+    @Column({
+        name: 'payment_status',
+        enum: EOrderPaymentStatus,
+        default: EOrderPaymentStatus.pending,
+    })
+    paymentStatus: number;
 
     @Column({
         nullable: true,

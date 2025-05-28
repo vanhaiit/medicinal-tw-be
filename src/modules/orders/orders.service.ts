@@ -151,7 +151,7 @@ export class OrdersService {
         const result = await this.orderRepository.save(updatedOrder);
 
         switch (result?.status) {
-            case EOrderStatus.processing:
+            case EOrderStatus.deliver:
                 sendSms(
                     order?.toPhone,
                     `Đơn hàng ORDER_${result.id} của bạn đã được xác nhận và chuyển cho đơn vị vận chuyển. Hãy chú ý điện thoại để nhận thông tin giao hàng sớm nhất nhé!`,

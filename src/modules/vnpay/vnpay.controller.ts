@@ -1,7 +1,11 @@
 import {
     Body,
     Controller,
-    Post
+    Post,
+    Get,
+    Query,
+    HttpCode,
+    HttpStatus
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { PublicRoute } from '@shared/decorators/public-route.decorator';
@@ -28,10 +32,25 @@ export class VnPayController {
                 data: { paymentUrl }
             };
         } catch (error) {
+            return {
+                status: 'error',
+                message: error.message || 'Failed to create payment URL',
+                data: null
+            };
         }
     }
 
-    
-
-
+    @Get('vnpay_ipn')
+    @PublicRoute()
+    @HttpCode(HttpStatus.OK)
+    async vnpayIpn(@Query() query: any) {
+        try {
+            return this.vnpayService.verifyIpnUrl(query);
+        } catch (error) {
+            return {
+                RspCode: '99',
+                Message: 'Unknown error'
+            };
+        }
+    }
 }

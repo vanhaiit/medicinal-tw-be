@@ -94,6 +94,11 @@ export class InitOrder1745031390074 implements MigrationInterface {
                         type: 'integer',
                         isNullable: false,
                     },
+                      {
+                        name: 'payment_status',
+                        type: 'integer',
+                        isNullable: false,
+                    },
                     {
                         name: 'feedback',
                         type: 'varchar',
