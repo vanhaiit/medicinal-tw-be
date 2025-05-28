@@ -39,6 +39,8 @@ export class OrdersService {
     @Transactional()
     async create(body: CreateOrderDto, userId: number) {
         const payload = mapDto(body, CreateOrderDto);
+        const timestamp = Date.now();
+        const orderCode = `ORDER_${timestamp}`;
 
         const itemIds = payload.orderItems.map(e => e.itemId);
 
@@ -58,6 +60,7 @@ export class OrdersService {
         const order = await this.orderRepository.save(
             this.orderRepository.create({
                 ...payload,
+                code: orderCode,
             }),
         );
 
@@ -90,23 +93,19 @@ export class OrdersService {
         if (body?.toPhone) {
             sendSms(
                 body?.toPhone,
-                `Cảm ơn bạn đã đặt hàng tại Nguyễn Hiền. Mã đơn hàng của bạn là ORDER_${order.id}. Chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất.`,
+                `Cảm ơn bạn đã đặt hàng tại Nguyễn Hiền. Mã đơn hàng của bạn là ${order.code}. Chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất.`,
             )
         }
 
         return order;
     }
 
-    async findOne(id: number) {
-        return this.orderRepository.getOrderWithItems(id);
-    }
+    async findOne(id: string | number) {
+        const order = await this.orderRepository.getOrderWithItems(
+            typeof id === 'number' ? id : undefined,
+            typeof id === 'string' ? id : undefined
+        );
 
-    async findByUserId(userId: number, options: GetOrderOwnerRequestDto) {
-        return this.orderRepository.getOrdersByUserId(userId, options);
-    }
-
-    async update(id: number, body: UpdateOrderDto) {
-        const order = await this.orderRepository.findOne({ where: { id } });
         if (!order) {
             throw new HttpException(
                 httpErrors.ORDER_DOES_NOT_EXIST,
@@ -114,6 +113,27 @@ export class OrdersService {
             );
         }
 
+        return order;
+    }
+
+    async findByUserId(userId: number, options: GetOrderOwnerRequestDto) {
+        return this.orderRepository.getOrdersByUserId(userId, options);
+    }
+
+    async update(id: string | number, body: UpdateOrderDto) {
+        const order = await this.orderRepository.findOne({
+            where: [
+                { id: typeof id === 'number' ? id : undefined },
+                { code: typeof id === 'string' ? id : undefined }
+            ]
+        });
+
+        if (!order) {
+            throw new HttpException(
+                httpErrors.ORDER_DOES_NOT_EXIST,
+                HttpStatus.BAD_REQUEST,
+            );
+        }
 
         const payload = mapDto(body, UpdateOrderDto);
 
@@ -133,12 +153,12 @@ export class OrdersService {
         // Update order items if provided
         if (payload.orderItems?.length) {
             // Delete existing order items
-            await this.orderItemRepository.delete({ orderId: id });
+            await this.orderItemRepository.delete({ orderId: order.id });
 
             // Create new order items
             const orderItems = payload.orderItems.map(item => ({
                 ...item,
-                orderId: id,
+                orderId: order.id,
             }));
 
             await this.orderItemRepository.save(
@@ -154,25 +174,27 @@ export class OrdersService {
             case EOrderStatus.deliver:
                 sendSms(
                     order?.toPhone,
-                    `Đơn hàng ORDER_${result.id} của bạn đã được xác nhận và chuyển cho đơn vị vận chuyển. Hãy chú ý điện thoại để nhận thông tin giao hàng sớm nhất nhé!`,
+                    `Đơn hàng ${result.code} của bạn đã được xác nhận và chuyển cho đơn vị vận chuyển. Hãy chú ý điện thoại để nhận thông tin giao hàng sớm nhất nhé!`,
                 );
                 break;
 
             case EOrderStatus.completed:
                 sendSms(
                     order?.toPhone,
-                    `Đơn hàng ORDER_${result.id} của bạn đã được giao thành công. Cảm ơn bạn đã mua sắm tại Nguyễn Hiền!`,
+                    `Đơn hàng ${result.code} của bạn đã được giao thành công. Cảm ơn bạn đã mua sắm tại Nguyễn Hiền!`,
                 );
                 break;
             case EOrderStatus.cancelled:
                 sendSms(
                     order?.toPhone,
-                    `Đơn hàng ORDER_${result.id} của bạn đã bị hủy. Nếu có thắc mắc, vui lòng liên hệ với chúng tôi qua hotline.`,
+                    `Đơn hàng ${result.code} của bạn đã bị hủy. Nếu có thắc mắc, vui lòng liên hệ với chúng tôi qua hotline.`,
                 );
                 break;
             default:
                 break;
         }
+
+        return result;
     }
 
     async remove(query: DeleteOrderRequestDto) {

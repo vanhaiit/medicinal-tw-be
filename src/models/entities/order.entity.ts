@@ -20,6 +20,13 @@ export class OrderEntity {
     id: number;
 
     @Column({
+        unique: true,
+        length: 50,
+        comment: 'Unique order code in format ORDER123456',
+    })
+    code: string;
+
+    @Column({
         name: 'user_id',
         comment: 'ID of the user who placed the order',
     })

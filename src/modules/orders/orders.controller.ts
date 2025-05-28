@@ -59,7 +59,7 @@ export class OrdersController {
     @Put(':id')
     @PublicRoute()
     update(@Param('id') id: string, @Body() body: UpdateOrderDto) {
-        return this.ordersService.update(+id, body);
+        return this.ordersService.update(id, body);
     }
 
     @Delete()

@@ -12,14 +12,20 @@ import { BaseRepository } from './base.repository';
 
 @CustomRepository(OrderEntity)
 export class OrderRepository extends BaseRepository<OrderEntity> {
-    async getOrderWithItems(orderId: number): Promise<OrderEntity> {
-        return this.createQueryBuilder('orders')
+    async getOrderWithItems(id?: number, code?: string): Promise<OrderEntity> {
+        const query = this.createQueryBuilder('orders')
             .leftJoinAndSelect('orders.orderItems', 'orderItems')
             .leftJoinAndSelect('orders.voucher', 'voucher')
             .leftJoinAndSelect('orderItems.item', 'item')
-            .leftJoinAndSelect('orders.user', 'user')
-            .where('orders.id = :orderId', { orderId })
-            .getOne();
+            .leftJoinAndSelect('orders.user', 'user');
+
+        if (id) {
+            query.where('orders.id = :id', { id });
+        } else if (code) {
+            query.where('orders.code = :code', { code });
+        }
+
+        return query.getOne();
     }
 
     async getOrdersByUserId(

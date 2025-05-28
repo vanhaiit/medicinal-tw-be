@@ -15,6 +15,13 @@ export class InitOrder1745031390074 implements MigrationInterface {
                         generationStrategy: 'increment',
                     },
                     {
+                        name: 'code',
+                        type: 'varchar',
+                        length: '50',
+                        isUnique: true,
+                        isNullable: false,
+                    },
+                    {
                         name: 'user_id',
                         type: 'integer',
                         isNullable: false,
@@ -94,10 +101,11 @@ export class InitOrder1745031390074 implements MigrationInterface {
                         type: 'integer',
                         isNullable: false,
                     },
-                      {
+                    {
                         name: 'payment_status',
                         type: 'integer',
                         isNullable: false,
+                        default: 0,
                     },
                     {
                         name: 'feedback',
