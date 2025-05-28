@@ -12,9 +12,10 @@ export class VnPayService {
     constructor(
         private readonly orderRepository: OrderRepository,
     ) { }
-    private vnp_TmnCode = 'M3KV0AWY';
-    private vnp_HashSecret = 'QDSM0KAY4X4DGGTW783C4P5Z2FRTXCM6';
-    private vnp_Url = 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html';
+    private vnp_TmnCode = process.env.VNPAY_TMN_CODE; 
+    private vnp_HashSecret = process.env.VNPAY_HASH_SECRET;
+    private vnp_Url = process.env.VNPAY_API_URL;
+    private vnp_ReturnUrl = process.env.VNPAY_RETURN_URL;
 
     createPaymentUrl(body: VnPayRequestDto) {
         // Tạo vnp_TxnRef duy nhất dựa trên timestamp
@@ -31,7 +32,7 @@ export class VnPayService {
             vnp_OrderInfo: 'thanhtoandonhang',
             vnp_OrderType: 'other',
             vnp_Amount: 0,
-            vnp_ReturnUrl: 'http://113.160.192.163:4000/ReturnUrl',
+            vnp_ReturnUrl: this.vnp_ReturnUrl,
             vnp_IpAddr: '127.0.0.1',
             vnp_CreateDate,
             ...body
