@@ -5,8 +5,11 @@ import { OrderRepository } from '@models/repositories/order.repository';
 import { VoucherRepository } from '@models/repositories/voucher.repositoty';
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { httpErrors } from 'constant/http-error.constant';
+import { EOrderStatus } from 'constant/order.constant';
+import { Transactional } from 'typeorm-transactional';
 
 import mapDto from '@shared/helpers/mapdto';
+import { sendSms } from '@shared/utils/sms';
 
 import { CreateOrderDto } from './dto/create-order.dto';
 import {
@@ -15,9 +18,6 @@ import {
     GetOrderRequestDto,
 } from './dto/order.req.dto';
 import { UpdateOrderDto } from './dto/update-order.dto';
-import { Transactional } from 'typeorm-transactional';
-import { sendSms } from '@shared/utils/sms';
-import { EOrderStatus } from 'constant/order.constant';
 
 @Injectable()
 export class OrdersService {
@@ -27,7 +27,7 @@ export class OrdersService {
         private readonly voucherRepository: VoucherRepository,
         private readonly itemRepository: ItemRepository,
         private readonly cartRepository: CartRepository,
-    ) { }
+    ) {}
 
     async findAll(query: GetOrderRequestDto) {
         const [result, metadata]: any = await this.orderRepository.getAll(
@@ -84,17 +84,14 @@ export class OrdersService {
         );
 
         if (userId) {
-            await this.cartRepository.removeFromCart(
-                userId,
-                itemIds,
-            );
+            await this.cartRepository.removeFromCart(userId, itemIds);
         }
 
         if (body?.toPhone) {
             sendSms(
                 body?.toPhone,
                 `Cảm ơn bạn đã đặt hàng tại Nguyễn Hiền. Mã đơn hàng của bạn là ${order.code}. Chúng tôi sẽ liên hệ với bạn trong thời gian sớm nhất.`,
-            )
+            );
         }
 
         return order;
@@ -103,7 +100,7 @@ export class OrdersService {
     async findOne(id: string | number) {
         const order = await this.orderRepository.getOrderWithItems(
             typeof id === 'number' ? id : undefined,
-            typeof id === 'string' ? id : undefined
+            typeof id === 'string' ? id : undefined,
         );
 
         if (!order) {
@@ -123,9 +120,14 @@ export class OrdersService {
     async update(id: string | number, body: UpdateOrderDto) {
         const order = await this.orderRepository.findOne({
             where: [
-                { id: typeof id === 'number' ? id : undefined },
-                { code: typeof id === 'string' ? id : undefined }
-            ]
+                {
+                    id:
+                        typeof id === 'number' || Number(id)
+                            ? parseInt(`${id}`)
+                            : undefined,
+                },
+                { code: typeof id === 'string' ? id : undefined },
+            ],
         });
 
         if (!order) {
@@ -137,7 +139,10 @@ export class OrdersService {
 
         const payload = mapDto(body, UpdateOrderDto);
 
-        if (order.status !== EOrderStatus.pending && payload.status === EOrderStatus.pending) {
+        if (
+            order.status !== EOrderStatus.pending &&
+            payload.status === EOrderStatus.pending
+        ) {
             throw new HttpException(
                 'Đơn hàng đã xác nhận không thể thực hiện hành động này!',
                 HttpStatus.BAD_REQUEST,

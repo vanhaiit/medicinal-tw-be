@@ -3,20 +3,20 @@ import { Expose, Type } from 'class-transformer';
 import {
     IsEmail,
     IsEnum,
-    IsNotEmpty,
     IsNumber,
     IsOptional,
     IsString,
     ValidateNested,
 } from 'class-validator';
+import { EAddressType } from 'constant/address.constant';
 import {
     EOrderPaymentMethod,
+    EOrderPaymentStatus,
     EOrderShippingBranch,
     EOrderStatus,
 } from 'constant/order.constant';
 
 import { CreateOrderItemDto } from './create-order-item.dto';
-import { EAddressType } from 'constant/address.constant';
 
 export class UpdateOrderDto {
     @Expose()
@@ -174,6 +174,18 @@ export class UpdateOrderDto {
     @IsEnum(EOrderPaymentMethod) // Assuming these are the payment method IDs
     @IsOptional()
     paymentMethod?: number;
+
+    @Expose()
+    @ApiProperty({
+        description: 'Payment status of the order',
+        example: EOrderPaymentStatus.pending,
+        enum: EOrderPaymentStatus,
+        default: EOrderPaymentStatus.pending,
+    })
+    @IsNumber()
+    @IsEnum(EOrderPaymentStatus)
+    @IsOptional()
+    paymentStatus: number;
 
     @Expose()
     @ApiProperty({

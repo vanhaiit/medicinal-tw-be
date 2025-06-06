@@ -10,14 +10,15 @@ import {
     IsString,
     ValidateNested,
 } from 'class-validator';
+import { EAddressType } from 'constant/address.constant';
 import {
     EOrderPaymentMethod,
+    EOrderPaymentStatus,
     EOrderShippingBranch,
     EOrderStatus,
 } from 'constant/order.constant';
 
 import { CreateOrderItemDto } from './create-order-item.dto';
-import { EAddressType } from 'constant/address.constant';
 
 export class CreateOrderDto {
     @Expose()
@@ -175,6 +176,18 @@ export class CreateOrderDto {
     @IsNotEmpty()
     @IsEnum(EOrderPaymentMethod) // Assuming these are the payment method IDs
     paymentMethod: number;
+
+    @Expose()
+    @ApiProperty({
+        description: 'Payment status of the order',
+        example: EOrderPaymentStatus.pending,
+        enum: EOrderPaymentStatus,
+        default: EOrderPaymentStatus.pending,
+    })
+    @IsNumber()
+    @IsEnum(EOrderPaymentStatus)
+    @IsNotEmpty()
+    paymentStatus: number;
 
     @Expose()
     @ApiProperty({

@@ -8,7 +8,7 @@ import {
     IsOptional,
     IsString,
 } from 'class-validator';
-import { EOrderStatus } from 'constant/order.constant';
+import { EOrderPaymentStatus, EOrderStatus } from 'constant/order.constant';
 
 import { StringFieldOption } from '@shared/decorators/field.decorator';
 import { PageOptionsDto } from '@shared/dtos/page-options.dto';
@@ -38,6 +38,16 @@ export class GetOrderRequestDto extends PageOptionsDto {
     @IsString()
     @IsOptional()
     paymentMethod: string;
+
+    @Expose()
+    @ApiProperty({
+        description: 'Payment status of the order',
+        example: EOrderPaymentStatus.pending,
+        enum: EOrderPaymentStatus,
+    })
+    @IsEnum(EOrderPaymentStatus)
+    @IsOptional()
+    paymentStatus?: EOrderPaymentStatus;
 
     @ApiPropertyOptional({ required: false })
     @IsNumber()
